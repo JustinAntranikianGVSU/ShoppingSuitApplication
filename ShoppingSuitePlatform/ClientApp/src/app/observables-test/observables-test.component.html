@@ -1,0 +1,67 @@
+<p>observables-test works!</p>
+
+<div>
+    <h6>HttpGet</h6>
+    <button (click)="onHttpGetClicked()">Ok</button>
+    <p>{{ todoEntry.title }}</p>
+  </div>
+  
+  <hr />
+  
+  <div>
+    <h6>SwitchMap</h6>
+    <input type="text" id="switchMapText" />
+    <p>{{ todoEntry.title }}</p>
+  </div>
+  
+  <hr />
+  
+  <div>
+    <h6>MergeMap</h6>
+    <input type="text" id="firstName" />
+    <input type="text" id="lastName" />
+    <p>FullName : {{ fullName }}</p>
+  </div>
+  
+  <hr />
+  
+  <div>
+    <h6>ConcatMap</h6>
+    <button (click)="onConcatMapClicked()">Concat</button>
+  </div>
+  
+  <hr />
+  
+  <div>
+    <h6>Intervals</h6>
+    <button (click)="onIntervalClicked()">Interval</button>
+    <div>
+      <button (click)="onStopPollingClicked()">Stop Polling</button>
+    </div>
+  </div>
+  
+  <hr />
+  
+  <div>
+    <h6>Merge</h6>
+    <input type="text" id="firstNameMerge" />
+    <input type="text" id="lastNameMerge" />
+    <p>FullNameMerge : {{ fullNameMerged }}</p>
+  </div>
+  
+  <hr />
+  
+  <div>
+    <h6>ExhaustMap</h6>
+    <button id="exhaustMap">ExhaustMap</button>
+  </div>
+  
+  <hr />
+  
+  <div>
+    <h6>FlatMap</h6>
+    <button id="flatMap" (click)="onFlatMapClicked()">FlatMap</button>
+    <input type="text" [(ngModel)]="flatMapValue" />
+  </div>
+  
+  <hr style="margin: 20px" />
