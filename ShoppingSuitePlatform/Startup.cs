@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ShoppingSuitePlatform.Controllers;
 
 namespace ShoppingSuitePlatform
 {
@@ -26,6 +27,8 @@ namespace ShoppingSuitePlatform
 			{
 				configuration.RootPath = "ClientApp/dist";
 			});
+
+			services.AddScoped<IMyClass, MyClass>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

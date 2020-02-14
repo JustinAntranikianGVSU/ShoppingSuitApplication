@@ -2,7 +2,7 @@
 
 namespace Domain
 {
-	public class UserBasicInfo
+	public class User
 	{
 		public int Id { get; set; }
 
@@ -10,13 +10,8 @@ namespace Domain
 
 		public string LastName { get; set; }
 
+		public string Email { get; set; }
+
 		public DateTime DateOfBirth { get; set; }
-	}
-
-	public class Occupation
-	{
-		public int Id;
-
-		public string Name;
 	}
 }

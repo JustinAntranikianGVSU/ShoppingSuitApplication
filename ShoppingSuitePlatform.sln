@@ -5,7 +5,11 @@ VisualStudioVersion = 16.0.29324.140
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoppingSuitePlatform", "ShoppingSuitePlatform\ShoppingSuitePlatform.csproj", "{0B6DA215-AFDE-401A-A216-48C8C2898E94}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{57BF348B-43C0-4C23-8D57-3062E696B023}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{57BF348B-43C0-4C23-8D57-3062E696B023}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainTest", "DomainTest\DomainTest.csproj", "{6F30D277-CF42-40C2-8A37-8C9495C8DDD0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository", "Repository\Repository.csproj", "{BFC49063-D99D-4D48-8476-187F9F4B2922}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{57BF348B-43C0-4C23-8D57-3062E696B023}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57BF348B-43C0-4C23-8D57-3062E696B023}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57BF348B-43C0-4C23-8D57-3062E696B023}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F30D277-CF42-40C2-8A37-8C9495C8DDD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F30D277-CF42-40C2-8A37-8C9495C8DDD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F30D277-CF42-40C2-8A37-8C9495C8DDD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F30D277-CF42-40C2-8A37-8C9495C8DDD0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFC49063-D99D-4D48-8476-187F9F4B2922}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFC49063-D99D-4D48-8476-187F9F4B2922}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFC49063-D99D-4D48-8476-187F9F4B2922}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFC49063-D99D-4D48-8476-187F9F4B2922}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

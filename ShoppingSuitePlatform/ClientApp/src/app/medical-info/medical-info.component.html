@@ -1,1 +1,80 @@
 <p>medical-info works!</p>
+
+<hr />
+
+<form>
+
+  <div class="form-group">
+    <label for="firstName">First Name</label>
+    <input type="text" name="firstName" [(ngModel)]="userInfo.firstName" class="form-control" id="firstName" placeholder="First Name">
+  </div>
+
+  <div class="form-group">
+    <label for="lastName">Last Name</label>
+    <input type="text" name="lastName" [(ngModel)]="userInfo.lastName" class="form-control" id="lastName" placeholder="Last Name">
+  </div>
+
+  <div class="form-group">
+    <label for="occupation">Occupation :</label>
+    <select name="occupation" [(ngModel)]="userInfo.occupationId" class="form-control" id="occupation">
+      <option [value]="item.id" *ngFor="let item of occupations">{{ item.name }}</option>
+    </select>
+  </div>
+
+  <button type="submit" (click)="onSaveUserInfoClicked()" class="btn btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i>Submit</button>
+</form>
+
+<hr />
+
+<ng-template #content let-modal>
+
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-basic-title">Profile update</h4>
+  <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+  <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+  <form>
+
+    <div class="form-group">
+    <label for="occupationSector">Filter By Occupation Sector :</label>
+     <select name="occupationSector" [(ngModel)]="userInfo.occupationSectorId" (change)="onOccupationSectorChanged()" class="form-control" id="occupationSector">
+      <option [value]="item.id" *ngFor="let item of occupationSectors">{{ item.name }}</option>
+    </select>
+    </div>
+
+    <div class="form-group">
+      <label for="occupation">Occupation :</label>
+      <select name="occupation2" [(ngModel)]="userInfo.occupationId" class="form-control" id="occupation">
+        <option [value]="item.id" *ngFor="let item of occupations">{{ item.name }}</option>
+      </select>
+    </div>
+
+    <div class="row">
+      <div class="col-sm">
+        <div class="form-group">
+          <label for="lastName">First Name</label>
+          <input type="text" name="firstName" [(ngModel)]="userInfo.firstName" class="form-control" id="firstName" placeholder="First Name">
+        </div>
+      </div>
+      <div class="col-sm">
+        <div class="form-group">
+          <label for="lastName">Last Name</label>
+          <input type="text" name="lastName" [(ngModel)]="userInfo.lastName" class="form-control" id="lastName" placeholder="Last Name">
+        </div>
+      </div>
+    </div>
+    
+  </form>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+</div>
+
+</ng-template>
+
+<button class="btn btn-lg btn-outline-primary" (click)="open(content)">Launch demo modal</button>
+

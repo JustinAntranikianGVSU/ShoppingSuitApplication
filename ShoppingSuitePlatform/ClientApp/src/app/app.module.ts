@@ -38,6 +38,7 @@ import { MedicalInfoService } from './services/medical-info.service';
       { path: 'fetch-data', component: FetchDataComponent },
       { path: 'bootstrap-test', component: BootstrapTestComponent },
       { path: 'observables-test', component: ObservablesTestComponent },
+      { path: 'medical-info', component: MedicalInfoComponent },
     ])
   ],
   providers: [TodoService, MedicalInfoService],
