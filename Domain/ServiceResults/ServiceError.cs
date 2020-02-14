@@ -13,15 +13,30 @@ namespace Domain.ServiceResult
 			return new ServiceError(message, errorLocation, fieldName);
 		}
 
-		public string ErrorMessage;
+		/// <summary>
+		/// Provide a custom message to send back to the user.
+		/// </summary>
+		public string Message;
 
-		public string ErrorLocation;
+		/// <summary>
+		/// Usually the type name of the Orchestrator that validated the error.
+		/// </summary>
+		public string Location;
 
+		/// <summary>
+		/// Name of the field where the error occured (ie. FirstName, Email, etc)
+		/// </summary>
 		public string? FieldName;
 
-		public ServiceError(string errorMessage, string errorLocation, string? fieldName = null)
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="message">Provide a custom message to send back to the user.</param>
+		/// <param name="location">Usually the type name of the Orchestrator that validated the error.</param>
+		/// <param name="fieldName">Name of the field where the error occured (ie. FirstName, Email, etc).</param>
+		public ServiceError(string message, string location, string? fieldName = null)
 		{
-			(ErrorMessage, ErrorLocation, FieldName) = (errorMessage, errorLocation, fieldName);
+			(Message, Location, FieldName) = (message, location, fieldName);
 		}
 	}
 }

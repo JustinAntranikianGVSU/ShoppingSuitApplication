@@ -91,3 +91,5 @@ C:\source\ShoppingSuitePlatform\DomainTest\bin\Debug\netcoreapp3.0\zh-Hans\Micro
 C:\source\ShoppingSuitePlatform\DomainTest\bin\Debug\netcoreapp3.0\zh-Hant\Microsoft.TestPlatform.CommunicationUtilities.resources.dll
 C:\source\ShoppingSuitePlatform\DomainTest\bin\Debug\netcoreapp3.0\zh-Hant\Microsoft.TestPlatform.CrossPlatEngine.resources.dll
 C:\source\ShoppingSuitePlatform\DomainTest\bin\Debug\netcoreapp3.0\zh-Hant\Microsoft.VisualStudio.TestPlatform.Common.resources.dll
+C:\source\ShoppingSuitePlatform\DomainTest\bin\Debug\netcoreapp3.0\Repository.dll
+C:\source\ShoppingSuitePlatform\DomainTest\bin\Debug\netcoreapp3.0\Repository.pdb

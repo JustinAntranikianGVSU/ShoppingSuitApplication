@@ -9,6 +9,7 @@
       "DomainTest/1.0.0": {
         "dependencies": {
           "Domain": "1.0.0",
+          "Repository": "1.0.0",
           "coverlet.collector": "1.0.1",
           "xunit": "2.4.1",
           "xunit.runner.visualstudio": "2.4.1"
@@ -1360,6 +1361,14 @@
         "runtime": {
           "Domain.dll": {}
         }
+      },
+      "Repository/1.0.0": {
+        "dependencies": {
+          "Domain": "1.0.0"
+        },
+        "runtime": {
+          "Repository.dll": {}
+        }
       }
     }
   },
@@ -2140,6 +2149,11 @@
       "hashPath": "xunit.runner.visualstudio.2.4.1.nupkg.sha512"
     },
     "Domain/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Repository/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

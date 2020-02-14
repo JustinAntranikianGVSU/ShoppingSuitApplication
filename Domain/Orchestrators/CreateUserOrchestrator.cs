@@ -23,26 +23,43 @@ namespace Domain.Orchestrators
 			if (userByEmail is {})
 			{
 				var message = $"{userByEmail.Email} is already in use.";
-				var error = new ServiceError(message, nameof(userByEmail.Email), nameof(CreateUserOrchestrator));
+				var error = GetError(message, nameof(user.Email));
 				errors.Add(error);
 			}
 
-			var result = errors.Any() ? GetBadRequestResult(errors) : GetProcessedResult(user);
-			return result;
+			if (errors.Any())
+			{
+				return GetBadRequestResult(errors);
+			}
+
+			var userToCreate = new User
+			{
+				Id = 100,
+				FirstName = user.FirstName,
+				LastName = user.LastName,
+				Email = user.Email,
+				DateOfBirth = user.DateOfBirth
+			};
+
+			await _repo.Add(userToCreate);
+			return GetProcessedResult(userToCreate);
 		}
 
 		private IEnumerable<ServiceError> GetServiceErrors(User user)
 		{
 			if (string.IsNullOrWhiteSpace(user.FirstName))
 			{
-				var error = ServiceError.CreateNotSetError(nameof(user.FirstName), GetType());
-				yield return error;
+				yield return GetNotSetError(nameof(user.FirstName));
 			}
 
 			if (string.IsNullOrWhiteSpace(user.LastName))
 			{
-				var error = ServiceError.CreateNotSetError(nameof(user.LastName), GetType());
-				yield return error;
+				yield return GetNotSetError(nameof(user.LastName));
+			}
+
+			if (string.IsNullOrWhiteSpace(user.Email))
+			{
+				yield return GetNotSetError(nameof(user.Email));
 			}
 		}
 	}
