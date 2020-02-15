@@ -1,0 +1,7 @@
+C:\source\ShoppingSuitePlatform\DataAccess\bin\Debug\netstandard2.1\DataAccess.deps.json
+C:\source\ShoppingSuitePlatform\DataAccess\bin\Debug\netstandard2.1\DataAccess.dll
+C:\source\ShoppingSuitePlatform\DataAccess\obj\Debug\netstandard2.1\DataAccess.AssemblyInfoInputs.cache
+C:\source\ShoppingSuitePlatform\DataAccess\obj\Debug\netstandard2.1\DataAccess.AssemblyInfo.cs
+C:\source\ShoppingSuitePlatform\DataAccess\bin\Debug\netstandard2.1\DataAccess.pdb
+C:\source\ShoppingSuitePlatform\DataAccess\obj\Debug\netstandard2.1\DataAccess.dll
+C:\source\ShoppingSuitePlatform\DataAccess\obj\Debug\netstandard2.1\DataAccess.pdb
