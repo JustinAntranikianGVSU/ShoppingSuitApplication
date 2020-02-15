@@ -12,6 +12,21 @@ namespace Domain
 
 		public string Email { get; set; }
 
-		public DateTime DateOfBirth { get; set; }
+		public User() { }
+
+		public User(string firstName, string lastName, string email)
+		{
+			FirstName = firstName;
+			LastName = lastName;
+			Email = email;
+		}
+
+		public User(int id, string firstName, string lastName, string email)
+		{
+			Id = id;
+			FirstName = firstName;
+			LastName = lastName;
+			Email = email;
+		}
 	}
 }

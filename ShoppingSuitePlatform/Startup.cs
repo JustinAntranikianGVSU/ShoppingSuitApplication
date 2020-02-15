@@ -1,4 +1,7 @@
+using AutoMapper;
 using DataAccess;
+using Domain;
+using Domain.Entities;
 using Domain.Orchestrators;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -7,7 +10,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using ShoppingSuitePlatform.Controllers;
 
 namespace ShoppingSuitePlatform
 {
@@ -32,6 +34,15 @@ namespace ShoppingSuitePlatform
 
 			var sqlServerConnection = Configuration.GetConnectionString("DBConnection");
 			services.AddDbContextPool<AppDbContext>(options => options.UseSqlServer(sqlServerConnection));
+
+			// Auto Mapper Configurations
+			var mappingConfig = new MapperConfiguration(mc =>
+			{
+				mc.AddProfile(new MappingProfile());
+			});
+
+			var mapper = mappingConfig.CreateMapper();
+			services.AddSingleton(mapper);
 
 			services.AddScoped<ICreateUserOrchestrator, CreateUserOrchestrator>();
 		}
@@ -66,18 +77,18 @@ namespace ShoppingSuitePlatform
 					pattern: "{controller}/{action=Index}/{id?}");
 			});
 
-			app.UseSpa(spa =>
-			{
-				// To learn more about options for serving an Angular SPA from ASP.NET Core,
-				// see https://go.microsoft.com/fwlink/?linkid=864501
+			//app.UseSpa(spa =>
+			//{
+			//	// To learn more about options for serving an Angular SPA from ASP.NET Core,
+			//	// see https://go.microsoft.com/fwlink/?linkid=864501
 
-				spa.Options.SourcePath = "ClientApp";
+			//	spa.Options.SourcePath = "ClientApp";
 
-				//if (env.IsDevelopment())
-				//{
-				//	spa.UseAngularCliServer(npmScript: "start");
-				//}
-			});
+			//	if (env.IsDevelopment())
+			//	{
+			//		spa.UseAngularCliServer(npmScript: "start");
+			//	}
+			//});
 		}
 	}
 }

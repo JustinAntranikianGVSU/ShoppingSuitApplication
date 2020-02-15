@@ -1,9 +1,9 @@
-﻿using DataAccess;
+﻿using AutoMapper;
+using DataAccess;
 using DataAccess.Entities;
 using Domain.Entities;
 using Domain.Security;
 using Domain.ServiceResult;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,15 +19,18 @@ namespace Domain.Orchestrators
 	{
 		private readonly AppDbContext _dbContext;
 
-		public CreateUserOrchestrator(AppDbContext dbContext)
+		private readonly IMapper _mapper;
+
+		public CreateUserOrchestrator(AppDbContext dbContext, IMapper mapper)
 		{
 			_dbContext = dbContext;
+			_mapper = mapper;
 		}
 
 		public async Task<ServiceResult<User>> Create(User user)
 		{
 			var errors = GetServiceErrors(user).ToList();
-			var userByEmail = await _dbContext.Users.FirstOrDefaultAsync(oo => oo.Email == user.Email);
+			var userByEmail = await _dbContext.Users.GetByEmail(user.Email);
 
 			if (userByEmail is {})
 			{
@@ -41,26 +44,14 @@ namespace Domain.Orchestrators
 				return GetBadRequestResult(errors);
 			}
 
-			var userEntity = new UserEntity
-			{
-				FirstName = user.FirstName,
-				LastName = user.LastName,
-				Email = user.Email,
-				Roles = new List<UserRoleEntity> { new UserRoleEntity { RoleGuid = RoleLookup.TrainingUserRoleGuid } }
-			};
+			var userEntity = _mapper.Map<UserEntity>(user);
+			userEntity.Roles.Add(new UserRoleEntity { RoleGuid = RoleLookup.TrainingUserRoleGuid });
 
 			_dbContext.Users.Add(userEntity);
 			await _dbContext.SaveChangesAsync();
 
-			var newUserDto = new User
-			{
-				Id = userEntity.Id,
-				FirstName = userEntity.FirstName,
-				LastName = userEntity.LastName,
-				Email = userEntity.Email
-			};
-
-			return GetProcessedResult(newUserDto);
+			var newUser = _mapper.Map<User>(userEntity);
+			return GetProcessedResult(newUser);
 		}
 
 		private IEnumerable<ServiceError> GetServiceErrors(User user)

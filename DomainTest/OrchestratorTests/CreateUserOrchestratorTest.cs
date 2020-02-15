@@ -1,90 +1,113 @@
-﻿//using Domain;
-//using Domain.Orchestrators;
-//using Domain.ServiceResult;
-//using Repository;
-//using System.Collections.Generic;
-//using System.Threading.Tasks;
-//using Xunit;
+﻿using AutoMapper;
+using DataAccess;
+using Domain;
+using Domain.Entities;
+using Domain.Orchestrators;
+using Domain.ServiceResult;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Threading.Tasks;
+using Xunit;
 
-//namespace DomainTest.OrchestratorTests
-//{
-//	public class CreateUserOrchestratorTest
-//	{
-//		private const string LOCATION = "CreateUserOrchestrator";
+namespace DomainTest.OrchestratorTests
+{
+	public class CreateUserOrchestratorTest
+	{
+		private const string LOCATION = "CreateUserOrchestrator";
 
-//		[Fact]
-//		public async Task CreateUserOrchestrator_Create_ReturnsBadRequest()
-//		{
-//			var users = new List<User>();
-//			var repo = new UserRepository(users);
-//			var orchestrator = new CreateUserOrchestrator(repo);
+		private static AppDbContext GetInMemoryDb()
+		{
+			var name = $"new {nameof(AppDbContext)}_{Guid.NewGuid()}";
+			var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(name).Options;
+			return new AppDbContext(options);
+		}
 
-//			var result = await orchestrator.Create(new User());
+		private static IMapper GetMapper()
+		{
+			var mappingConfig = new MapperConfiguration(mc =>
+			{
+				mc.AddProfile(new MappingProfile());
+			});
 
-//			Assert.Equal(3, result.Errors.Count);
+			return mappingConfig.CreateMapper();
+		}
 
-//			Assert.Collection(result.Errors, (error) => {
-//				Assert.Equal(LOCATION, error.Location);
-//				Assert.Equal("FirstName", error.FieldName);
-//				Assert.Equal("FirstName must be set.", error.Message);
-//			},
-//			(error) => {
-//				Assert.Equal(LOCATION, error.Location);
-//				Assert.Equal("LastName", error.FieldName);
-//				Assert.Equal("LastName must be set.", error.Message);
-//			},
-//			(error) => {
-//				Assert.Equal(LOCATION, error.Location);
-//				Assert.Equal("Email", error.FieldName);
-//				Assert.Equal("Email must be set.", error.Message);
-//			});
+		[Fact]
+		public async Task CreateUserOrchestrator_Create_ReturnsBadRequest()
+		{
+			var dbContext = GetInMemoryDb();
+			var orchestrator = new CreateUserOrchestrator(dbContext, GetMapper());
+			var result = await orchestrator.Create(new User());
 
-//			Assert.Null(result.Value);
-//			Assert.Equal(ServiceResultStatus.BadRequest, result.Status);
-//		}
+			Assert.Equal(3, result.Errors.Count);
 
-//		[Fact]
-//		public async Task CreateUserOrchestrator_Create_EmailAlreadyInUse()
-//		{
-//			var existingUser = new User { FirstName = "J1", LastName = "A1", Email = "J" };
+			Assert.Collection(result.Errors, (error) =>
+			{
+				Assert.Equal(LOCATION, error.Location);
+				Assert.Equal("FirstName", error.FieldName);
+				Assert.Equal("FirstName must be set.", error.Message);
+			},
+			(error) =>
+			{
+				Assert.Equal(LOCATION, error.Location);
+				Assert.Equal("LastName", error.FieldName);
+				Assert.Equal("LastName must be set.", error.Message);
+			},
+			(error) =>
+			{
+				Assert.Equal(LOCATION, error.Location);
+				Assert.Equal("Email", error.FieldName);
+				Assert.Equal("Email must be set.", error.Message);
+			});
 
-//			var users = new List<User> 
-//			{
-//				new User { FirstName = "J1", LastName = "A1", Email = "J" }
-//			};
-//			var repo = new UserRepository(users);
-//			var orchestrator = new CreateUserOrchestrator(repo);
+			Assert.Null(result.Value);
+			Assert.Equal(ServiceResultStatus.BadRequest, result.Status);
+		}
 
-//			var newUser = new User { FirstName = "J", LastName = "A", Email = "J" };
-//			var result = await orchestrator.Create(newUser);
+		[Fact]
+		public async Task CreateUserOrchestrator_Create_EmailAlreadyInUseError()
+		{
+			var dbContext = GetInMemoryDb();
 
-//			Assert.Single(result.Errors);
+			var existingUser = new UserEntity() { FirstName = "J1", LastName = "A1", Email = "J" };
+			dbContext.Users.Add(existingUser);
+			dbContext.SaveChanges();
 
-//			Assert.Collection(result.Errors, (error) => {
-//				Assert.Equal(LOCATION, error.Location);
-//				Assert.Equal("Email", error.FieldName);
-//				Assert.Equal($"{newUser.Email} is already in use.", error.Message);
-//			});
-//		}
+			var orchestrator = new CreateUserOrchestrator(dbContext, GetMapper());
+			var newUser = new User("J", "A", "J");
+			var result = await orchestrator.Create(newUser);
 
-//		[Fact]
-//		public async Task CreateUserOrchestrator_Create_AddsUser()
-//		{
-//			var existingUser = new User { FirstName = "J1", LastName = "A1", Email = "J1" };
+			Assert.Single(result.Errors);
 
-//			var users = new List<User> { existingUser };
-//			var repo = new UserRepository(users);
-//			var orchestrator = new CreateUserOrchestrator(repo);
+			Assert.Collection(result.Errors, (error) =>
+			{
+				Assert.Equal(LOCATION, error.Location);
+				Assert.Equal("Email", error.FieldName);
+				Assert.Equal($"{newUser.Email} is already in use.", error.Message);
+			});
+		}
 
-//			var newUser = new User { FirstName = "J", LastName = "A", Email = "J" };
-//			var result = await orchestrator.Create(newUser);
+		[Fact]
+		public async Task CreateUserOrchestrator_Create_AddUserToDbContext()
+		{
+			var dbContext = GetInMemoryDb();
 
-//			Assert.Null(result.Errors);
-//			Assert.Equal(100, result.Value.Id);
-//			Assert.Equal("J", result.Value.FirstName);
-//			Assert.Equal("A", result.Value.LastName);
-//			Assert.Equal("J", result.Value.Email);
-//			Assert.Equal(2, users.Count);
-//		}
-//	}
-//}
+			var existingUser = new UserEntity() { FirstName = "J1", LastName = "A1", Email = "J1" };
+			dbContext.Users.Add(existingUser);
+			dbContext.SaveChanges();
+
+			var orchestrator = new CreateUserOrchestrator(dbContext, GetMapper());
+			var newUser = new User("J", "A", "J");
+			var result = await orchestrator.Create(newUser);
+
+			Assert.Empty(result.Errors);
+			Assert.Equal(2, result.Value.Id);
+			Assert.Equal("J", result.Value.FirstName);
+			Assert.Equal("A", result.Value.LastName);
+			Assert.Equal("J", result.Value.Email);
+
+			var userCount = await dbContext.Users.CountAsync();
+			Assert.Equal(2, userCount);
+		}
+	}
+}
