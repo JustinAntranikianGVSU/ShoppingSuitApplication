@@ -30,11 +30,9 @@ namespace ShoppingSuitePlatform
 				configuration.RootPath = "ClientApp/dist";
 			});
 
-			services.AddDbContextPool<AppDbContext>(options =>
-				options.UseSqlServer(Configuration.GetConnectionString("DBConnection"))
-			);
+			var sqlServerConnection = Configuration.GetConnectionString("DBConnection");
+			services.AddDbContextPool<AppDbContext>(options => options.UseSqlServer(sqlServerConnection));
 
-			services.AddScoped<IMyClass, MyClass>();
 			services.AddScoped<ICreateUserOrchestrator, CreateUserOrchestrator>();
 		}
 
@@ -75,10 +73,10 @@ namespace ShoppingSuitePlatform
 
 				spa.Options.SourcePath = "ClientApp";
 
-				if (env.IsDevelopment())
-				{
-					spa.UseAngularCliServer(npmScript: "start");
-				}
+				//if (env.IsDevelopment())
+				//{
+				//	spa.UseAngularCliServer(npmScript: "start");
+				//}
 			});
 		}
 	}

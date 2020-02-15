@@ -5,3 +5,4 @@ C:\source\ShoppingSuitePlatform\DataAccess\obj\Debug\netstandard2.1\DataAccess.A
 C:\source\ShoppingSuitePlatform\DataAccess\bin\Debug\netstandard2.1\DataAccess.pdb
 C:\source\ShoppingSuitePlatform\DataAccess\obj\Debug\netstandard2.1\DataAccess.dll
 C:\source\ShoppingSuitePlatform\DataAccess\obj\Debug\netstandard2.1\DataAccess.pdb
+C:\source\ShoppingSuitePlatform\DataAccess\obj\Debug\netstandard2.1\DataAccess.csprojAssemblyReference.cache

@@ -1,5 +1,7 @@
 ﻿using DataAccess;
+using DataAccess.Entities;
 using Domain.Entities;
+using Domain.Security;
 using Domain.ServiceResult;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -43,7 +45,8 @@ namespace Domain.Orchestrators
 			{
 				FirstName = user.FirstName,
 				LastName = user.LastName,
-				Email = user.Email
+				Email = user.Email,
+				Roles = new List<UserRoleEntity> { new UserRoleEntity { RoleGuid = RoleLookup.TrainingUserRoleGuid } }
 			};
 
 			_dbContext.Users.Add(userEntity);

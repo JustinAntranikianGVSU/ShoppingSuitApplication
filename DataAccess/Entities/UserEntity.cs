@@ -1,4 +1,6 @@
 ﻿
+using DataAccess.Entities;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -21,5 +23,8 @@ namespace Domain.Entities
 		[Required]
 		[MaxLength(50)]
 		public string Email { get; set; }
+
+		[ForeignKey("UserId")]
+		public virtual ICollection<UserRoleEntity> Roles { get; set; } = new List<UserRoleEntity>();
 	}
 }

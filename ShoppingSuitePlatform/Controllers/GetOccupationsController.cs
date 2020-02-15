@@ -5,35 +5,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ShoppingSuitePlatform.Controllers
 {
-	public interface IMyClass
-	{
-		public string GetTheThing();
-	}
-
-	public class MyClass : IMyClass
-	{
-		public string GetTheThing()
-		{
-			return "I'm here";
-		}
-	}
-
 	[ApiController]
 	[Route("[controller]")]
 	public class GetOccupationsController : ControllerBase
 	{
-		private readonly IMyClass _myClass;
-
-		public GetOccupationsController(IMyClass myClass)
-		{
-			_myClass = myClass;
-		}
-
 		[HttpGet]
 		public async Task<List<Occupation>> Get()
 		{
-			var more = _myClass.GetTheThing();
-
 			var occupations = new List<Occupation>
 			{
 				new Occupation { Id = 1, Name = "Software Developer", OccupationSectorId = 1 },
