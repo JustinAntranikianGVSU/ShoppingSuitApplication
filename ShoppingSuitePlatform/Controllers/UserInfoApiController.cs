@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Domain;
 using Domain.Orchestrators;
 using Microsoft.AspNetCore.Mvc;
-using Repository;
 
 namespace ShoppingSuitePlatform.Controllers
 {
@@ -12,20 +10,17 @@ namespace ShoppingSuitePlatform.Controllers
 	[Route("[controller]")]
 	public class UserController : ControllerBase
 	{
-		public static List<User> Users = new List<User>();
+		private readonly ICreateUserOrchestrator _createUserOrchestrator;
 
-		[HttpGet]
-		public async Task<User> Get()
+		public UserController(ICreateUserOrchestrator createUserOrchestrator)
 		{
-			return new User();
+			_createUserOrchestrator = createUserOrchestrator;
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> Post([FromBody] User userBasicInfo)
+		public async Task<ActionResult> Post([FromBody] User user)
 		{
-			var repo = new UserRepository(Users);
-			var orchestrator = new CreateUserOrchestrator(repo);
-			var result = await orchestrator.Create(userBasicInfo);
+			var result = await _createUserOrchestrator.Create(user);
 
 			if (result.Errors.Any())
 			{

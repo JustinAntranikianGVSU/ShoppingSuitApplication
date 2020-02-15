@@ -6,3 +6,6 @@ C:\source\ShoppingSuitePlatform\Domain\obj\Debug\netstandard2.1\Domain.AssemblyI
 C:\source\ShoppingSuitePlatform\Domain\obj\Debug\netstandard2.1\Domain.dll
 C:\source\ShoppingSuitePlatform\Domain\obj\Debug\netstandard2.1\Domain.pdb
 C:\source\ShoppingSuitePlatform\Domain\obj\Debug\netstandard2.1\Domain.csprojAssemblyReference.cache
+C:\source\ShoppingSuitePlatform\Domain\bin\Debug\netstandard2.1\DataAccess.dll
+C:\source\ShoppingSuitePlatform\Domain\bin\Debug\netstandard2.1\DataAccess.pdb
+C:\source\ShoppingSuitePlatform\Domain\obj\Debug\netstandard2.1\Domain.csproj.CopyComplete

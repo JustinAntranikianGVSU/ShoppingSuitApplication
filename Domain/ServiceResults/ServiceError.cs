@@ -16,17 +16,17 @@ namespace Domain.ServiceResult
 		/// <summary>
 		/// Provide a custom message to send back to the user.
 		/// </summary>
-		public string Message;
+		public string Message { get; set; }
 
 		/// <summary>
 		/// Usually the type name of the Orchestrator that validated the error.
 		/// </summary>
-		public string Location;
+		public string Location { get; set; }
 
 		/// <summary>
 		/// Name of the field where the error occured (ie. FirstName, Email, etc)
 		/// </summary>
-		public string? FieldName;
+		public string? FieldName { get; set; }
 
 		/// <summary>
 		/// 

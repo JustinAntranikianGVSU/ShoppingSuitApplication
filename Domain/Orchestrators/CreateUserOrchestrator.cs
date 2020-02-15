@@ -1,24 +1,31 @@
-﻿using Domain.RepositoryInterfaces;
+﻿using DataAccess;
+using Domain.Entities;
 using Domain.ServiceResult;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Domain.Orchestrators
 {
-	public class CreateUserOrchestrator : OrchestratorBase<User>
+	public interface ICreateUserOrchestrator
 	{
-		private readonly IUserRepository _repo;
+		Task<ServiceResult<User>> Create(User user);
+	}
 
-		public CreateUserOrchestrator(IUserRepository repo)
+	public class CreateUserOrchestrator : OrchestratorBase<User>, ICreateUserOrchestrator
+	{
+		private readonly AppDbContext _dbContext;
+
+		public CreateUserOrchestrator(AppDbContext dbContext)
 		{
-			_repo = repo;
+			_dbContext = dbContext;
 		}
 
 		public async Task<ServiceResult<User>> Create(User user)
 		{
 			var errors = GetServiceErrors(user).ToList();
-			var userByEmail = await _repo.GetByEmail(user.Email);
+			var userByEmail = await _dbContext.Users.FirstOrDefaultAsync(oo => oo.Email == user.Email);
 
 			if (userByEmail is {})
 			{
@@ -32,17 +39,25 @@ namespace Domain.Orchestrators
 				return GetBadRequestResult(errors);
 			}
 
-			var userToCreate = new User
+			var userEntity = new UserEntity
 			{
-				Id = 100,
 				FirstName = user.FirstName,
 				LastName = user.LastName,
-				Email = user.Email,
-				DateOfBirth = user.DateOfBirth
+				Email = user.Email
 			};
 
-			await _repo.Add(userToCreate);
-			return GetProcessedResult(userToCreate);
+			_dbContext.Users.Add(userEntity);
+			await _dbContext.SaveChangesAsync();
+
+			var newUserDto = new User
+			{
+				Id = userEntity.Id,
+				FirstName = userEntity.FirstName,
+				LastName = userEntity.LastName,
+				Email = userEntity.Email
+			};
+
+			return GetProcessedResult(newUserDto);
 		}
 
 		private IEnumerable<ServiceError> GetServiceErrors(User user)

@@ -8,7 +8,7 @@ namespace Domain.ServiceResult
 
 		public ServiceResultStatus Status;
 
-		public List<ServiceError>? Errors;
+		public List<ServiceError> Errors;
 
 		public ServiceResult(List<ServiceError> errors, ServiceResultStatus status)
 		{
@@ -18,6 +18,7 @@ namespace Domain.ServiceResult
 		public ServiceResult(T value, ServiceResultStatus status)
 		{
 			(Value, Status) = (value, status);
+			Errors = new List<ServiceError>();
 		}
 	}
 }

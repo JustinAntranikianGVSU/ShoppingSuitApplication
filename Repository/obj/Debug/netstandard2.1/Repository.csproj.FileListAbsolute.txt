@@ -9,3 +9,5 @@ C:\source\ShoppingSuitePlatform\Repository\obj\Debug\netstandard2.1\Repository.A
 C:\source\ShoppingSuitePlatform\Repository\obj\Debug\netstandard2.1\Repository.csproj.CopyComplete
 C:\source\ShoppingSuitePlatform\Repository\obj\Debug\netstandard2.1\Repository.dll
 C:\source\ShoppingSuitePlatform\Repository\obj\Debug\netstandard2.1\Repository.pdb
+C:\source\ShoppingSuitePlatform\Repository\bin\Debug\netstandard2.1\DataAccess.dll
+C:\source\ShoppingSuitePlatform\Repository\bin\Debug\netstandard2.1\DataAccess.pdb
