@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using DataAccess;
+using Domain.Mappers;
 using Domain.Security;
 using Domain.ServiceResult;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,6 +12,8 @@ namespace Domain.Orchestrators
 {
 	public interface IGetUserOrchestrator
 	{
+		Task<ServiceResult<List<User>>> GetAll();
+
 		Task<ServiceResult<User>> Get(int id);
 	}
 
@@ -21,8 +25,14 @@ namespace Domain.Orchestrators
 
 		public GetUserOrchestrator(AppDbContext dbContext, IMapper mapper)
 		{
-			_dbContext = dbContext;
-			_mapper = mapper;
+			(_dbContext, _mapper) = (dbContext, mapper);
+		}
+
+		public async Task<ServiceResult<List<User>>> GetAll()
+		{
+			var userEntites = await _dbContext.Users.Include(oo => oo.Roles).ToListAsync();
+			var users = new UserMapper(_mapper).Map(userEntites);
+			return new ServiceResult<List<User>>(users, ServiceResultStatus.Processed);
 		}
 
 		public async Task<ServiceResult<User>> Get(int id)
@@ -36,9 +46,7 @@ namespace Domain.Orchestrators
 				return GetNotFoundResult(error);
 			}
 
-			var userDto = _mapper.Map<User>(userEntity);
-			userDto.Roles = userEntity.Roles.Select(oo => RoleLookup.GetRole(oo.RoleGuid)).ToList();
-
+			var userDto = new UserMapper(_mapper).Map(userEntity);
 			return GetProcessedResult(userDto);
 		}
 	}

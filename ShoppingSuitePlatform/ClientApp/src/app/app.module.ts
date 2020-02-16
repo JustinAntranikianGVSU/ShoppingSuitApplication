@@ -15,6 +15,7 @@ import { MedicalInfoComponent } from './medical-info/medical-info.component';
 import { MedicalInfoService } from './services/medical-info.service';
 import { UserEditComponent } from './user-edit/user-edit.component';
 import { UserEditService } from './services/user-edit.service';
+import { UserListComponent } from './user-list/user-list.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { UserEditService } from './services/user-edit.service';
     BootstrapTestComponent,
     ObservablesTestComponent,
     MedicalInfoComponent,
-    UserEditComponent
+    UserEditComponent,
+    UserListComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -36,6 +38,7 @@ import { UserEditService } from './services/user-edit.service';
       { path: 'bootstrap-test', component: BootstrapTestComponent },
       { path: 'observables-test', component: ObservablesTestComponent },
       { path: 'observables-test', component: ObservablesTestComponent },
+      { path: 'user-list', component: UserListComponent },
       { path: 'user-edit/:id', component: UserEditComponent },
       { path: 'medical-info', component: MedicalInfoComponent },
     ])

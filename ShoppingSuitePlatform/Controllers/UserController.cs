@@ -20,6 +20,13 @@ namespace ShoppingSuitePlatform.Controllers
 			_getUserOrchestrator = getUserOrchestrator;
 		}
 
+		[HttpGet]
+		public async Task<ActionResult> GetAll()
+		{
+			var result = await _getUserOrchestrator.GetAll();
+			return Ok(result.Value);
+		}
+
 		[HttpGet("{id}")]
 		public async Task<ActionResult> Get(int id)
 		{

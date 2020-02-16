@@ -9,6 +9,10 @@ export class UserEditService {
 
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) { }
 
+  public getAll(): Observable<any[]> {
+    return this.http.get<any[]>(this.baseUrl + `User`)
+  }
+
   public getUser(userId: number): Observable<any[]> {
     return this.http.get<any[]>(this.baseUrl + `User/${userId}`)
   }

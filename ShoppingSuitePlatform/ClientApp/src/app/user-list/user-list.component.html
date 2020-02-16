@@ -1,0 +1,5 @@
+<p>user-list works!</p>
+<div *ngFor="let user of users">
+    {{ user.firstName }}, {{ user.lastName }}
+    <a [routerLink]="['/user-edit', user.id]">{{ user.email }}</a>
+</div>
