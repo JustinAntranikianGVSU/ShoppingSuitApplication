@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Domain.Security;
+using System;
+using System.Collections.Generic;
 
 namespace Domain
 {
@@ -11,6 +13,8 @@ namespace Domain
 		public string LastName { get; set; }
 
 		public string Email { get; set; }
+
+		public List<Role> Roles { get; set; } = new List<Role>();
 
 		public User() { }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Domain.Security
 {
@@ -20,6 +21,18 @@ namespace Domain.Security
 			var systemAdmin = new Role(SystemAdminRoleGuid, "System Admin");
 
 			Roles = new List<Role> { traningUser, trainingAdmin, systemAdmin };
+		}
+
+		public static Role GetRole(Guid identifier)
+		{
+			var role = Roles.SingleOrDefault(oo => oo.GuidIdentifier == identifier);
+
+			if (role is null)
+			{
+				throw new Exception($"Could not find Role with identifier {identifier}. Please fix whatever data is refering to a role that doesn't exist.");
+			}
+
+			return role;
 		}
 	}
 }

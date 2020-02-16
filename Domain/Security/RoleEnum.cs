@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,17 +7,18 @@ namespace Domain.Security
 {
 	public class Role
 	{
-		public Guid Id;
+		public Guid GuidIdentifier { get; set; }
 
-		public string Name;
+		public string Name { get; set; }
 
-		public List<Permission> Permissions;
+		[JsonIgnore]
+		public List<Permission> Permissions { get; set; }
 
-		public bool HasGlobalPermissions;
+		public bool HasGlobalPermissions { get; set; }
 
 		public Role(Guid id, string name)
 		{
-			Id = id;
+			GuidIdentifier = id;
 			Name = name;
 			Permissions = new List<Permission>();
 			HasGlobalPermissions = true;
@@ -24,7 +26,7 @@ namespace Domain.Security
 
 		public Role(Guid id, string name, params Permission[] permissions)
 		{
-			Id = id;
+			GuidIdentifier = id;
 			Name = name;
 			Permissions = permissions.ToList();
 		}

@@ -7,8 +7,11 @@ namespace Domain
 	{
 		public MappingProfile()
 		{
-			CreateMap<User, UserEntity>();
-			CreateMap<UserEntity, User>();
+			CreateMap<User, UserEntity>()
+				.ForMember(oo => oo.Roles, opt => opt.Ignore());
+
+			CreateMap<UserEntity, User>()
+				.ForMember(oo => oo.Roles, opt => opt.Ignore());
 		}
 	}
 }

@@ -12,9 +12,25 @@ namespace ShoppingSuitePlatform.Controllers
 	{
 		private readonly ICreateUserOrchestrator _createUserOrchestrator;
 
-		public UserController(ICreateUserOrchestrator createUserOrchestrator)
+		private readonly IGetUserOrchestrator _getUserOrchestrator;
+
+		public UserController(ICreateUserOrchestrator createUserOrchestrator, IGetUserOrchestrator getUserOrchestrator)
 		{
 			_createUserOrchestrator = createUserOrchestrator;
+			_getUserOrchestrator = getUserOrchestrator;
+		}
+
+		[HttpGet("{id}")]
+		public async Task<ActionResult> Get(int id)
+		{
+			var result = await _getUserOrchestrator.Get(id);
+
+			if (result.Errors.Any())
+			{
+				return BadRequest(result.Errors);
+			}
+
+			return Ok(result.Value);
 		}
 
 		[HttpPost]

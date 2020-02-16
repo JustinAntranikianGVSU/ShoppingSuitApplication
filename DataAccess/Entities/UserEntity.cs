@@ -25,6 +25,6 @@ namespace Domain.Entities
 		public string Email { get; set; }
 
 		[ForeignKey("UserId")]
-		public virtual ICollection<UserRoleEntity> Roles { get; set; } = new List<UserRoleEntity>();
+		public ICollection<UserRoleEntity> Roles { get; set; } = new List<UserRoleEntity>();
 	}
 }

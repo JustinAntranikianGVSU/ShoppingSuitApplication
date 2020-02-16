@@ -8,24 +8,23 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
-import { CounterComponent } from './counter/counter.component';
-import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { BootstrapTestComponent } from './bootstrap-test/bootstrap-test.component';
 import { ObservablesTestComponent } from './observables-test/observables-test.component';
 import { TodoService } from './services/todo.service';
 import { MedicalInfoComponent } from './medical-info/medical-info.component';
 import { MedicalInfoService } from './services/medical-info.service';
+import { UserEditComponent } from './user-edit/user-edit.component';
+import { UserEditService } from './services/user-edit.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavMenuComponent,
     HomeComponent,
-    CounterComponent,
-    FetchDataComponent,
     BootstrapTestComponent,
     ObservablesTestComponent,
-    MedicalInfoComponent
+    MedicalInfoComponent,
+    UserEditComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -34,14 +33,14 @@ import { MedicalInfoService } from './services/medical-info.service';
     NgbModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'counter', component: CounterComponent },
-      { path: 'fetch-data', component: FetchDataComponent },
       { path: 'bootstrap-test', component: BootstrapTestComponent },
       { path: 'observables-test', component: ObservablesTestComponent },
+      { path: 'observables-test', component: ObservablesTestComponent },
+      { path: 'user-edit/:id', component: UserEditComponent },
       { path: 'medical-info', component: MedicalInfoComponent },
     ])
   ],
-  providers: [TodoService, MedicalInfoService],
+  providers: [TodoService, MedicalInfoService, UserEditService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -27,5 +27,7 @@ namespace DataAccess
 		{
 			return await users.FirstOrDefaultAsync(oo => oo.Email == email);
 		}
+
+		public static async Task<UserEntity?> GetById(this DbSet<UserEntity> users, int id) => await users.SingleOrDefaultAsync(oo => oo.Id == id);
 	}
 }
