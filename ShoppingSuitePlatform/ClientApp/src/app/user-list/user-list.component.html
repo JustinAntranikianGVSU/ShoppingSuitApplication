@@ -1,5 +1,29 @@
-<p>user-list works!</p>
-<div *ngFor="let user of users">
-    {{ user.firstName }}, {{ user.lastName }}
-    <a [routerLink]="['/user-edit', user.id]">{{ user.email }}</a>
+
+<h2><i class="fa fa-users mr-2" aria-hidden="true"></i>User List</h2>
+
+<div *ngIf="dataLoaded">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">First</th>
+        <th scope="col">Last</th>
+        <th scope="col">Email</th>
+        <th scope="col">Edit</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users">
+        <th scope="row">{{ user.id }}</th>
+        <td>{{ user.firstName }}</td>
+        <td>{{ user.lastName }}</td>
+        <td>{{ user.email }}</td>
+        <td><a [routerLink]="['/user-edit', user.id]"><i class="fa fa-pencil-square-o mr-2" aria-hidden="true"></i>Edit</a></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div *ngIf="!dataLoaded">
+    <i class="fa fa-refresh fa-spin fa-3x fa-fw mr-2"></i>Loading Users...
 </div>

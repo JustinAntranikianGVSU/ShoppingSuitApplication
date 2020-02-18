@@ -12,3 +12,21 @@
   <li><strong>Efficient production builds</strong>. In production mode, development-time features are disabled, and your <code>dotnet publish</code> configuration automatically invokes <code>ng build</code> to produce minified, ahead-of-time compiled JavaScript files.</li>
 </ul>
 <p>The <code>ClientApp</code> subdirectory is a standard Angular CLI application. If you open a command prompt in that directory, you can run any <code>ng</code> command (e.g., <code>ng test</code>), or use <code>npm</code> to install extra packages into it.</p>
+
+<hr />
+
+<div class="form-group row">
+  <label for="email" class="col-sm-2 col-form-label">Email</label>
+    <div class="col-sm-10">
+    <input type="text" [(ngModel)]="loginInfo.email" class="form-control" id="email">
+  </div>
+</div>
+
+<div class="form-group row">
+  <label for="password" class="col-sm-2 col-form-label">Password</label>
+    <div class="col-sm-10">
+    <input type="text" [(ngModel)]="loginInfo.password" class="form-control" id="password">
+  </div>
+</div>
+
+<button type="button" (click)="onLoginClicked()" class="btn btn-primary">Login</button>

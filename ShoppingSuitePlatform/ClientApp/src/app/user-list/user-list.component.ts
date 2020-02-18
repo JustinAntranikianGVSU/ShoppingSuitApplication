@@ -9,13 +9,17 @@ import { UserEditService } from '../services/user-edit.service';
 export class UserListComponent implements OnInit {
 
   public users: any[]
+  public dataLoaded = false
 
   constructor(
     private userService: UserEditService,
   ) {}
   
   ngOnInit() {
-    this.userService.getAll().subscribe(users => this.users = users)
+    this.userService.getAll().subscribe(users => { 
+      this.users = users
+      this.dataLoaded = true
+    })
   }
 
 }

@@ -30,14 +30,14 @@ namespace Domain.Orchestrators
 
 		public async Task<ServiceResult<List<User>>> GetAll()
 		{
-			var userEntites = await _dbContext.Users.Include(oo => oo.Roles).ToListAsync();
+			var userEntites = await _dbContext.Users.Include(oo => oo.Roles).AsNoTracking().ToListAsync();
 			var users = new UserMapper(_mapper).Map(userEntites);
 			return new ServiceResult<List<User>>(users, ServiceResultStatus.Processed);
 		}
 
 		public async Task<ServiceResult<User>> Get(int id)
 		{
-			var userEntity = await _dbContext.Users.Include(oo => oo.Roles).SingleOrDefaultAsync(oo => oo.Id == id);
+			var userEntity = await _dbContext.Users.Include(oo => oo.Roles).AsNoTracking().SingleOrDefaultAsync(oo => oo.Id == id);
 
 			if (userEntity == null)
 			{

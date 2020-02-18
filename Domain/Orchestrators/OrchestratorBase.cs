@@ -10,7 +10,7 @@ namespace Domain.Orchestrators
 
 		protected ServiceResult<T> GetProcessedResult(T value) => new ServiceResult<T>(value, ServiceResultStatus.Processed);
 
-		protected ServiceResult<T> GetBadRequestResult(List<ServiceError> errors) => new ServiceResult<T>(errors, ServiceResultStatus.BadRequest);
+		protected ServiceResult<T> GetBadRequestResult(params ServiceError[] errors) => new ServiceResult<T>(errors.ToList(), ServiceResultStatus.BadRequest);
 
 		protected ServiceResult<T> GetNotFoundResult(params ServiceError[] errors) => new ServiceResult<T>(errors.ToList(), ServiceResultStatus.NotFound);
 

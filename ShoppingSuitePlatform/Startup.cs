@@ -1,15 +1,19 @@
 using AutoMapper;
 using DataAccess;
 using Domain;
-using Domain.Entities;
 using Domain.Orchestrators;
+using Domain.Security;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ShoppingSuitePlatform.MiddleWare;
 
 namespace ShoppingSuitePlatform
 {
@@ -25,6 +29,25 @@ namespace ShoppingSuitePlatform
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
+
+			services.AddAuthentication().AddCookie(options =>
+			{
+				//options.AccessDeniedPath = "/account/denied";
+				//options.LoginPath = "/account/login";
+			});
+
+			services.AddAuthorization(options =>
+			{
+				AppPolicy.GetPolicyToPermissionMappings().ForEach(oo =>
+				{
+					var (policyName, permission) = oo;
+					var requirement = new PermissionRequirement(permission);
+					options.AddPolicy(policyName, policy => policy.Requirements.Add(requirement));
+				});
+			});
+
+			services.AddIdentity<IdentityUser, IdentityRole>().AddUserStore<AppUserStore>().AddRoleStore<AppRoleStore>().AddDefaultTokenProviders();
+
 			services.AddControllersWithViews();
 			// In production, the Angular files will be served from this directory
 			services.AddSpaStaticFiles(configuration =>
@@ -32,20 +55,18 @@ namespace ShoppingSuitePlatform
 				configuration.RootPath = "ClientApp/dist";
 			});
 
-			var sqlServerConnection = Configuration.GetConnectionString("DBConnection");
-			services.AddDbContextPool<AppDbContext>(options => options.UseSqlServer(sqlServerConnection));
+			services.AddDbContextPool<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DBConnection")));
 
-			// Auto Mapper Configurations
-			var mappingConfig = new MapperConfiguration(mc =>
-			{
-				mc.AddProfile(new MappingProfile());
-			});
+			var mappingConfig = new MapperConfiguration(mc => { mc.AddProfile(new MappingProfile()); });
+			services.AddSingleton(mappingConfig.CreateMapper());
 
-			var mapper = mappingConfig.CreateMapper();
-			services.AddSingleton(mapper);
+			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+			services.AddSingleton<IAuthorizationHandler, PermissionRequirementHandler>();
 
+			// Orchestrators
 			services.AddScoped<ICreateUserOrchestrator, CreateUserOrchestrator>();
 			services.AddScoped<IGetUserOrchestrator, GetUserOrchestrator>();
+			services.AddScoped<ILoginOrchestrator, LoginOrchestrator>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -71,11 +92,12 @@ namespace ShoppingSuitePlatform
 
 			app.UseRouting();
 
+			app.UseAuthentication();
+			app.UseAuthorization();
+
 			app.UseEndpoints(endpoints =>
 			{
-				endpoints.MapControllerRoute(
-					name: "default",
-					pattern: "{controller}/{action=Index}/{id?}");
+				endpoints.MapControllerRoute(name: "default", pattern: "{controller}/{action=Index}/{id?}");
 			});
 
 			app.UseSpa(spa =>

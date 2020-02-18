@@ -20,5 +20,4 @@ export class UserEditComponent implements OnInit {
     const userId = parseInt(this.route.snapshot.paramMap.get('id'))
     this.userService.getUser(userId).subscribe(data => this.user = data)
   }
-
 }

@@ -1,10 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
@@ -16,6 +15,7 @@ import { MedicalInfoService } from './services/medical-info.service';
 import { UserEditComponent } from './user-edit/user-edit.component';
 import { UserEditService } from './services/user-edit.service';
 import { UserListComponent } from './user-list/user-list.component';
+import { LoginService } from './services/login.service';
 
 @NgModule({
   declarations: [
@@ -43,7 +43,7 @@ import { UserListComponent } from './user-list/user-list.component';
       { path: 'medical-info', component: MedicalInfoComponent },
     ])
   ],
-  providers: [TodoService, MedicalInfoService, UserEditService],
+  providers: [TodoService, MedicalInfoService, UserEditService, LoginService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -41,7 +41,7 @@ namespace Domain.Orchestrators
 
 			if (errors.Any())
 			{
-				return GetBadRequestResult(errors);
+				return GetBadRequestResult(errors.ToArray());
 			}
 
 			var userEntity = _mapper.Map<UserEntity>(user);
