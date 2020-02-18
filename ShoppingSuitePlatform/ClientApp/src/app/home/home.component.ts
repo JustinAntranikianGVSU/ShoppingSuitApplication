@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { LoginService } from '../services/login.service';
+import { LogoutService } from '../services/logout.service';
 
 interface ILoginInfo {
   email: string
@@ -16,10 +17,19 @@ export class HomeComponent {
     password: ""
   }
 
-  constructor(private loginService: LoginService) {}
+  constructor(
+    private loginService: LoginService,
+    private logoutService: LogoutService) {}
 
   public onLoginClicked() {
     this.loginService.post(this.loginInfo).subscribe(
+      data => console.log(data),
+      error => console.log(error)
+    )
+  }
+
+  public onLogoutClicked() {
+    this.logoutService.post().subscribe(
       data => console.log(data),
       error => console.log(error)
     )

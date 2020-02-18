@@ -16,6 +16,7 @@ import { UserEditComponent } from './user-edit/user-edit.component';
 import { UserEditService } from './services/user-edit.service';
 import { UserListComponent } from './user-list/user-list.component';
 import { LoginService } from './services/login.service';
+import { LogoutService } from './services/logout.service';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,7 @@ import { LoginService } from './services/login.service';
       { path: 'medical-info', component: MedicalInfoComponent },
     ])
   ],
-  providers: [TodoService, MedicalInfoService, UserEditService, LoginService],
+  providers: [TodoService, MedicalInfoService, UserEditService, LoginService, LogoutService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
