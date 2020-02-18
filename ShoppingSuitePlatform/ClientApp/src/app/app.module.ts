@@ -7,7 +7,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
-import { BootstrapTestComponent } from './bootstrap-test/bootstrap-test.component';
 import { ObservablesTestComponent } from './observables-test/observables-test.component';
 import { TodoService } from './services/todo.service';
 import { MedicalInfoComponent } from './medical-info/medical-info.component';
@@ -17,17 +16,18 @@ import { UserEditService } from './services/user-edit.service';
 import { UserListComponent } from './user-list/user-list.component';
 import { LoginService } from './services/login.service';
 import { LogoutService } from './services/logout.service';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavMenuComponent,
     HomeComponent,
-    BootstrapTestComponent,
     ObservablesTestComponent,
     MedicalInfoComponent,
     UserEditComponent,
-    UserListComponent
+    UserListComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -36,7 +36,7 @@ import { LogoutService } from './services/logout.service';
     NgbModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'bootstrap-test', component: BootstrapTestComponent },
+      { path: 'mylogin', component: LoginComponent },
       { path: 'observables-test', component: ObservablesTestComponent },
       { path: 'observables-test', component: ObservablesTestComponent },
       { path: 'user-list', component: UserListComponent },

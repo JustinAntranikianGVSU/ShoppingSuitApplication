@@ -1,0 +1,19 @@
+<h2><i class="fa fa-sign-in mr-1" aria-hidden="true"></i>Sign In</h2>
+
+<hr />
+
+<div class="form-group row">
+  <label for="email" class="col-sm-2 col-form-label">Email</label>
+    <div class="col-sm-10">
+    <input type="text" [(ngModel)]="loginInfo.email" class="form-control" id="email">
+  </div>
+</div>
+  
+<div class="form-group row">
+  <label for="password" class="col-sm-2 col-form-label">Password</label>
+    <div class="col-sm-10">
+    <input type="text" [(ngModel)]="loginInfo.password" class="form-control" id="password">
+  </div>
+</div>
+  
+<button type="button" (click)="onLoginClicked()" class="btn btn-primary">Login</button>

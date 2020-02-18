@@ -24,13 +24,16 @@
             <a class="nav-link text-dark" [routerLink]="['/user-list']"><i class="fa fa-users mr-2" aria-hidden="true"></i>Users</a>
           </li>
           <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/bootstrap-test']">Bootstrap</a>
-          </li>
-          <li class="nav-item" [routerLinkActive]="['link-active']">
             <a class="nav-link text-dark" [routerLink]="['/observables-test']">Observables</a>
           </li>
           <li class="nav-item" [routerLinkActive]="['link-active']">
             <a class="nav-link text-dark" [routerLink]="['/medical-info']">Medical Info</a>
+          </li>
+          <li class="nav-item" [routerLinkActive]="['link-active']">
+            <a class="nav-link text-dark" [routerLink]="['/mylogin']">Login</a>
+          </li>
+          <li class="nav-item" [routerLinkActive]="['link-active']">
+            <a class="nav-link text-dark" (click)="onLogoutClicked()"><i class="fa fa-sign-out mr-1" aria-hidden="true"></i>Logout</a>
           </li>
         </ul>
       </div>

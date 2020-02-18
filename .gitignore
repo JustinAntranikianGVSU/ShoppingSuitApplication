@@ -5,3 +5,7 @@
 /Domain/obj/Debug/netstandard2.1/Domain.assets.cache
 
 
+Clients 
+Locations - belongs to one client
+LocationList - links many locations together.
+Employees - belong to one client, and one location.

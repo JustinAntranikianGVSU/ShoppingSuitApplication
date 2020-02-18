@@ -30,6 +30,7 @@ namespace ShoppingSuitePlatform.Controllers
 			}
 
 			var identityUser = new IdentityUser();
+
 			await _signInManager.SignInWithClaimsAsync(identityUser, false, result.Value?.Claims.ToArray());
 
 			return Ok(result.Value);

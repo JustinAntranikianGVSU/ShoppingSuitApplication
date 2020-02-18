@@ -20,7 +20,7 @@ namespace ShoppingSuitePlatform.MiddleWare
 
 		public Task<IdentityUser> FindByIdAsync(string userId, CancellationToken cancellationToken)
 		{
-			return Task.FromResult(new IdentityUser("My User Dude"));
+			return Task.FromResult(new IdentityUser(userId));
 		}
 
 		public Task<IdentityUser> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
@@ -31,7 +31,6 @@ namespace ShoppingSuitePlatform.MiddleWare
 		public Task<string> GetNormalizedUserNameAsync(IdentityUser user, CancellationToken cancellationToken)
 		{
 			return Task.FromResult("My User Dude");
-
 		}
 
 		public Task<string> GetUserIdAsync(IdentityUser user, CancellationToken cancellationToken)
@@ -42,7 +41,6 @@ namespace ShoppingSuitePlatform.MiddleWare
 		public Task<string> GetUserNameAsync(IdentityUser user, CancellationToken cancellationToken)
 		{
 			return Task.FromResult("My User Dude");
-
 		}
 
 		public Task SetNormalizedUserNameAsync(IdentityUser user, string normalizedName, CancellationToken cancellationToken)

@@ -18,12 +18,14 @@
         <td>{{ user.firstName }}</td>
         <td>{{ user.lastName }}</td>
         <td>{{ user.email }}</td>
-        <td><a [routerLink]="['/user-edit', user.id]"><i class="fa fa-pencil-square-o mr-2" aria-hidden="true"></i>Edit</a></td>
+        <td>
+          <a a class="btn btn-primary" [routerLink]="['/user-edit', user.id]"><i class="fa fa-pencil-square-o mr-1" aria-hidden="true"></i>Edit</a>
+        </td>
       </tr>
     </tbody>
   </table>
 </div>
 
 <div *ngIf="!dataLoaded">
-    <i class="fa fa-refresh fa-spin fa-3x fa-fw mr-2"></i>Loading Users...
+  <i class="fa fa-refresh fa-spin fa-3x fa-fw mr-2"></i>Loading Users...
 </div>
