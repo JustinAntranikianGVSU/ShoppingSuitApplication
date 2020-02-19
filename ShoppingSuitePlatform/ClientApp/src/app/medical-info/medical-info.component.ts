@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MedicalInfoService } from '../services/medical-info.service';
+import { MedicalInfoService } from '../_services/medical-info.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 class UserInfo {

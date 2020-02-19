@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { fromEvent, of, interval, concat, merge } from 'rxjs';
 import { debounceTime, switchMap, map, takeWhile, delay, tap, exhaustMap, flatMap, mergeMap } from 'rxjs/operators';
-import { TodoService } from '../services/todo.service';
-import { TodoEntry } from '../domainTypes/todoEntry';
+import { TodoService } from '../_services/todo.service';
+import { TodoEntry } from '../_models/todoEntry';
 import { HttpClient } from '@angular/common/http';
 
 @Component({

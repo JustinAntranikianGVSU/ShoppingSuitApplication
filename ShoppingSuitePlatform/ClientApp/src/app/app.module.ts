@@ -8,14 +8,14 @@ import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { ObservablesTestComponent } from './observables-test/observables-test.component';
-import { TodoService } from './services/todo.service';
+import { TodoService } from './_services/todo.service';
 import { MedicalInfoComponent } from './medical-info/medical-info.component';
-import { MedicalInfoService } from './services/medical-info.service';
+import { MedicalInfoService } from './_services/medical-info.service';
 import { UserEditComponent } from './user-edit/user-edit.component';
-import { UserEditService } from './services/user-edit.service';
+import { UserEditService } from './_services/user-edit.service';
 import { UserListComponent } from './user-list/user-list.component';
-import { LoginService } from './services/login.service';
-import { LogoutService } from './services/logout.service';
+import { LoginService } from './_services/login.service';
+import { LogoutService } from './_services/logout.service';
 import { LoginComponent } from './login/login.component';
 
 @NgModule({

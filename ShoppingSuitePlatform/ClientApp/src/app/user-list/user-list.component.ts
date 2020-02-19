@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserEditService } from '../services/user-edit.service';
+import { UserEditService } from '../_services/user-edit.service';
 
 @Component({
   selector: 'app-user-list',

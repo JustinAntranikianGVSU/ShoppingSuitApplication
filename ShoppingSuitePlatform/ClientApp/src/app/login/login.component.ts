@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { LoginService } from '../services/login.service';
+import { LoginService } from '../_services/login.service';
 import { Router } from '@angular/router';
 
 interface ILoginInfo {
