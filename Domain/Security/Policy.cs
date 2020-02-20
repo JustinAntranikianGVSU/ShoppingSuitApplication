@@ -4,9 +4,9 @@ namespace Domain.Security
 {
 	public static class AppPolicy
 	{
-		public static string ViewEmployee = "ViewEmployee";
-		public static string EditEmployee = "EditEmployee";
-		public static string DeleteEmployee = "DeleteEmployee";
+		public const string ViewEmployee = "ViewEmployee";
+		public const string EditEmployee = "EditEmployee";
+		public const string DeleteEmployee = "DeleteEmployee";
 
 		public static List<(string policy, Permission permission)> GetPolicyToPermissionMappings()
 		{

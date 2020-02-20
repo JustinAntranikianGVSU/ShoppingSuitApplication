@@ -4,6 +4,7 @@ using Domain.Entities;
 using Domain.ServiceResult;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -35,7 +36,7 @@ namespace Domain.Orchestrators
 			}
 
 			var claims = GetClaims(userEntity).ToList();
-			return GetProcessedResult(new LoginReponseDto(claims));
+			return GetProcessedResult(new LoginReponseDto(claims, userEntity.Id));
 		}
 
 		private static IEnumerable<Claim> GetClaims(UserEntity userEntity)
@@ -45,7 +46,7 @@ namespace Domain.Orchestrators
 				yield return new Claim(ClaimTypes.Role, role.RoleGuid.ToString());
 			}
 
-			yield return new Claim(ClaimTypes.UserData, userEntity.Id.ToString());
+			yield return new Claim(JwtRegisteredClaimNames.Sub, userEntity.Id.ToString());
 		}
 	}
 }

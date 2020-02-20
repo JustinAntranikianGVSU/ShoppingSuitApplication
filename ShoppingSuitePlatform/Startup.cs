@@ -3,17 +3,23 @@ using DataAccess;
 using Domain;
 using Domain.Orchestrators;
 using Domain.Security;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
+using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using ShoppingSuitePlatform.MiddleWare;
+using System;
+using System.Text;
+using System.Linq;
 
 namespace ShoppingSuitePlatform
 {
@@ -29,11 +35,29 @@ namespace ShoppingSuitePlatform
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-
-			services.AddAuthentication().AddCookie(options =>
+			services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 			{
-				//options.AccessDeniedPath = "/account/denied";
-				//options.LoginPath = "/account/login";
+				options.Events = new JwtBearerEvents
+				{
+					OnTokenValidated = async (ctx) =>
+					{
+						var jwtUserContext = ctx.HttpContext.RequestServices.GetService(typeof(JwtUserContext)) as JwtUserContext;
+						var nameClaim = ctx.Principal.Claims.First(oo => oo.Type == ClaimTypes.NameIdentifier);
+
+						jwtUserContext.LoggedInUserId = Convert.ToInt32(nameClaim.Value);
+					}
+				};
+
+				options.TokenValidationParameters = new TokenValidationParameters
+				{
+					ValidateIssuer = true,
+					ValidateAudience = true,
+					ValidateLifetime = true,
+					ValidateIssuerSigningKey = true,
+					ValidIssuer = Configuration["Jwt:Issuer"],
+					ValidAudience = Configuration["Jwt:Issuer"],
+					IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+				};
 			});
 
 			services.AddAuthorization(options =>
@@ -45,8 +69,6 @@ namespace ShoppingSuitePlatform
 					options.AddPolicy(policyName, policy => policy.Requirements.Add(requirement));
 				});
 			});
-
-			services.AddIdentity<IdentityUser, IdentityRole>().AddUserStore<AppUserStore>().AddRoleStore<AppRoleStore>().AddDefaultTokenProviders();
 
 			services.AddControllersWithViews();
 			// In production, the Angular files will be served from this directory
@@ -63,10 +85,21 @@ namespace ShoppingSuitePlatform
 			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 			services.AddSingleton<IAuthorizationHandler, PermissionRequirementHandler>();
 
+			services.AddScoped(BuildJwtUserContext);
+
 			// Orchestrators
 			services.AddScoped<ICreateUserOrchestrator, CreateUserOrchestrator>();
 			services.AddScoped<IGetUserOrchestrator, GetUserOrchestrator>();
 			services.AddScoped<ILoginOrchestrator, LoginOrchestrator>();
+		}
+		
+		public static JwtUserContext BuildJwtUserContext(IServiceProvider serviceProvider)
+		{
+			return new JwtUserContext
+			{
+				LoggedInUserId = -1,
+				ImpersonationUserId = -1
+			};
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -100,18 +133,18 @@ namespace ShoppingSuitePlatform
 				endpoints.MapControllerRoute(name: "default", pattern: "{controller}/{action=Index}/{id?}");
 			});
 
-			app.UseSpa(spa =>
-			{
-				// To learn more about options for serving an Angular SPA from ASP.NET Core,
-				// see https://go.microsoft.com/fwlink/?linkid=864501
+			//app.UseSpa(spa =>
+			//{
+			//	// To learn more about options for serving an Angular SPA from ASP.NET Core,
+			//	// see https://go.microsoft.com/fwlink/?linkid=864501
 
-				spa.Options.SourcePath = "ClientApp";
+			//	spa.Options.SourcePath = "ClientApp";
 
-				if (env.IsDevelopment())
-				{
-					spa.UseAngularCliServer(npmScript: "start");
-				}
-			});
+			//	if (env.IsDevelopment())
+			//	{
+			//		spa.UseAngularCliServer(npmScript: "start");
+			//	}
+			//});
 		}
 	}
 }

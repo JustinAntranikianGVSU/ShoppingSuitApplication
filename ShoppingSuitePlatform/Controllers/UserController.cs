@@ -1,13 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Domain;
 using Domain.Orchestrators;
 using Domain.Security;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using ShoppingSuitePlatform.MiddleWare;
 
 namespace ShoppingSuitePlatform.Controllers
 {
@@ -19,38 +17,29 @@ namespace ShoppingSuitePlatform.Controllers
 
 		private readonly IGetUserOrchestrator _getUserOrchestrator;
 
-		//private readonly SignInManager<IdentityUser> _signInManager;
+		private readonly JwtUserContext _jwtUserContext;
 
 		public UserController
 		(
 			ICreateUserOrchestrator createUserOrchestrator,
 			IGetUserOrchestrator getUserOrchestrator,
-			SignInManager<IdentityUser> signInManager
+			JwtUserContext jwtUserContext
 		)
 		{
 			_createUserOrchestrator = createUserOrchestrator;
 			_getUserOrchestrator = getUserOrchestrator;
-			//_signInManager = signInManager;
+			_jwtUserContext = jwtUserContext;
 		}
 
 		[HttpGet]
 		public async Task<ActionResult> GetAll()
 		{
-			//var claims = new List<Claim>
-			//{
-			//	new Claim(ClaimTypes.Role, RoleLookup.TrainingUserRoleGuid.ToString())
-			//};
-
-			//var identityUser = new IdentityUser();
-
-			//await _signInManager.SignInWithClaimsAsync(identityUser, false, claims.ToArray());
-
 			var result = await _getUserOrchestrator.GetAll();
 			return Ok(result.Value);
 		}
 
 		[HttpGet("{id}")]
-		[Authorize(Policy = "ViewEmployee")]
+		[Authorize(Policy = AppPolicy.ViewEmployee)]
 		public async Task<ActionResult> Get(int id)
 		{
 			var result = await _getUserOrchestrator.Get(id);

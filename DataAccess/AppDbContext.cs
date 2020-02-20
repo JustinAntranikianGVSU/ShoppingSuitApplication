@@ -1,6 +1,5 @@
 ﻿using DataAccess.Entities;
 using Domain.Entities;
-using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
@@ -23,7 +22,7 @@ namespace DataAccess
 		/// <param name="users"></param>
 		/// <param name="email"></param>
 		/// <returns></returns>
-		public static async Task<UserEntity?> GetByEmail([CanBeNull] this DbSet<UserEntity> users, string email)
+		public static async Task<UserEntity?> GetByEmail(this DbSet<UserEntity> users, string email)
 		{
 			return await users.FirstOrDefaultAsync(oo => oo.Email == email);
 		}

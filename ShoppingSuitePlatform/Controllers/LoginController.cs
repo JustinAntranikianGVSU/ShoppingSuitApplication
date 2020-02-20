@@ -1,8 +1,11 @@
 ﻿using Domain.Dtos;
 using Domain.Orchestrators;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using ShoppingSuitePlatform.Helpers;
+using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace ShoppingSuitePlatform.Controllers
@@ -13,10 +16,11 @@ namespace ShoppingSuitePlatform.Controllers
 	{
 		private readonly ILoginOrchestrator _loginOrchestrator;
 
-		private readonly SignInManager<IdentityUser> _signInManager;
-		public LoginController(ILoginOrchestrator loginOrchestrator, SignInManager<IdentityUser> signInManager)
+		private readonly IConfiguration _config;
+
+		public LoginController(ILoginOrchestrator loginOrchestrator, IConfiguration config)
 		{
-			(_loginOrchestrator, _signInManager) = (loginOrchestrator, signInManager);
+			(_loginOrchestrator, _config) = (loginOrchestrator, config);
 		}
 
 		[HttpPost]
@@ -29,11 +33,9 @@ namespace ShoppingSuitePlatform.Controllers
 				return BadRequest(result.Errors);
 			}
 
-			var identityUser = new IdentityUser();
-
-			await _signInManager.SignInWithClaimsAsync(identityUser, false, result.Value?.Claims.ToArray());
-
-			return Ok(result.Value);
+			var tokenHelper = new JwtTokenHelper(_config);
+			var jwtToken = tokenHelper.GenerateJSONWebToken(result.Value?.Claims ?? new List<Claim>());
+			return Ok(new { token = jwtToken });
 		}
 	}
 }

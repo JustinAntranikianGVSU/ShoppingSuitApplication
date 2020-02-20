@@ -14,6 +14,12 @@ namespace Domain.Dtos
 	{
 		public List<Claim> Claims { get; set; }
 
-		public LoginReponseDto(List<Claim> claims) => Claims = claims;
+		public int UserId { get; set; }
+
+		public LoginReponseDto(List<Claim> claims, int userId)
+		{
+			Claims = claims;
+			UserId = userId;
+		}
 	}
 }

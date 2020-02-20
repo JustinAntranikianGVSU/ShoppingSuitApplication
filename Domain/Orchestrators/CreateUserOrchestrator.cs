@@ -47,7 +47,7 @@ namespace Domain.Orchestrators
 			var userEntity = _mapper.Map<UserEntity>(user);
 			userEntity.Roles.Add(new UserRoleEntity { RoleGuid = RoleLookup.TrainingUserRoleGuid });
 
-			_dbContext.Users.Add(userEntity);
+			await _dbContext.AddAsync(userEntity);
 			await _dbContext.SaveChangesAsync();
 
 			var newUser = _mapper.Map<User>(userEntity);

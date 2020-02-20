@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app.component';
@@ -17,6 +17,8 @@ import { UserListComponent } from './user-list/user-list.component';
 import { LoginService } from './_services/login.service';
 import { LogoutService } from './_services/logout.service';
 import { LoginComponent } from './login/login.component';
+import { AuthGuard } from './_guards/authGuard';
+import { JwtInterceptor } from './_guards/jwtInterceptor';
 
 @NgModule({
   declarations: [
@@ -37,14 +39,20 @@ import { LoginComponent } from './login/login.component';
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'mylogin', component: LoginComponent },
-      { path: 'observables-test', component: ObservablesTestComponent },
-      { path: 'observables-test', component: ObservablesTestComponent },
-      { path: 'user-list', component: UserListComponent },
-      { path: 'user-edit/:id', component: UserEditComponent },
-      { path: 'medical-info', component: MedicalInfoComponent },
+      { path: 'observables-test', component: ObservablesTestComponent, canActivate: [AuthGuard] },
+      { path: 'user-list', component: UserListComponent, canActivate: [AuthGuard] },
+      { path: 'user-edit/:id', component: UserEditComponent, canActivate: [AuthGuard] },
+      { path: 'medical-info', component: MedicalInfoComponent, canActivate: [AuthGuard] },
     ])
   ],
-  providers: [TodoService, MedicalInfoService, UserEditService, LoginService, LogoutService],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },    
+    TodoService, 
+    MedicalInfoService, 
+    UserEditService, 
+    LoginService, 
+    LogoutService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

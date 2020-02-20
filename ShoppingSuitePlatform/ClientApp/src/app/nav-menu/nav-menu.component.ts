@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { LogoutService } from '../_services/logout.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-nav-menu',
@@ -12,7 +12,8 @@ export class NavMenuComponent {
 
   constructor(
     private router: Router,
-    private logoutService: LogoutService) {}
+    private logoutService: LogoutService
+  ) {}
 
   collapse() {
     this.isExpanded = false;
@@ -24,7 +25,10 @@ export class NavMenuComponent {
 
   public onLogoutClicked() {
     this.logoutService.post().subscribe(
-      () => this.router.navigate(['mylogin']),
+      () => {
+        localStorage.removeItem('currentUser');
+        this.router.navigate(['mylogin'])  
+      },
       error => console.log(error)
     )
   }
