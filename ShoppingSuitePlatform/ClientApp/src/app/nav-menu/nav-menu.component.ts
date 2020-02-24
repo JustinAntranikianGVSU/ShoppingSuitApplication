@@ -24,12 +24,7 @@ export class NavMenuComponent {
   }
 
   public onLogoutClicked() {
-    this.logoutService.post().subscribe(
-      () => {
-        localStorage.removeItem('currentUser');
-        this.router.navigate(['mylogin'])  
-      },
-      error => console.log(error)
-    )
+    localStorage.removeItem('userToken');
+    this.router.navigate(['mylogin'])  
   }
 }

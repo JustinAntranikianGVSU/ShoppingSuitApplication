@@ -7,13 +7,12 @@ export class JwtInterceptor implements HttpInterceptor {
 
   public intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    if (currentUser && currentUser.token) {
-      const bearer = { Authorization: `Bearer ${currentUser.token}` }
+    const userToken = localStorage.getItem('userToken');
+    if (userToken) {
+      const bearer = { Authorization: `Bearer ${userToken}` }
       request = request.clone({ setHeaders: bearer });
     }
 
-    console.log('IN CUSTOM Intercept !!')
     return next.handle(request);
   }
 }

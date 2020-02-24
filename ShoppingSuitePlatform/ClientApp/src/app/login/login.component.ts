@@ -26,8 +26,9 @@ export class LoginComponent {
 
   public onLoginClicked() {
     this.loginService.post(this.loginInfo).subscribe(
-      () => {
-        localStorage.setItem('currentUser', JSON.stringify({ }))
+      (data) => {
+
+        localStorage.setItem('userToken', data.token)
 
         const returnUrl = this.route.snapshot.queryParams['returnUrl'] || 'user-list'
         this.router.navigate([returnUrl])
