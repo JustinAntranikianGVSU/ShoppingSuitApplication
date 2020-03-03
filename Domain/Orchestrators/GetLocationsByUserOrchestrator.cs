@@ -27,8 +27,7 @@ namespace Domain.Orchestrators
 
 		public GetLocationsByUserOrchestrator(AppDbContext dbContext, JwtRequestContext jwtRequestContext)
 		{
-			_dbContext = dbContext;
-			_jwtRequestContext = jwtRequestContext;
+			(_dbContext, _jwtRequestContext) = (dbContext, jwtRequestContext);
 		}
 
 		public async Task<ServiceResult<List<LocationDto>>> Get() => await Get(_jwtRequestContext.GetUserId());

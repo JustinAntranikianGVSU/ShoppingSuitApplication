@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using DataAccess;
+using Domain.Dtos;
+using Domain.Entities;
 using Domain.Mappers;
 using Domain.ServiceResult;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Domain.Orchestrators
@@ -18,17 +21,25 @@ namespace Domain.Orchestrators
 	public class GetUserOrchestrator : OrchestratorBase<User>, IGetUserOrchestrator
 	{
 		private readonly AppDbContext _dbContext;
-
+		private readonly JwtRequestContext _jwtRequestContext;
 		private readonly IMapper _mapper;
 
-		public GetUserOrchestrator(AppDbContext dbContext, IMapper mapper)
+		public GetUserOrchestrator(AppDbContext dbContext, JwtRequestContext jwtRequestContext, IMapper mapper)
 		{
-			(_dbContext, _mapper) = (dbContext, mapper);
+			(_dbContext, _jwtRequestContext, _mapper) = (dbContext, jwtRequestContext, mapper);
 		}
 
 		public async Task<ServiceResult<List<User>>> GetAll()
 		{
-			var userEntites = await _dbContext.Users.Include(oo => oo.Roles).AsNoTracking().ToListAsync();
+			var clientId = _jwtRequestContext.GetClientId();
+			var queryable = _dbContext.Users.Include(oo => oo.Roles).AsNoTracking();
+
+			if (clientId.HasValue)
+			{
+				queryable = queryable.Where(oo => oo.ClientIdentifier == clientId.Value);
+			}
+
+			var userEntites = await queryable.ToListAsync();
 			var users = new UserMapper(_mapper).Map(userEntites);
 			return new ServiceResult<List<User>>(users, ServiceResultStatus.Processed);
 		}

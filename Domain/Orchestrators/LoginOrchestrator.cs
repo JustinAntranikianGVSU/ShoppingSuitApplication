@@ -1,8 +1,10 @@
 ﻿using DataAccess;
+using Domain.Constants;
 using Domain.Dtos;
 using Domain.Entities;
 using Domain.ServiceResult;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
@@ -47,6 +49,9 @@ namespace Domain.Orchestrators
 			}
 
 			yield return new Claim(JwtRegisteredClaimNames.Sub, userEntity.Id.ToString());
+
+			var clientId = userEntity.ClientIdentifier.HasValue ? userEntity.ClientIdentifier : Guid.Empty;
+			yield return new Claim(AppClaimTypes.ClientId, clientId.ToString());
 		}
 	}
 }

@@ -1,9 +1,14 @@
-﻿using Domain.Security;
+﻿using Domain;
+using Domain.Constants;
+using Domain.Orchestrators;
+using Domain.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using ShoppingSuitePlatform.Helpers;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -16,27 +21,55 @@ namespace ShoppingSuitePlatform.Controllers
     {
 		private readonly IConfiguration _config;
 
-		public ImpersonationController(IConfiguration config)
+		private readonly IGetUserOrchestrator _orchestrator;
+
+		public ImpersonationController(IConfiguration config, IGetUserOrchestrator orchestrator)
 		{
-			_config = config;
+			(_config, _orchestrator) = (config, orchestrator);
 		}
 
 		[Authorize(Policy = AppPolicy.ViewEmployee)]
 		public async Task<ActionResult> Post([FromBody] int impersonatingUserId)
 		{
-			var claims = HttpContext.User.Claims.ToList();
-			var impersonationClaim = HttpContext.User.Claims.SingleOrDefault(oo => oo.Type == "impersionationUserId");
+			var userResult = await _orchestrator.Get(impersonatingUserId);
 
-			if (impersonationClaim is {})
+			if (userResult.Value is null)
 			{
-				claims.Remove(impersonationClaim);
+				return NotFound(userResult.Errors);
 			}
 
-			claims.Add(new Claim("impersionationUserId", impersonatingUserId.ToString()));
+			var claims = HttpContext.User.Claims.ToList();
 
-			var tokenHelper = new JwtTokenHelper(_config);
-			var jwtToken = tokenHelper.GenerateJSONWebToken(claims);
+			HandleUserClaims(claims, impersonatingUserId);
+			HandleClientClaims(claims, userResult.Value);
+
+			var jwtToken = new JwtTokenHelper(_config).GenerateJSONWebToken(claims);
 			return Ok(new { token = jwtToken });
+		}
+
+		private void HandleUserClaims(List<Claim> claims, int impersonatingUserId)
+		{
+			var claim = HttpContext.User.FindFirst(AppClaimTypes.ImpersonationUserId);
+
+			if (claim is {})
+			{
+				claims.Remove(claim);
+			}
+
+			claims.Add(new Claim(AppClaimTypes.ImpersonationUserId, impersonatingUserId.ToString()));
+		}
+
+		private void HandleClientClaims(List<Claim> claims, User userDto)
+		{
+			var claim = HttpContext.User.FindFirst(AppClaimTypes.ImpersonationClientId);
+
+			if (claim is {})
+			{
+				claims.Remove(claim);
+			}
+
+			var clientId = userDto.ClientIdentifier.HasValue ? userDto.ClientIdentifier : Guid.Empty;
+			claims.Add(new Claim(AppClaimTypes.ImpersonationClientId, clientId.ToString()));
 		}
 	}
 }

@@ -18,7 +18,7 @@ namespace Domain.Security
 
 		public bool HasPermission(Permission permission)
 		{
-			return Permissions.Contains(permission);
+			return HasGlobalPermissions || Permissions.Contains(permission);
 		}
 
 		public Role(Guid id, string name)

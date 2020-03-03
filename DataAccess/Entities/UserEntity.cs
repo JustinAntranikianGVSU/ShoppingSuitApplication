@@ -27,8 +27,6 @@ namespace Domain.Entities
 
 		public Guid? ClientIdentifier { get; set; }
 
-		public bool AccessToAllClients { get; set; }
-
 		[ForeignKey("UserId")]
 		public ICollection<UserRoleEntity> Roles { get; set; } = new List<UserRoleEntity>();
 	}

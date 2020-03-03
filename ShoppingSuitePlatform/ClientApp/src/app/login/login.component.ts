@@ -15,14 +15,15 @@ interface ILoginInfo {
 export class LoginComponent {
 
   public loginInfo: ILoginInfo = {
-    email: 'csmith@gmail.com',
+    email: 'jantranikian@gmail.com',
     password: ''
   }
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private loginService: LoginService) {}
+    private loginService: LoginService
+  ) {}
 
   public onLoginClicked() {
     this.loginService.post(this.loginInfo).subscribe(

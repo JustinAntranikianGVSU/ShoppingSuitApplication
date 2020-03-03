@@ -52,6 +52,10 @@ export class UserListComponent implements OnInit {
     this.impersonateService.post(id).subscribe(data => {
       localStorage.setItem('userToken', data.token)
       this.modalService.open(this.impersonationCompleteRef).result.then(this.handleImpersonationLinkClicked)
+    }, (error) => {
+      if (error.status === 403) {
+        alert('You do not have permissions to the impersonate feature.')
+      }
     })
   }
 

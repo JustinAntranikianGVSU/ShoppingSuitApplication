@@ -20,6 +20,8 @@ using System;
 using System.Text;
 using System.Linq;
 using Domain.Dtos;
+using Domain.Constants;
+using ShoppingSuitePlatform.Helpers;
 
 namespace ShoppingSuitePlatform
 {
@@ -42,17 +44,16 @@ namespace ShoppingSuitePlatform
 					OnTokenValidated = async (ctx) =>
 					{
 						var jwtUserContext = ctx.HttpContext.RequestServices.GetService(typeof(JwtRequestContext)) as JwtRequestContext;
-						var nameClaim = ctx.Principal.Claims.Single(oo => oo.Type == ClaimTypes.NameIdentifier);
-						var impersonationClaim = ctx.Principal.Claims.SingleOrDefault(oo => oo.Type == "impersionationUserId");
 
-						jwtUserContext.LoggedInUserId = Convert.ToInt32(nameClaim.Value);
-				
-						if (impersonationClaim is null)
+						if (jwtUserContext == null)
 						{
-							return;
+							throw new Exception("This should never be null. Make sure the BuildJwtUserContext() is called in OWIN middleware");
 						}
 
-						jwtUserContext.ImpersonationUserId = Convert.ToInt32(impersonationClaim.Value);
+						JwtRequestContextHelpers.SetUserId(ctx, jwtUserContext);
+						JwtRequestContextHelpers.SetClientId(ctx, jwtUserContext);
+						JwtRequestContextHelpers.SetImpersonationId(ctx, jwtUserContext);
+						JwtRequestContextHelpers.SetImpersonationClientId(ctx, jwtUserContext);
 					}
 				};
 
