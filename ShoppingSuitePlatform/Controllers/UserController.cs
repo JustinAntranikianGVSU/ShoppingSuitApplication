@@ -5,7 +5,6 @@ using Domain.Orchestrators;
 using Domain.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ShoppingSuitePlatform.MiddleWare;
 
 namespace ShoppingSuitePlatform.Controllers
 {
@@ -17,18 +16,14 @@ namespace ShoppingSuitePlatform.Controllers
 
 		private readonly IGetUserOrchestrator _getUserOrchestrator;
 
-		private readonly JwtUserContext _jwtUserContext;
-
 		public UserController
 		(
 			ICreateUserOrchestrator createUserOrchestrator,
-			IGetUserOrchestrator getUserOrchestrator,
-			JwtUserContext jwtUserContext
+			IGetUserOrchestrator getUserOrchestrator
 		)
 		{
 			_createUserOrchestrator = createUserOrchestrator;
 			_getUserOrchestrator = getUserOrchestrator;
-			_jwtUserContext = jwtUserContext;
 		}
 
 		[HttpGet]

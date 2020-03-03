@@ -1,12 +1,13 @@
 ﻿
 using DataAccess.Entities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entities
 {
-	[Table("Users")]
+	[Table("User")]
 	public class UserEntity
 	{
 		[Key]
@@ -23,6 +24,10 @@ namespace Domain.Entities
 		[Required]
 		[MaxLength(50)]
 		public string Email { get; set; }
+
+		public Guid? ClientIdentifier { get; set; }
+
+		public bool AccessToAllClients { get; set; }
 
 		[ForeignKey("UserId")]
 		public ICollection<UserRoleEntity> Roles { get; set; } = new List<UserRoleEntity>();

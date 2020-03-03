@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserEditService } from '../_services/user-edit.service';
+import { ImpersonateService } from '../_services/impersonate.service';
 
 @Component({
   selector: 'app-user-list',
@@ -12,13 +13,21 @@ export class UserListComponent implements OnInit {
   public dataLoaded = false
 
   constructor(
-    private userService: UserEditService,
+    private readonly userService: UserEditService,
+    private readonly impersonateService: ImpersonateService
   ) {}
   
   ngOnInit() {
     this.userService.getAll().subscribe(users => { 
       this.users = users
       this.dataLoaded = true
+    })
+  }
+
+  public onImpersonateClicked(user: any) {
+
+    this.impersonateService.post(user.id).subscribe(data => {
+      localStorage.setItem('userToken', data.token)
     })
   }
 

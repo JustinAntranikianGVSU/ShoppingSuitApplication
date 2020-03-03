@@ -19,7 +19,8 @@
         <td>{{ user.lastName }}</td>
         <td>{{ user.email }}</td>
         <td>
-          <a a class="btn btn-primary" [routerLink]="['/user-edit', user.id]"><i class="fa fa-pencil-square-o mr-1" aria-hidden="true"></i>Edit</a>
+          <a class="btn btn-primary" [routerLink]="['/user-edit', user.id]"><i class="fa fa-pencil-square-o mr-1" aria-hidden="true"></i>Edit</a>
+          <button (click)="onImpersonateClicked(user)" class="btn btn-primary">Impersonate</button>
         </td>
       </tr>
     </tbody>

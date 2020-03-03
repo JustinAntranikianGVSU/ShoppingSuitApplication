@@ -19,6 +19,7 @@ using ShoppingSuitePlatform.MiddleWare;
 using System;
 using System.Text;
 using System.Linq;
+using Domain.Dtos;
 
 namespace ShoppingSuitePlatform
 {
@@ -40,10 +41,18 @@ namespace ShoppingSuitePlatform
 				{
 					OnTokenValidated = async (ctx) =>
 					{
-						var jwtUserContext = ctx.HttpContext.RequestServices.GetService(typeof(JwtUserContext)) as JwtUserContext;
-						var nameClaim = ctx.Principal.Claims.First(oo => oo.Type == ClaimTypes.NameIdentifier);
+						var jwtUserContext = ctx.HttpContext.RequestServices.GetService(typeof(JwtRequestContext)) as JwtRequestContext;
+						var nameClaim = ctx.Principal.Claims.Single(oo => oo.Type == ClaimTypes.NameIdentifier);
+						var impersonationClaim = ctx.Principal.Claims.SingleOrDefault(oo => oo.Type == "impersionationUserId");
 
 						jwtUserContext.LoggedInUserId = Convert.ToInt32(nameClaim.Value);
+				
+						if (impersonationClaim is null)
+						{
+							return;
+						}
+
+						jwtUserContext.ImpersonationUserId = Convert.ToInt32(impersonationClaim.Value);
 					}
 				};
 
@@ -88,16 +97,16 @@ namespace ShoppingSuitePlatform
 
 			// Orchestrators
 			services.AddScoped<ICreateUserOrchestrator, CreateUserOrchestrator>();
+			services.AddScoped<IGetLocationsByUserOrchestrator, GetLocationsByUserOrchestrator>();
 			services.AddScoped<IGetUserOrchestrator, GetUserOrchestrator>();
 			services.AddScoped<ILoginOrchestrator, LoginOrchestrator>();
 		}
 		
-		public static JwtUserContext BuildJwtUserContext(IServiceProvider serviceProvider)
+		public static JwtRequestContext BuildJwtUserContext(IServiceProvider serviceProvider)
 		{
-			return new JwtUserContext
+			return new JwtRequestContext
 			{
-				LoggedInUserId = -1,
-				ImpersonationUserId = -1
+				LoggedInUserId = -1
 			};
 		}
 

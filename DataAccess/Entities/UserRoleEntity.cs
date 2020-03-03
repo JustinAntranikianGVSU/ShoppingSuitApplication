@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataAccess.Entities
 {
-	[Table("User_Roles")]
+	[Table("User_Role")]
 	public class UserRoleEntity
 	{
 		[Key]

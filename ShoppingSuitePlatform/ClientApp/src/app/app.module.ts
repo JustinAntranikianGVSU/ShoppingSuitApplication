@@ -19,6 +19,8 @@ import { LogoutService } from './_services/logout.service';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './_guards/authGuard';
 import { JwtInterceptor } from './_guards/jwtInterceptor';
+import { LocationsComponent } from './locations/locations.component';
+import { LocationsService } from './_services/locations.service';
 
 @NgModule({
   declarations: [
@@ -29,7 +31,8 @@ import { JwtInterceptor } from './_guards/jwtInterceptor';
     MedicalInfoComponent,
     UserEditComponent,
     UserListComponent,
-    LoginComponent
+    LoginComponent,
+    LocationsComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -41,6 +44,7 @@ import { JwtInterceptor } from './_guards/jwtInterceptor';
       { path: 'mylogin', component: LoginComponent },
       { path: 'observables-test', component: ObservablesTestComponent, canActivate: [AuthGuard] },
       { path: 'user-list', component: UserListComponent, canActivate: [AuthGuard] },
+      { path: 'locations', component: LocationsComponent, canActivate: [AuthGuard] },
       { path: 'user-edit/:id', component: UserEditComponent, canActivate: [AuthGuard] },
       { path: 'medical-info', component: MedicalInfoComponent, canActivate: [AuthGuard] },
     ])
@@ -50,8 +54,9 @@ import { JwtInterceptor } from './_guards/jwtInterceptor';
     TodoService, 
     MedicalInfoService, 
     UserEditService, 
-    LoginService, 
-    LogoutService
+    LoginService,
+    LogoutService,
+    LocationsService
   ],
   bootstrap: [AppComponent]
 })
