@@ -25,6 +25,13 @@ namespace ShoppingSuitePlatform.Controllers
 		public async Task<ActionResult> Post([FromBody] int impersonatingUserId)
 		{
 			var claims = HttpContext.User.Claims.ToList();
+			var impersonationClaim = HttpContext.User.Claims.SingleOrDefault(oo => oo.Type == "impersionationUserId");
+
+			if (impersonationClaim is {})
+			{
+				claims.Remove(impersonationClaim);
+			}
+
 			claims.Add(new Claim("impersionationUserId", impersonatingUserId.ToString()));
 
 			var tokenHelper = new JwtTokenHelper(_config);

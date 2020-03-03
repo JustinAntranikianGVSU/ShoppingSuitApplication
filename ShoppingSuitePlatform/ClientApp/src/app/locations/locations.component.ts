@@ -10,7 +10,9 @@ export class LocationsComponent implements OnInit {
 
   public locations: any[];
 
-  constructor(private readonly locationService: LocationsService) { }
+  constructor(
+    private readonly locationService: LocationsService
+  ) { }
 
   ngOnInit() {
     this.locationService.get().subscribe(data =>

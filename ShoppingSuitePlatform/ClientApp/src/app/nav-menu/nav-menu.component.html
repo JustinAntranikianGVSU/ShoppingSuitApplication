@@ -21,19 +21,16 @@
       >
         <ul class="navbar-nav flex-grow">
           <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/user-list']"><i class="fa fa-users mr-2" aria-hidden="true"></i>Users</a>
+            <a class="nav-link text-dark" [routerLink]="['/user-list']"><i class="fa fa-users mr-1" aria-hidden="true"></i>Users</a>
           </li>
           <li class="nav-item" [routerLinkActive]="['link-active']">
             <a class="nav-link text-dark" [routerLink]="['/observables-test']">Observables</a>
           </li>
           <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/medical-info']">Medical Info</a>
+            <a class="nav-link text-dark" [routerLink]="['/locations']"><i class="fa fa-location-arrow mr-1" aria-hidden="true"></i>Locations</a>
           </li>
           <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/locations']">Locations</a>
-          </li>
-          <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/mylogin']">Login</a>
+            <a class="nav-link text-dark" [routerLink]="['/mylogin']"><i class="fa fa-sign-in mr-1" aria-hidden="true"></i>Login</a>
           </li>
           <li class="nav-item" [routerLinkActive]="['link-active']">
             <a class="nav-link text-dark" (click)="onLogoutClicked()"><i class="fa fa-sign-out mr-1" aria-hidden="true"></i>Logout</a>

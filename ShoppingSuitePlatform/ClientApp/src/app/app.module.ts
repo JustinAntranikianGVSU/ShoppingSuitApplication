@@ -9,8 +9,6 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { ObservablesTestComponent } from './observables-test/observables-test.component';
 import { TodoService } from './_services/todo.service';
-import { MedicalInfoComponent } from './medical-info/medical-info.component';
-import { MedicalInfoService } from './_services/medical-info.service';
 import { UserEditComponent } from './user-edit/user-edit.component';
 import { UserEditService } from './_services/user-edit.service';
 import { UserListComponent } from './user-list/user-list.component';
@@ -28,7 +26,6 @@ import { LocationsService } from './_services/locations.service';
     NavMenuComponent,
     HomeComponent,
     ObservablesTestComponent,
-    MedicalInfoComponent,
     UserEditComponent,
     UserListComponent,
     LoginComponent,
@@ -41,19 +38,17 @@ import { LocationsService } from './_services/locations.service';
     NgbModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'mylogin', component: LoginComponent },
-      { path: 'observables-test', component: ObservablesTestComponent, canActivate: [AuthGuard] },
       { path: 'user-list', component: UserListComponent, canActivate: [AuthGuard] },
-      { path: 'locations', component: LocationsComponent, canActivate: [AuthGuard] },
       { path: 'user-edit/:id', component: UserEditComponent, canActivate: [AuthGuard] },
-      { path: 'medical-info', component: MedicalInfoComponent, canActivate: [AuthGuard] },
+      { path: 'observables-test', component: ObservablesTestComponent, canActivate: [AuthGuard] },
+      { path: 'locations', component: LocationsComponent, canActivate: [AuthGuard] },
+      { path: 'mylogin', component: LoginComponent },
     ])
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },    
-    TodoService, 
-    MedicalInfoService, 
-    UserEditService, 
+    TodoService,
+    UserEditService,
     LoginService,
     LogoutService,
     LocationsService

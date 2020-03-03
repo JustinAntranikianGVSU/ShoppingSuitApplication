@@ -1,6 +1,46 @@
 
 <h2><i class="fa fa-users mr-2" aria-hidden="true"></i>User List</h2>
 
+<ng-template #impersonationConfirm let-modal>
+
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Impersonate ?</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+    <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  
+  <div class="modal-body">
+    Are you sure you want to impersonate : {{ this.userToImpersonate.firstName }} {{ this.userToImpersonate.lastName }}
+  </div>
+  
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-success" (click)="modal.close()">Ok</button>
+  </div>
+  
+</ng-template>
+
+<ng-template #impersonationComplete let-modal>
+
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">You are now impersonating</h4>
+  </div>
+  
+  <div class="modal-body">
+    <p>You now impersonating : <strong>{{ this.userToImpersonate.firstName }} {{ this.userToImpersonate.lastName }}</strong>.</p>
+    <p>Permissions, data, and roles will now reflect what {{ this.userToImpersonate.firstName }} has <strong><i>ACCESS TO</i></strong>.</p>
+    <p>To exist impersonation, either click the 'Exist Impersonation' button or 'Logout' button.</p>
+    <p>You will need to <strong>navigate</strong> to another page or refresh the current page.</p>
+    <hr />
+    <p class="text-center">
+      <button class="btn btn-outline-primary" (click)="modal.close('Locations')"><i class="fa fa-location-arrow mr-1" aria-hidden="true"></i>Locations</button>
+      <span class="mx-4">OR</span>
+      <button class="btn btn-outline-primary" (click)="modal.close('Reload')"><i class="fa fa-users mr-1" aria-hidden="true"></i>Reload</button>
+    </p>
+  </div>
+  
+</ng-template>
+
 <div *ngIf="dataLoaded">
   <table class="table table-striped">
     <thead>
@@ -9,7 +49,7 @@
         <th scope="col">First</th>
         <th scope="col">Last</th>
         <th scope="col">Email</th>
-        <th scope="col">Edit</th>
+        <th class="text-center" scope="col">Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -18,9 +58,9 @@
         <td>{{ user.firstName }}</td>
         <td>{{ user.lastName }}</td>
         <td>{{ user.email }}</td>
-        <td>
-          <a class="btn btn-primary" [routerLink]="['/user-edit', user.id]"><i class="fa fa-pencil-square-o mr-1" aria-hidden="true"></i>Edit</a>
-          <button (click)="onImpersonateClicked(user)" class="btn btn-primary">Impersonate</button>
+        <td class="text-center">
+          <a class="btn btn-outline-primary" placement="left" ngbTooltip="Edit : {{ user.firstName }} {{ user.lastName }}" [routerLink]="['/user-edit', user.id]"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+          <button class="btn btn-outline-primary ml-2" (click)="onImpersonateClicked(user)" ngbTooltip="Impersonate : {{ user.firstName }} {{ user.lastName }}"><i class="fa fa-address-card" aria-hidden="true"></i></button>
         </td>
       </tr>
     </tbody>
