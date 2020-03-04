@@ -39,7 +39,7 @@ namespace ShoppingSuitePlatform.Helpers
 			var clientId = Guid.Parse(GetClaimValue(AppClaimTypes.ClientId));
 			if (clientId != default)
 			{
-				_jwtRequestContext.ClientIdentifier = clientId;
+				_jwtRequestContext.LoggedInUserClientIdentifier = clientId;
 			}
 		}
 

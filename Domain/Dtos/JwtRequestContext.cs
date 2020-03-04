@@ -6,7 +6,7 @@ namespace Domain.Dtos
 	{
 		public int LoggedInUserId { get; set; }
 
-		public Guid? ClientIdentifier { get; set; }
+		public Guid? LoggedInUserClientIdentifier { get; set; }
 
 		public int? ImpersonationUserId { get; set; }
 
@@ -22,6 +22,6 @@ namespace Domain.Dtos
 		/// If ImpersonationClientIdentifier is set return that. Otherwise return the ClientIdentifier.
 		/// </summary>
 		/// <returns></returns>
-		public Guid? GetClientId() => ImpersonationClientIdentifier ?? ClientIdentifier;
+		public Guid? GetClientId() => ImpersonationClientIdentifier ?? LoggedInUserClientIdentifier;
 	}
 }

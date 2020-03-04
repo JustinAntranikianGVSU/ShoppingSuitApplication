@@ -55,16 +55,19 @@
     </ng-template>
     
     <div class="row mb-3">
-      <div class="col text-right">
-        <div ngbDropdown class="d-inline-block">
-          <button class="btn btn-outline-secondary" id="actionsDropDown" ngbDropdownToggle>Actions</button>
-          <div ngbDropdownMenu aria-labelledby="actionsDropDown">
-            <button ngbDropdownItem>Create New Employee</button>
+      <div class="col-sm-4">
+        <div class="card" style="border-color: #1E4A6F;">
+          <div class="card-header" style="background-color: #1E4A6F; color: white;">
+            <h5>Filter by first name</h5>
+          </div>
+          <div class="card-body">
+            <input type="text" class="form-control" [(ngModel)]="filterModel" [ngbTypeahead]="searchUsers"/>
+            <div class="text-right"><button class="btn btn-outline-secondary mt-2">Filter</button></div>
           </div>
         </div>
       </div>
     </div>
-    
+
     <div *ngIf="dataLoaded">
       <table class="table table-striped">
         <thead>

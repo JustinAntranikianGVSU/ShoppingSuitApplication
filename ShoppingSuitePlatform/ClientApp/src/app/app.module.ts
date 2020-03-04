@@ -7,8 +7,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
-import { ObservablesTestComponent } from './observables-test/observables-test.component';
-import { TodoService } from './_services/todo.service';
 import { UserEditComponent } from './user-edit/user-edit.component';
 import { UserEditService } from './_services/user-edit.service';
 import { UserListComponent } from './user-list/user-list.component';
@@ -19,17 +17,19 @@ import { AuthGuard } from './_guards/authGuard';
 import { JwtInterceptor } from './_guards/jwtInterceptor';
 import { LocationsComponent } from './locations/locations.component';
 import { LocationsService } from './_services/locations.service';
+import { ProfileComponent } from './profile/profile.component';
+import { ProfileService } from './_services/profile.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavMenuComponent,
     HomeComponent,
-    ObservablesTestComponent,
     UserEditComponent,
     UserListComponent,
     LoginComponent,
-    LocationsComponent
+    LocationsComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -40,18 +40,18 @@ import { LocationsService } from './_services/locations.service';
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'user-list', component: UserListComponent, canActivate: [AuthGuard] },
       { path: 'user-edit/:id', component: UserEditComponent, canActivate: [AuthGuard] },
-      { path: 'observables-test', component: ObservablesTestComponent, canActivate: [AuthGuard] },
       { path: 'locations', component: LocationsComponent, canActivate: [AuthGuard] },
+      { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
       { path: 'mylogin', component: LoginComponent },
     ])
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },    
-    TodoService,
     UserEditService,
     LoginService,
     LogoutService,
-    LocationsService
+    LocationsService,
+    ProfileService
   ],
   bootstrap: [AppComponent]
 })

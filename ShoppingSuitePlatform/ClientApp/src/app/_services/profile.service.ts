@@ -5,15 +5,11 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class LocationsService {
+export class ProfileService {
 
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) { }
 
   public get(): Observable<any> {
-    return this.http.get<any[]>(this.baseUrl + `LocationsByUser`)
-  }
-
-  public getByUserId(userId: number): Observable<any> {
-    return this.http.get<any[]>(this.baseUrl + `LocationsByUser/${userId}`)
+    return this.http.get<any[]>(this.baseUrl + `MyProfile`)
   }
 }

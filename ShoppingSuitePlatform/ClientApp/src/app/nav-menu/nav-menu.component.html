@@ -11,9 +11,6 @@
             <a class="nav-link text-dark" [routerLink]="['/user-list']"><i class="fa fa-users mr-1" aria-hidden="true"></i>Users</a>
           </li>
           <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/observables-test']">Observables</a>
-          </li>
-          <li class="nav-item" [routerLinkActive]="['link-active']">
             <a class="nav-link text-dark" [routerLink]="['/locations']"><i class="fa fa-location-arrow mr-1" aria-hidden="true"></i>Locations</a>
           </li>
           <li class="nav-item dropdown">
@@ -24,7 +21,7 @@
                 <button ngbDropdownItem (click)="onLogoutClicked()"><i class="fa fa-sign-out mr-1" aria-hidden="true"></i>Logout</button>
                 <div class="dropdown-divider"></div>
                 <a ngbDropdownItem [routerLink]="['/mylogin']"><i class="fa fa-sign-in mr-2" aria-hidden="true"></i>Login</a>
-                <a ngbDropdownItem [routerLink]="['/mylogin']"><i class="fa fa-wrench mr-2" aria-hidden="true"></i>My Profile</a>
+                <a ngbDropdownItem [routerLink]="['/profile']"><i class="fa fa-wrench mr-2" aria-hidden="true"></i>My Profile</a>
               </div>
             </div>
           </li>

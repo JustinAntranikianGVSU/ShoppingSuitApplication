@@ -3,6 +3,10 @@ import { UserEditService } from '../_services/user-edit.service';
 import { ImpersonateService } from '../_services/impersonate.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
+import { debounceTime, distinctUntilChanged, map, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+
+const commonNames = ['Justin', 'Bob', 'Barry', 'Calvin', 'Don', 'Chris']
 
 @Component({
   selector: 'app-user-list',
@@ -15,7 +19,9 @@ export class UserListComponent implements OnInit {
   public dataLoaded = false
   public userToImpersonate: any
   public showErrorToast = false
-  
+  public isFilterCollapsed = false;
+  public filterModel: any;
+
   @ViewChild('impersonationComplete', null) 
   private impersonationCompleteRef: ElementRef
 
@@ -63,4 +69,10 @@ export class UserListComponent implements OnInit {
     linkType === 'Reload' ? window.location.reload() : this.router.navigate(['/locations'])
   }
 
+  public searchUsers = (text$: Observable<string>) =>
+    text$.pipe(
+      debounceTime(200),
+      distinctUntilChanged(),
+      map(term => term.length < 2 ? [] : commonNames.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
+    )
 }
