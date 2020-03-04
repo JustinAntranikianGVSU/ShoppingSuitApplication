@@ -1,12 +1,17 @@
+<div class="alert alert-success" role="alert">
+  <h3><i class="fa fa-users mr-4" aria-hidden="true"></i>User List</h3>
+</div>
 
-<h2><i class="fa fa-users mr-2" aria-hidden="true"></i>User List</h2>
+<ngb-toast [delay]="5000" class="bg-danger text-light" header="An error occurred" *ngIf="showErrorToast" (hide)="showErrorToast = false">
+  You do not have permissions for this action.
+</ngb-toast>
 
 <ng-template #impersonationConfirm let-modal>
 
   <div class="modal-header">
     <h4 class="modal-title" id="modal-basic-title">Impersonate ?</h4>
     <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
-    <span aria-hidden="true">&times;</span>
+      <span aria-hidden="true">&times;</span>
     </button>
   </div>
   
@@ -40,6 +45,17 @@
   </div>
   
 </ng-template>
+
+<div class="row mb-3">
+  <div class="col text-right">
+    <div ngbDropdown class="d-inline-block">
+      <button class="btn btn-outline-secondary" id="actionsDropDown" ngbDropdownToggle>Actions</button>
+      <div ngbDropdownMenu aria-labelledby="actionsDropDown">
+        <button ngbDropdownItem>Create New Employee</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div *ngIf="dataLoaded">
   <table class="table table-striped">

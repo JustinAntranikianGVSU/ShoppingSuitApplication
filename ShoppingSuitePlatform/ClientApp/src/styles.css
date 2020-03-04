@@ -14,3 +14,7 @@ code {
   background-color: #1b6ec2;
   border-color: #1861ac;
 }
+
+.alert h3 {
+  margin-bottom: 0;
+}

@@ -29,11 +29,17 @@
           <li class="nav-item" [routerLinkActive]="['link-active']">
             <a class="nav-link text-dark" [routerLink]="['/locations']"><i class="fa fa-location-arrow mr-1" aria-hidden="true"></i>Locations</a>
           </li>
-          <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/mylogin']"><i class="fa fa-sign-in mr-1" aria-hidden="true"></i>Login</a>
-          </li>
-          <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" (click)="onLogoutClicked()"><i class="fa fa-sign-out mr-1" aria-hidden="true"></i>Logout</a>
+          <li class="nav-item dropdown">
+            <div ngbDropdown class="d-inline-block">
+              <button class="btn btn-outline-secondary" id="actionsDropDown" ngbDropdownToggle><i class="fa fa-cog" aria-hidden="true"></i></button>
+              <div ngbDropdownMenu aria-labelledby="actionsDropDown">
+                <button ngbDropdownItem (click)="onLogoutClicked()"><i class="fa fa-address-card mr-2" aria-hidden="true"></i>Exit Impersonation</button>
+                <button ngbDropdownItem (click)="onLogoutClicked()"><i class="fa fa-sign-out mr-1" aria-hidden="true"></i>Logout</button>
+                <div class="dropdown-divider"></div>
+                <a ngbDropdownItem [routerLink]="['/mylogin']"><i class="fa fa-sign-in mr-2" aria-hidden="true"></i>Login</a>
+                <a ngbDropdownItem [routerLink]="['/mylogin']"><i class="fa fa-wrench mr-2" aria-hidden="true"></i>My Profile</a>
+              </div>
+            </div>
           </li>
         </ul>
       </div>

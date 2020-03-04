@@ -25,7 +25,7 @@ namespace Domain.Security
 
 		public static Role GetRole(Guid identifier)
 		{
-			var role = Roles.SingleOrDefault(oo => oo.GuidIdentifier == identifier);
+			var role = Roles.SingleOrDefault(oo => oo.Identifier == identifier);
 
 			if (role is null)
 			{

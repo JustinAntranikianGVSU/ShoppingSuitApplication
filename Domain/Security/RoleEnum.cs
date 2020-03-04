@@ -7,7 +7,7 @@ namespace Domain.Security
 {
 	public class Role
 	{
-		public Guid GuidIdentifier { get; set; }
+		public Guid Identifier { get; set; }
 
 		public string Name { get; set; }
 
@@ -23,7 +23,7 @@ namespace Domain.Security
 
 		public Role(Guid id, string name)
 		{
-			GuidIdentifier = id;
+			Identifier = id;
 			Name = name;
 			Permissions = new List<Permission>();
 			HasGlobalPermissions = true;
@@ -31,7 +31,7 @@ namespace Domain.Security
 
 		public Role(Guid id, string name, params Permission[] permissions)
 		{
-			GuidIdentifier = id;
+			Identifier = id;
 			Name = name;
 			Permissions = permissions.ToList();
 		}

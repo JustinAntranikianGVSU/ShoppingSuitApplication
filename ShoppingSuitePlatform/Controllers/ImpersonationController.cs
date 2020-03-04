@@ -38,38 +38,30 @@ namespace ShoppingSuitePlatform.Controllers
 				return NotFound(userResult.Errors);
 			}
 
-			var claims = HttpContext.User.Claims.ToList();
+			var claims = HttpContext.User.GetUserAndClientClaims();
 
-			HandleUserClaims(claims, impersonatingUserId);
-			HandleClientClaims(claims, userResult.Value);
+			claims.AddRange(GetRoleClaims(userResult.Value));
+			claims.Add(GetImpersonationUserClaim(impersonatingUserId));
+			claims.Add(GetImpersonationClientIdClaim(userResult.Value));
 
 			var jwtToken = new JwtTokenHelper(_config).GenerateJSONWebToken(claims);
 			return Ok(new { token = jwtToken });
 		}
 
-		private void HandleUserClaims(List<Claim> claims, int impersonatingUserId)
+		private List<Claim> GetRoleClaims(User user)
 		{
-			var claim = HttpContext.User.FindFirst(AppClaimTypes.ImpersonationUserId);
-
-			if (claim is {})
-			{
-				claims.Remove(claim);
-			}
-
-			claims.Add(new Claim(AppClaimTypes.ImpersonationUserId, impersonatingUserId.ToString()));
+			return user.Roles.Select(role => new Claim(ClaimTypes.Role, role.Identifier.ToString())).ToList();
 		}
 
-		private void HandleClientClaims(List<Claim> claims, User userDto)
+		private Claim GetImpersonationUserClaim(int impersonatingUserId)
 		{
-			var claim = HttpContext.User.FindFirst(AppClaimTypes.ImpersonationClientId);
+			return new Claim(AppClaimTypes.ImpersonationUserId, impersonatingUserId.ToString());
+		}
 
-			if (claim is {})
-			{
-				claims.Remove(claim);
-			}
-
+		private Claim GetImpersonationClientIdClaim(User userDto)
+		{
 			var clientId = userDto.ClientIdentifier.HasValue ? userDto.ClientIdentifier : Guid.Empty;
-			claims.Add(new Claim(AppClaimTypes.ImpersonationClientId, clientId.ToString()));
+			return new Claim(AppClaimTypes.ImpersonationClientId, clientId.ToString());
 		}
 	}
 }

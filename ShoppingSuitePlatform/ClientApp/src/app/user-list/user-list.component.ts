@@ -14,6 +14,7 @@ export class UserListComponent implements OnInit {
   public users: any[]
   public dataLoaded = false
   public userToImpersonate: any
+  public showErrorToast = false
   
   @ViewChild('impersonationComplete', null) 
   private impersonationCompleteRef: ElementRef
@@ -49,23 +50,17 @@ export class UserListComponent implements OnInit {
 
     const {id} = this.userToImpersonate
 
-    this.impersonateService.post(id).subscribe(data => {
-      localStorage.setItem('userToken', data.token)
-      this.modalService.open(this.impersonationCompleteRef).result.then(this.handleImpersonationLinkClicked)
-    }, (error) => {
-      if (error.status === 403) {
-        alert('You do not have permissions to the impersonate feature.')
-      }
-    })
+    this.impersonateService.post(id).subscribe(
+      data => {
+        localStorage.setItem('userToken', data.token)
+        this.modalService.open(this.impersonationCompleteRef).result.then(this.handleImpersonationLinkClicked)
+      }, 
+      error => this.showErrorToast = error.status === 403
+    )
   }
 
   private handleImpersonationLinkClicked = (linkType: string) => {
-    if (linkType === 'Reload') {
-      window.location.reload()
-      return
-    }
-
-    this.router.navigate(['/locations'])
+    linkType === 'Reload' ? window.location.reload() : this.router.navigate(['/locations'])
   }
 
 }

@@ -43,17 +43,8 @@ namespace ShoppingSuitePlatform
 				{
 					OnTokenValidated = async (ctx) =>
 					{
-						var jwtUserContext = ctx.HttpContext.RequestServices.GetService(typeof(JwtRequestContext)) as JwtRequestContext;
-
-						if (jwtUserContext == null)
-						{
-							throw new Exception("This should never be null. Make sure the BuildJwtUserContext() is called in OWIN middleware");
-						}
-
-						JwtRequestContextHelpers.SetUserId(ctx, jwtUserContext);
-						JwtRequestContextHelpers.SetClientId(ctx, jwtUserContext);
-						JwtRequestContextHelpers.SetImpersonationId(ctx, jwtUserContext);
-						JwtRequestContextHelpers.SetImpersonationClientId(ctx, jwtUserContext);
+						var helper = new JwtRequestContextHelper(ctx);
+						helper.InitContext();
 					}
 				};
 
