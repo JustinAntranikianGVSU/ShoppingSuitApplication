@@ -12,4 +12,8 @@ export class ImpersonateService {
   public post(userId: number): Observable<any> {
     return this.http.post<any[]>(this.baseUrl + `Impersonation`, userId)
   }
+
+  public exit(): Observable<any> {
+    return this.http.post<any[]>(this.baseUrl + `ExitImpersonation`, null)
+  }
 }

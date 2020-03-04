@@ -31,5 +31,19 @@ namespace ShoppingSuitePlatform.Controllers
 
 			return Ok(result.Value);
 		}
+
+		[HttpGet("{id}")]
+		[Authorize(Policy = AppPolicy.ViewEmployee)]
+		public async Task<ActionResult> Get(int id)
+		{
+			var result = await _orchestrator.Get(id);
+
+			if (result.Errors.Any())
+			{
+				return NotFound(result.Errors);
+			}
+
+			return Ok(result.Value);
+		}
 	}
 }

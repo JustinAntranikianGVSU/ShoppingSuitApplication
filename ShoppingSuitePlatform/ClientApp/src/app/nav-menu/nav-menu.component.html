@@ -1,24 +1,11 @@
+
 <header>
-  <nav
-    class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3"
-  >
+  <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
     <div class="container">
-      <a class="navbar-brand" [routerLink]="['/']">ShoppingSuitePlatform</a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target=".navbar-collapse"
-        aria-label="Toggle navigation"
-        [attr.aria-expanded]="isExpanded"
-        (click)="toggle()"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div
-        class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse"
-        [ngClass]="{ show: isExpanded }"
-      >
+
+      <a [routerLink]="['/']"><img src="../assets/images/companyNameCropped.PNG" style="height: 65px;" /></a>
+
+      <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse" [ngClass]="{ show: isExpanded }">
         <ul class="navbar-nav flex-grow">
           <li class="nav-item" [routerLinkActive]="['link-active']">
             <a class="nav-link text-dark" [routerLink]="['/user-list']"><i class="fa fa-users mr-1" aria-hidden="true"></i>Users</a>
@@ -33,7 +20,7 @@
             <div ngbDropdown class="d-inline-block">
               <button class="btn btn-outline-secondary" id="actionsDropDown" ngbDropdownToggle><i class="fa fa-cog" aria-hidden="true"></i></button>
               <div ngbDropdownMenu aria-labelledby="actionsDropDown">
-                <button ngbDropdownItem (click)="onLogoutClicked()"><i class="fa fa-address-card mr-2" aria-hidden="true"></i>Exit Impersonation</button>
+                <button ngbDropdownItem (click)="onExitImpersonationClicked()"><i class="fa fa-address-card mr-2" aria-hidden="true"></i>Exit Impersonation</button>
                 <button ngbDropdownItem (click)="onLogoutClicked()"><i class="fa fa-sign-out mr-1" aria-hidden="true"></i>Logout</button>
                 <div class="dropdown-divider"></div>
                 <a ngbDropdownItem [routerLink]="['/mylogin']"><i class="fa fa-sign-in mr-2" aria-hidden="true"></i>Login</a>

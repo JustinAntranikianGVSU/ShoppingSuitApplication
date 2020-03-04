@@ -1,29 +1,60 @@
 
-<div class="alert alert-success" role="alert">
-  <h3><i class="fa fa-user mr-4" aria-hidden="true"></i>Edit User</h3>
-</div>
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a [routerLink]="['/']">Dashboard</a></li>
+    <li class="breadcrumb-item"><a [routerLink]="['/user-list']">Users</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{ user.firstName }} {{ user.lastName }}</li>
+  </ol>
+</nav>
 
-<a class="btn btn-primary" role="button" [routerLink]="['/user-list']">View All Users</a>
+<div class="row">
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-header"><h3>Basic Info</h3></div>
+      <div class="card-body">
 
-<hr />
+        <div class="form-group row">
+          <label for="firstName" class="col-sm-3 col-form-label">First Name</label>
+            <div class="col-sm-9">
+            <input type="text" [(ngModel)]="user.firstName" class="form-control" id="firstName">
+          </div>
+        </div>
+    
+        <div class="form-group row">
+          <label for="lastName" class="col-sm-3 col-form-label">Last Name</label>
+            <div class="col-sm-9">
+            <input type="text" [(ngModel)]="user.lastName" class="form-control" id="lastName">
+          </div>
+        </div>
 
-<div class="form-group row">
-  <label for="firstName" class="col-sm-2 col-form-label">First Name</label>
-    <div class="col-sm-10">
-    <input type="text" [(ngModel)]="user.firstName" class="form-control" id="firstName">
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-header"><h3>Roles</h3></div>
+      <div class="card-body">
+        <ul>
+          <li *ngFor="let role of user.roles">
+            {{ role.name }}
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
 </div>
 
-<div class="form-group row">
-  <label for="lastName" class="col-sm-2 col-form-label">Last Name</label>
-    <div class="col-sm-10">
-    <input type="text" [(ngModel)]="user.lastName" class="form-control" id="lastName">
+<div class="row mt-3">
+  <div class="col-sm-4">
+    <div class="card">
+      <div class="card-header"><h3>Locations</h3></div>
+      <div class="card-body">
+        <ol>
+          <li *ngFor="let location of locations">
+            {{ location.name }}
+          </li>
+        </ol>
+      </div>
+    </div>
   </div>
-</div>
-
-<hr />
-Roles
-
-<div *ngFor="let role of user.roles">
-    {{ role.name }}
 </div>

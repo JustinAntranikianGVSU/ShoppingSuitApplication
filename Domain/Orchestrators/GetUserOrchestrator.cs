@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using DataAccess;
 using Domain.Dtos;
-using Domain.Entities;
 using Domain.Mappers;
 using Domain.ServiceResult;
 using Microsoft.EntityFrameworkCore;
