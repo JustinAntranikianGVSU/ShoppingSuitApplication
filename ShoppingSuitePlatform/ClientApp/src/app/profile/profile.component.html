@@ -7,8 +7,8 @@
 </nav>
   
 <div class="alert alert-info">
-  <div>Welcome, {{ profileData.loggedInUser.firstName }} {{ profileData.loggedInUser.lastName }}.</div>
-  <div *ngIf="profileData.isImpersonating">You are <i>impersonating</i><strong> {{ profileData.impersonatingUser.firstName }} {{ profileData.impersonatingUser.lastName }}</strong></div>
+  <div>Welcome, {{ profileData.loggedInUser.fullName }}.</div>
+  <div *ngIf="profileData.isImpersonating">You are <i>impersonating</i><strong> {{ profileData.impersonatingUser.fullName }}</strong></div>
 </div>
 
 <div *ngIf="profileData.isImpersonating" class="row mt-3">

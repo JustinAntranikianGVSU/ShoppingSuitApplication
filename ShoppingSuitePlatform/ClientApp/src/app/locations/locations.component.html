@@ -31,7 +31,7 @@
         </td>
         <td (click)="onViewUsersClicked(location)">
           <div *ngIf="!location.users">View Users</div>
-          <div *ngFor="let user of location.users"><a [routerLink]="['/user-edit', user.id]">{{ user.firstName }} {{ user.lastName }}</a></div>
+          <div *ngFor="let user of location.users"><a [routerLink]="['/user-edit', user.id]">{{ user.fullName }}</a></div>
         </td>
       </tr>
     </tbody>

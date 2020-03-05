@@ -12,6 +12,14 @@ namespace Domain
 
 		public string LastName { get; set; }
 
+		/// <summary>
+		/// First and Last names seperated by a single space.
+		/// </summary>
+		public string FullName
+		{
+			get => FirstName + " " + LastName;
+		}
+
 		public string Email { get; set; }
 
 		public List<Role> Roles { get; set; } = new List<Role>();
@@ -27,12 +35,9 @@ namespace Domain
 			Email = email;
 		}
 
-		public User(int id, string firstName, string lastName, string email)
+		public User(int id, string firstName, string lastName, string email) : this(firstName, lastName, email)
 		{
 			Id = id;
-			FirstName = firstName;
-			LastName = lastName;
-			Email = email;
 		}
 	}
 }

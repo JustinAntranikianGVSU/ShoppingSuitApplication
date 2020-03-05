@@ -24,7 +24,7 @@
       </div>
       
       <div class="modal-body">
-        Are you sure you want to impersonate : {{ this.userToImpersonate.firstName }} {{ this.userToImpersonate.lastName }}
+        Are you sure you want to impersonate : {{ this.userToImpersonate.fullName }}
       </div>
       
       <div class="modal-footer">
@@ -40,8 +40,8 @@
       </div>
       
       <div class="modal-body">
-        <p>You now impersonating : <strong>{{ this.userToImpersonate.firstName }} {{ this.userToImpersonate.lastName }}</strong>.</p>
-        <p>Permissions, data, and roles will now reflect what {{ this.userToImpersonate.firstName }} has <strong><i>ACCESS TO</i></strong>.</p>
+        <p>You now impersonating : <strong>{{ this.userToImpersonate.fullName }}</strong>.</p>
+        <p>Permissions, data, and roles will now reflect what {{ this.userToImpersonate.fullName }} has <strong><i>ACCESS TO</i></strong>.</p>
         <p>To exist impersonation, either click the 'Exist Impersonation' button or 'Logout' button.</p>
         <p>You will need to <strong>navigate</strong> to another page or refresh the current page.</p>
         <hr />
@@ -86,8 +86,8 @@
             <td>{{ user.lastName }}</td>
             <td>{{ user.email }}</td>
             <td class="text-center">
-              <a class="btn btn-outline-primary" [routerLink]="['/user-edit', user.id]" placement="left" ngbTooltip="Edit : {{ user.firstName }} {{ user.lastName }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-              <button class="btn btn-outline-primary ml-2" (click)="onImpersonateClicked(user)" ngbTooltip="Impersonate : {{ user.firstName }} {{ user.lastName }}"><i class="fa fa-address-card" aria-hidden="true"></i></button>
+              <a class="btn btn-outline-primary" [routerLink]="['/user-edit', user.id]" placement="left" ngbTooltip="Edit : {{ user.fullName }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+              <button class="btn btn-outline-primary ml-2" (click)="onImpersonateClicked(user)" ngbTooltip="Impersonate : {{ user.fullName }}"><i class="fa fa-address-card" aria-hidden="true"></i></button>
             </td>
           </tr>
         </tbody>
