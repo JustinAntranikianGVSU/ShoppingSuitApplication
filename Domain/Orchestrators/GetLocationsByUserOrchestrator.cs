@@ -22,7 +22,6 @@ namespace Domain.Orchestrators
 	public class GetLocationsByUserOrchestrator : OrchestratorBase<List<LocationDto>>, IGetLocationsByUserOrchestrator
 	{
 		private readonly AppDbContext _dbContext;
-
 		private readonly JwtRequestContext _jwtRequestContext;
 
 		public GetLocationsByUserOrchestrator(AppDbContext dbContext, JwtRequestContext jwtRequestContext)

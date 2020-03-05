@@ -19,6 +19,8 @@ import { LocationsComponent } from './locations/locations.component';
 import { LocationsService } from './_services/locations.service';
 import { ProfileComponent } from './profile/profile.component';
 import { ProfileService } from './_services/profile.service';
+import { AccessListsComponent } from './access-lists/access-lists.component';
+import { AccessListEditComponent } from './access-list-edit/access-list-edit.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +31,9 @@ import { ProfileService } from './_services/profile.service';
     UserListComponent,
     LoginComponent,
     LocationsComponent,
-    ProfileComponent
+    ProfileComponent,
+    AccessListsComponent,
+    AccessListEditComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -41,6 +45,8 @@ import { ProfileService } from './_services/profile.service';
       { path: 'user-list', component: UserListComponent, canActivate: [AuthGuard] },
       { path: 'user-edit/:id', component: UserEditComponent, canActivate: [AuthGuard] },
       { path: 'locations', component: LocationsComponent, canActivate: [AuthGuard] },
+      { path: 'accessLists', component: AccessListsComponent, canActivate: [AuthGuard] },
+      { path: 'accessListEdit/:id', component: AccessListEditComponent, canActivate: [AuthGuard] },
       { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
       { path: 'mylogin', component: LoginComponent },
     ])

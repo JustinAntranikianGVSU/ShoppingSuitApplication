@@ -9,15 +9,18 @@ import { LocationsService } from '../_services/locations.service';
 export class LocationsComponent implements OnInit {
 
   public locations: any[];
+  public users: any[];
 
   constructor(
     private readonly locationService: LocationsService
   ) { }
 
   ngOnInit() {
-    this.locationService.get().subscribe(data =>
-      this.locations = data
-    )
+    this.locationService.getAllForClient().subscribe(data => this.locations = data)
+  }
+
+  public onViewUsersClicked(location: any) {
+    this.locationService.getUsersByLocationId(location.locationId).subscribe(data => location.users = data)
   }
 
 }

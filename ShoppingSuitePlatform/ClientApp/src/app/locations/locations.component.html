@@ -9,7 +9,31 @@
   <div class="card-header"><h3>Locations</h3></div>
   <div class="card-body">
 
-  <div *ngFor="let location of locations">
-    {{ location.name }}
-  </div>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Client Name</th>
+        <th scope="col">Access Lists</th>
+        <th scope="col">Users</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let location of locations">
+        <th scope="row">{{ location.locationId }}</th>
+        <td>{{ location.locationName }}</td>
+        <td>{{ location.client.clientName }}</td>
+        <td>
+          <div *ngFor="let accessList of location.accessListDtos">
+            <a [routerLink]="['/accessListEdit', accessList.accessListId]">{{ accessList.accessListName }}</a>
+          </div>
+        </td>
+        <td (click)="onViewUsersClicked(location)">
+          <div *ngIf="!location.users">View Users</div>
+          <div *ngFor="let user of location.users"><a [routerLink]="['/user-edit', user.id]">{{ user.firstName }} {{ user.lastName }}</a></div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>

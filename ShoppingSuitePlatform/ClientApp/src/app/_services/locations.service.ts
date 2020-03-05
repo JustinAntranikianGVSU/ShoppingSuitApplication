@@ -16,4 +16,20 @@ export class LocationsService {
   public getByUserId(userId: number): Observable<any> {
     return this.http.get<any[]>(this.baseUrl + `LocationsByUser/${userId}`)
   }
+
+  public getAllForClient(): Observable<any> {
+    return this.http.get<any[]>(this.baseUrl + `Locations`)
+  }
+
+  public getUsersByLocationId(locationId: number): Observable<any> {
+    return this.http.get<any[]>(this.baseUrl + `Locations/${locationId}`)
+  }
+
+  public getAccessLists(): Observable<any> {
+    return this.http.get<any[]>(this.baseUrl + `AccessList`)
+  }
+
+  public getAccessList(accessListId: number): Observable<any> {
+    return this.http.get<any[]>(this.baseUrl + `AccessList/${accessListId}`)
+  }
 }

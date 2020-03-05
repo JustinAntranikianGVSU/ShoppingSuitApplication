@@ -3,7 +3,7 @@ import { UserEditService } from '../_services/user-edit.service';
 import { ImpersonateService } from '../_services/impersonate.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
-import { debounceTime, distinctUntilChanged, map, tap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
 const commonNames = ['Justin', 'Bob', 'Barry', 'Calvin', 'Don', 'Chris']
@@ -69,10 +69,15 @@ export class UserListComponent implements OnInit {
     linkType === 'Reload' ? window.location.reload() : this.router.navigate(['/locations'])
   }
 
-  public searchUsers = (text$: Observable<string>) =>
-    text$.pipe(
+  public onFirstNameFilterClicked() {
+    this.users = this.users.filter(oo => oo.firstName.toLowerCase() == this.filterModel.toLowerCase())
+  }
+
+  public searchUsers = (text$: Observable<string>) => {
+    return text$.pipe(
       debounceTime(200),
       distinctUntilChanged(),
       map(term => term.length < 2 ? [] : commonNames.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
     )
+  }
 }

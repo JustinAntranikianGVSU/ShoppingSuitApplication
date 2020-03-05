@@ -55,14 +55,14 @@
     </ng-template>
     
     <div class="row mb-3">
-      <div class="col-sm-4">
+      <div class="col-sm-6">
         <div class="card" style="border-color: #1E4A6F;">
           <div class="card-header" style="background-color: #1E4A6F; color: white;">
             <h5>Filter by first name</h5>
           </div>
           <div class="card-body">
             <input type="text" class="form-control" [(ngModel)]="filterModel" [ngbTypeahead]="searchUsers"/>
-            <div class="text-right"><button class="btn btn-outline-secondary mt-2">Filter</button></div>
+            <div class="text-right"><button (click)="onFirstNameFilterClicked()" class="btn btn-outline-secondary mt-2">Filter</button></div>
           </div>
         </div>
       </div>
@@ -86,7 +86,7 @@
             <td>{{ user.lastName }}</td>
             <td>{{ user.email }}</td>
             <td class="text-center">
-              <a class="btn btn-outline-primary" placement="left" ngbTooltip="Edit : {{ user.firstName }} {{ user.lastName }}" [routerLink]="['/user-edit', user.id]"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+              <a class="btn btn-outline-primary" [routerLink]="['/user-edit', user.id]" placement="left" ngbTooltip="Edit : {{ user.firstName }} {{ user.lastName }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
               <button class="btn btn-outline-primary ml-2" (click)="onImpersonateClicked(user)" ngbTooltip="Impersonate : {{ user.firstName }} {{ user.lastName }}"><i class="fa fa-address-card" aria-hidden="true"></i></button>
             </td>
           </tr>

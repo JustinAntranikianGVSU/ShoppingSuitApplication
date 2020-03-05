@@ -11,6 +11,10 @@ namespace DataAccess.Entities
 
 		public int AccessListId { get; set; }
 
+		public AccessListEntity AccessList { get; set; }
+
 		public int LocationId { get; set; }
+
+		public LocationEntity Location { get; set; }
 	}
 }

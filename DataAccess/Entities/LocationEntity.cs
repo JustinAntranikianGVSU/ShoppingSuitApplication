@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -13,5 +14,8 @@ namespace DataAccess.Entities
 		public string Name { get; set; }
 
 		public Guid ClientIdentifier { get; set; }
+
+		[ForeignKey("LocationId")]
+		public ICollection<AccessListLocationEntity> AccessListLocationEntities { get; set; } = new List<AccessListLocationEntity>();
 	}
 }
