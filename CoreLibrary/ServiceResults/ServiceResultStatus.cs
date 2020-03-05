@@ -1,5 +1,4 @@
-﻿
-namespace Domain.ServiceResult
+﻿namespace CoreLibrary.ServiceResults
 {
 	public enum ServiceResultStatus
 	{

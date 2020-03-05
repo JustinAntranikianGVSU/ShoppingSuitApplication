@@ -1,4 +1,4 @@
-﻿using Domain.Security;
+﻿using CoreLibrary;
 using Microsoft.AspNetCore.Authorization;
 
 namespace ShoppingSuitePlatform.MiddleWare

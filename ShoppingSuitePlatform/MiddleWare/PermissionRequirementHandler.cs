@@ -1,4 +1,4 @@
-﻿using Domain.Security;
+﻿using CoreLibrary;
 using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Security.Claims;

@@ -1,4 +1,4 @@
-﻿namespace Domain.Security
+﻿namespace CoreLibrary
 {
 	public enum Permission
 	{

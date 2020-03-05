@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Domain.Clients
+namespace CoreLibrary
 {
 	public class Client
 	{

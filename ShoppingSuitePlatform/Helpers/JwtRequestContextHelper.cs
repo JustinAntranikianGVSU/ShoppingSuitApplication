@@ -1,5 +1,5 @@
-﻿using Domain.Constants;
-using Domain.Dtos;
+﻿using CoreLibrary.Constants;
+using CoreLibrary.RequestContexts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System;
 using System.Security.Claims;

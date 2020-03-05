@@ -2,9 +2,9 @@
 using System.Threading.Tasks;
 using Domain;
 using Domain.Orchestrators;
-using Domain.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using CoreLibrary;
 
 namespace ShoppingSuitePlatform.Controllers
 {

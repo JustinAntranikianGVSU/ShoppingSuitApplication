@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Domain.Dtos
+namespace CoreLibrary.RequestContexts
 {
 	public class JwtRequestContext
 	{

@@ -1,4 +1,4 @@
-﻿using Domain.Constants;
+﻿using CoreLibrary.Constants;
 using System;
 using System.Collections.Generic;
 using System.Linq;

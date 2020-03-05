@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Domain.Clients
+namespace CoreLibrary
 {
 	public static class ClientLookup
 	{

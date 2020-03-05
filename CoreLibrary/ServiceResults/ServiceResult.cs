@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 
-namespace Domain.ServiceResult
+namespace CoreLibrary.ServiceResults
 {
 	public class ServiceResult<T> where T : class
 	{
-		public T? Value;
+		public T Value;
 
 		public ServiceResultStatus Status;
 

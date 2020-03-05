@@ -1,5 +1,4 @@
-﻿
-namespace Domain.Constants
+﻿namespace CoreLibrary.Constants
 {
 	public static class AppClaimTypes
 	{

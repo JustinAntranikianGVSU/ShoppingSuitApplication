@@ -1,5 +1,5 @@
-﻿using DataAccess;
-using Domain.ServiceResult;
+﻿using CoreLibrary.ServiceResults;
+using DataAccess;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;

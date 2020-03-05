@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using CoreLibrary;
+using System.Collections.Generic;
 
-namespace Domain.Security
+namespace CoreLibrary
 {
 	public static class AppPolicy
 	{

@@ -1,7 +1,6 @@
-﻿using CoreLibrary.Orchestrators;
-using DataAccess;
+﻿using DataAccess;
 
-namespace Domain.Orchestrators
+namespace CoreLibrary.Orchestrators
 {
 	public abstract class DbContextOrchestratorBase<T> : OrchestratorBase<T> where T : class
 	{

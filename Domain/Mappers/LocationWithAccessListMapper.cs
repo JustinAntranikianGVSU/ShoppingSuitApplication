@@ -1,5 +1,5 @@
 ﻿using DataAccess.Entities;
-using Domain.Clients;
+using CoreLibrary;
 using Domain.Dtos;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,7 +1,7 @@
-﻿using Domain.ServiceResult;
+﻿using CoreLibrary.ServiceResults;
 using System.Linq;
 
-namespace Domain.Orchestrators
+namespace CoreLibrary.Orchestrators
 {
 	public abstract class OrchestratorBase<T> where T : class
 	{

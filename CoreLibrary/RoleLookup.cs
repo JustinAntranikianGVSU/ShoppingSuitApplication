@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Domain.Security
+namespace CoreLibrary
 {
 	public static class RoleLookup
 	{
@@ -26,13 +26,7 @@ namespace Domain.Security
 		public static Role GetRole(Guid identifier)
 		{
 			var role = Roles.SingleOrDefault(oo => oo.Identifier == identifier);
-
-			if (role is null)
-			{
-				throw new Exception($"Could not find Role with identifier {identifier}. Please fix whatever data is refering to a role that doesn't exist.");
-			}
-
-			return role;
+			return role ?? throw new Exception($"Could not find Role with identifier {identifier}. Please fix whatever data is refering to a role that doesn't exist.");
 		}
 	}
 }

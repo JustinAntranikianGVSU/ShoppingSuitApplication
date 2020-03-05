@@ -1,4 +1,4 @@
-﻿using Domain.Clients;
+﻿using CoreLibrary;
 using System.Collections.Generic;
 
 namespace Domain.Dtos

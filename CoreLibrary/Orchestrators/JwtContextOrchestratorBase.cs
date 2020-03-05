@@ -1,7 +1,7 @@
-﻿using DataAccess;
-using Domain.Dtos;
+﻿using CoreLibrary.RequestContexts;
+using DataAccess;
 
-namespace Domain.Orchestrators
+namespace CoreLibrary.Orchestrators
 {
 	public abstract class JwtContextOrchestratorBase<T> : DbContextOrchestratorBase<T> where T : class
 	{

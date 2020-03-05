@@ -2,14 +2,12 @@ using AutoMapper;
 using DataAccess;
 using Domain;
 using Domain.Orchestrators;
-using Domain.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
-using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,10 +16,9 @@ using Microsoft.IdentityModel.Tokens;
 using ShoppingSuitePlatform.MiddleWare;
 using System;
 using System.Text;
-using System.Linq;
-using Domain.Dtos;
-using Domain.Constants;
 using ShoppingSuitePlatform.Helpers;
+using CoreLibrary.RequestContexts;
+using CoreLibrary;
 
 namespace ShoppingSuitePlatform
 {

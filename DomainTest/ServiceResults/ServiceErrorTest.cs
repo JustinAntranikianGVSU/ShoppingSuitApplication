@@ -1,6 +1,6 @@
+using CoreLibrary.ServiceResults;
 using Domain;
 using Domain.Orchestrators;
-using Domain.ServiceResult;
 using Xunit;
 
 namespace DomainTest

@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
+using CoreLibrary.ServiceResults;
 using DataAccess;
 using Domain;
 using Domain.Entities;
 using Domain.Orchestrators;
-using Domain.ServiceResult;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;

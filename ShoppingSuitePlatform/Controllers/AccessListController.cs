@@ -1,5 +1,5 @@
 ﻿using Domain.Orchestrators;
-using Domain.Security;
+using CoreLibrary;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;

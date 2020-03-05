@@ -1,13 +1,15 @@
 ﻿using AutoMapper;
 using DataAccess;
-using Domain.Clients;
+using CoreLibrary;
 using Domain.Dtos;
 using Domain.Mappers;
-using Domain.ServiceResult;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
+using CoreLibrary.RequestContexts;
+using CoreLibrary.ServiceResults;
+using CoreLibrary.Orchestrators;
 
 namespace Domain.Orchestrators
 {

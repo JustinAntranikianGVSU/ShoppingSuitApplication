@@ -1,7 +1,6 @@
-﻿
-using System;
+﻿using System;
 
-namespace Domain.ServiceResult
+namespace CoreLibrary.ServiceResults
 {
 	public class ServiceError
 	{
@@ -26,7 +25,7 @@ namespace Domain.ServiceResult
 		/// <summary>
 		/// Name of the field where the error occured (ie. FirstName, Email, etc)
 		/// </summary>
-		public string? FieldName { get; set; }
+		public string FieldName { get; set; }
 
 		/// <summary>
 		/// 
@@ -34,7 +33,7 @@ namespace Domain.ServiceResult
 		/// <param name="message">Provide a custom message to send back to the user.</param>
 		/// <param name="location">Usually the type name of the Orchestrator that validated the error.</param>
 		/// <param name="fieldName">Name of the field where the error occured (ie. FirstName, Email, etc).</param>
-		public ServiceError(string message, string location, string? fieldName = null)
+		public ServiceError(string message, string location, string fieldName = null)
 		{
 			(Message, Location, FieldName) = (message, location, fieldName);
 		}
