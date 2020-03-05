@@ -19,25 +19,19 @@ namespace Domain.Orchestrators
 		Task<ServiceResult<List<LocationBasicDto>>> Get(int userId);
 	}
 
-	public class GetLocationsByUserOrchestrator : OrchestratorBase<List<LocationBasicDto>>, IGetLocationsByUserOrchestrator
+	public class GetLocationsByUserOrchestrator : JwtContextOrchestratorBase<List<LocationBasicDto>>, IGetLocationsByUserOrchestrator
 	{
-		private readonly AppDbContext _dbContext;
-		private readonly JwtRequestContext _jwtRequestContext;
-
-		public GetLocationsByUserOrchestrator(AppDbContext dbContext, JwtRequestContext jwtRequestContext)
-		{
-			(_dbContext, _jwtRequestContext) = (dbContext, jwtRequestContext);
-		}
+		public GetLocationsByUserOrchestrator(AppDbContext dbContext, JwtRequestContext jwtRequestContext) : base(dbContext, jwtRequestContext) {}
 
 		public async Task<ServiceResult<List<LocationBasicDto>>> Get() => await Get(_jwtRequestContext.GetUserId());
 
 		public async Task<ServiceResult<List<LocationBasicDto>>> Get(int userId)
 		{
-			var query = from userLists in _dbContext.UserAccessLists
-						join listLocations in _dbContext.AccessListLocations on userLists.AccessListId equals listLocations.AccessListId
-						join locations in _dbContext.Locations on listLocations.LocationId equals locations.Id
-						where userLists.UserId == userId
-						select new LocationBasicDto(locations.Id, locations.Name);
+			var query = _dbContext.UserAccessLists
+							.AsNoTracking()
+							.Where(oo => oo.UserId == userId)
+							.SelectMany(oo => oo.AccessList.Locations)
+							.Select(oo => new LocationBasicDto(oo.Location.Id, oo.Location.Name));
 
 			var locationDtos = await query.ToListAsync();
 			return GetProcessedResult(locationDtos);

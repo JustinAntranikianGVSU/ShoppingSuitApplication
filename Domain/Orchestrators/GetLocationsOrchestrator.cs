@@ -28,7 +28,7 @@ namespace Domain.Orchestrators
 
 		private IQueryable<LocationEntity> GetQueryable()
 		{
-			var initalQuery = _dbContext.Locations.Include(oo => oo.AccessListLocationEntities).ThenInclude(oo => oo.AccessList).AsNoTracking();
+			var initalQuery = _dbContext.Locations.Include(oo => oo.AccessLists).ThenInclude(oo => oo.AccessList).AsNoTracking();
 			var clientId = _jwtRequestContext.GetClientId();
 			return clientId.HasValue ? initalQuery.Where(oo => oo.ClientIdentifier == clientId) : initalQuery;
 		}

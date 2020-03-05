@@ -18,7 +18,6 @@ namespace Domain.Orchestrators
 	public class CreateUserOrchestrator : OrchestratorBase<User>, ICreateUserOrchestrator
 	{
 		private readonly AppDbContext _dbContext;
-
 		private readonly IMapper _mapper;
 
 		public CreateUserOrchestrator(AppDbContext dbContext, IMapper mapper)

@@ -1,5 +1,6 @@
 ﻿using DataAccess;
 using Domain.Dtos;
+using Domain.Mappers;
 using Domain.ServiceResult;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -15,15 +16,9 @@ namespace Domain.Orchestrators
 		Task<ServiceResult<AccessListFullDto>> Get(int accessListId);
 	}
 
-	public class AccessListOrchestrator : OrchestratorBase<List<AccessListBasicDto>>, IAccessListOrchestrator
+	public class AccessListOrchestrator : JwtContextOrchestratorBase<List<AccessListBasicDto>>, IAccessListOrchestrator
 	{
-		private readonly AppDbContext _dbContext;
-		private readonly JwtRequestContext _jwtRequestContext;
-
-		public AccessListOrchestrator(AppDbContext dbContext, JwtRequestContext jwtRequestContext)
-		{
-			(_dbContext, _jwtRequestContext) = (dbContext, jwtRequestContext);
-		}
+		public AccessListOrchestrator(AppDbContext dbContext, JwtRequestContext jwtRequestContext) : base(dbContext, jwtRequestContext) {}
 
 		public async Task<ServiceResult<List<AccessListBasicDto>>> Get()
 		{
@@ -48,15 +43,12 @@ namespace Domain.Orchestrators
 		public async Task<ServiceResult<AccessListFullDto>> Get(int accessListId)
 		{
 			var accessList = await _dbContext.AccessLists
-										.Include(oo => oo.UserAccessListEntities).ThenInclude(oo => oo.User)
-										.Include(oo => oo.AccessListLocationEntities).ThenInclude(oo => oo.Location)
+										.Include(oo => oo.Users).ThenInclude(oo => oo.User)
+										.Include(oo => oo.Locations).ThenInclude(oo => oo.Location)
 										.AsNoTracking()
 										.SingleAsync(oo => oo.Id == accessListId);
 
-			var users = accessList.UserAccessListEntities.Select(oo => new User(oo.UserId, oo.User.FirstName, oo.User.LastName));
-			var locations = accessList.AccessListLocationEntities.Select(oo => new LocationBasicDto(oo.LocationId, oo.Location.Name));
-
-			var accessListDto = new AccessListFullDto(accessList.Id, accessList.Name, locations.ToList(), users.ToList());
+			var accessListDto = new AccessListFullDtoMapper().Map(accessList);
 			return new ServiceResult<AccessListFullDto>(accessListDto, ServiceResultStatus.Processed);
 		}
 	}

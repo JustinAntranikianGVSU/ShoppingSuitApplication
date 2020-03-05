@@ -31,6 +31,6 @@ namespace Domain.Entities
 		public ICollection<UserRoleEntity> Roles { get; set; } = new List<UserRoleEntity>();
 
 		[ForeignKey("UserId")]
-		public ICollection<UserAccessListEntity> UserAccessListEntities { get; set; } = new List<UserAccessListEntity>();
+		public ICollection<UserAccessListEntity> AccessLists { get; set; } = new List<UserAccessListEntity>();
 	}
 }

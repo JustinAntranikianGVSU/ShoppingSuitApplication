@@ -73,6 +73,7 @@ namespace Domain.Orchestrators
 
 		private async Task<List<LocationBasicDto>> GetLocations(int userId)
 		{
+			// TODO: this is duplicated
 			var query = from userLists in _dbContext.UserAccessLists
 						join listLocations in _dbContext.AccessListLocations on userLists.AccessListId equals listLocations.AccessListId
 						join locations in _dbContext.Locations on listLocations.LocationId equals locations.Id

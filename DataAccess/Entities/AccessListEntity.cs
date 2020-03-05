@@ -16,9 +16,9 @@ namespace DataAccess.Entities
 		public Guid ClientIdentifier { get; set; }
 
 		[ForeignKey("AccessListId")]
-		public ICollection<AccessListLocationEntity> AccessListLocationEntities { get; set; } = new List<AccessListLocationEntity>();
+		public ICollection<AccessListLocationEntity> Locations { get; set; } = new List<AccessListLocationEntity>();
 
 		[ForeignKey("AccessListId")]
-		public ICollection<UserAccessListEntity> UserAccessListEntities { get; set; } = new List<UserAccessListEntity>();
+		public ICollection<UserAccessListEntity> Users { get; set; } = new List<UserAccessListEntity>();
 	}
 }
