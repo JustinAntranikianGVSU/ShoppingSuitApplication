@@ -1,5 +1,7 @@
-﻿using CoreLibrary.ServiceResults;
+﻿using CoreLibrary.Orchestrators;
+using CoreLibrary.ServiceResults;
 using DataAccess;
+using DataAccess.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +11,10 @@ namespace Domain.Orchestrators
 {
 	public interface IGetUsersByLocationOrchestrator
 	{
-		Task<ServiceResult<List<User>>> Get(int id);
+		Task<ServiceResult<List<UserDto>>> Get(int id);
 	}
 
-	public class GetUsersByLocationOrchestrator : DbContextOrchestratorBase<List<User>>, IGetUsersByLocationOrchestrator
+	public class GetUsersByLocationOrchestrator : DbContextOrchestratorBase<List<UserDto>>, IGetUsersByLocationOrchestrator
 	{
 		public GetUsersByLocationOrchestrator(AppDbContext dbContext) : base(dbContext) {}
 
@@ -21,23 +23,11 @@ namespace Domain.Orchestrators
 		/// </summary>
 		/// <param name="locationId"></param>
 		/// <returns></returns>
-		public async Task<ServiceResult<List<User>>> Get(int locationId)
+		public async Task<ServiceResult<List<UserDto>>> Get(int locationId)
 		{
-			//var query = from accessListLocations in _dbContext.AccessListLocations
-			//			join accessLists in _dbContext.AccessLists on accessListLocations.AccessListId equals accessLists.Id
-			//			join userAccessList in _dbContext.UserAccessLists on accessLists.Id equals userAccessList.AccessListId
-			//			join users in _dbContext.Users on userAccessList.UserId equals users.Id
-			//			where accessListLocations.LocationId == locationId
-			//			select new User(users.Id, users.FirstName, users.LastName);
-
-			var query = _dbContext.AccessListLocations
-							.AsNoTracking()
-							.Where(oo => oo.LocationId == locationId)
-							.SelectMany(oo => oo.AccessList.Users)
-							.Select(oo => new User(oo.User.Id, oo.User.FirstName, oo.User.LastName));
-
-			var locationDtos = await query.ToListAsync();
-			return GetProcessedResult(locationDtos);
+			var query = new LocationsRepository(_dbContext).GetUsers(locationId);
+			var userDtos = await query.Select(oo => new UserDto(oo.Id, oo.FirstName, oo.LastName)).ToListAsync();
+			return GetProcessedResult(userDtos);
 		}
 	}
 }

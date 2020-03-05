@@ -12,13 +12,13 @@ namespace Domain.Mappers
 
 		public UserMapper(IMapper mapper) => _mapper = mapper;
 
-		public User Map(UserEntity entity)
+		public UserDto Map(UserEntity entity)
 		{
-			var user = _mapper.Map<User>(entity);
+			var user = _mapper.Map<UserDto>(entity);
 			user.Roles = entity.Roles.Select(oo => RoleLookup.GetRole(oo.RoleGuid)).ToList();
 			return user;
 		}
 
-		public List<User> Map(List<UserEntity> entities) => entities.Select(Map).ToList();
+		public List<UserDto> Map(List<UserEntity> entities) => entities.Select(Map).ToList();
 	}
 }

@@ -13,23 +13,18 @@ namespace Domain.Orchestrators
 {
 	public interface IGetUserOrchestrator
 	{
-		Task<ServiceResult<List<User>>> GetAll();
+		Task<ServiceResult<List<UserDto>>> GetAll();
 
-		Task<ServiceResult<User>> Get(int id);
+		Task<ServiceResult<UserDto>> Get(int id);
 	}
 
-	public class GetUserOrchestrator : OrchestratorBase<User>, IGetUserOrchestrator
+	public class GetUserOrchestrator : JwtContextOrchestratorBase<UserDto>, IGetUserOrchestrator
 	{
-		private readonly AppDbContext _dbContext;
-		private readonly JwtRequestContext _jwtRequestContext;
 		private readonly IMapper _mapper;
 
-		public GetUserOrchestrator(AppDbContext dbContext, JwtRequestContext jwtRequestContext, IMapper mapper)
-		{
-			(_dbContext, _jwtRequestContext, _mapper) = (dbContext, jwtRequestContext, mapper);
-		}
+		public GetUserOrchestrator(AppDbContext dbContext, JwtRequestContext jwtRequestContext, IMapper mapper) : base(dbContext, jwtRequestContext) => _mapper = mapper;
 
-		public async Task<ServiceResult<List<User>>> GetAll()
+		public async Task<ServiceResult<List<UserDto>>> GetAll()
 		{
 			var clientId = _jwtRequestContext.GetClientId();
 			var queryable = _dbContext.Users.Include(oo => oo.Roles).AsNoTracking();
@@ -41,10 +36,10 @@ namespace Domain.Orchestrators
 
 			var userEntites = await queryable.ToListAsync();
 			var users = new UserMapper(_mapper).Map(userEntites);
-			return new ServiceResult<List<User>>(users, ServiceResultStatus.Processed);
+			return new ServiceResult<List<UserDto>>(users, ServiceResultStatus.Processed);
 		}
 
-		public async Task<ServiceResult<User>> Get(int id)
+		public async Task<ServiceResult<UserDto>> Get(int id)
 		{
 			var userEntity = await _dbContext.Users.Include(oo => oo.Roles).AsNoTracking().SingleOrDefaultAsync(oo => oo.Id == id);
 

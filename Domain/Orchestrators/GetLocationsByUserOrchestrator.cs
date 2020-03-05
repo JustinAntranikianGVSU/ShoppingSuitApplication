@@ -2,6 +2,7 @@
 using CoreLibrary.RequestContexts;
 using CoreLibrary.ServiceResults;
 using DataAccess;
+using DataAccess.Repositories;
 using Domain.Dtos;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -29,13 +30,8 @@ namespace Domain.Orchestrators
 
 		public async Task<ServiceResult<List<LocationBasicDto>>> Get(int userId)
 		{
-			var query = _dbContext.UserAccessLists
-							.AsNoTracking()
-							.Where(oo => oo.UserId == userId)
-							.SelectMany(oo => oo.AccessList.Locations)
-							.Select(oo => new LocationBasicDto(oo.Location.Id, oo.Location.Name));
-
-			var locationDtos = await query.ToListAsync();
+			var query = new UsersRepository(_dbContext).GetLocations(userId);
+			var locationDtos = await query.Select(oo => new LocationBasicDto(oo.Id, oo.Name)).ToListAsync();
 			return GetProcessedResult(locationDtos);
 		}
 	}

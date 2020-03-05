@@ -45,7 +45,7 @@ namespace ShoppingSuitePlatform.Controllers
 			return Ok(new { token = jwtToken });
 		}
 
-		private List<Claim> GetRoleClaims(User user)
+		private List<Claim> GetRoleClaims(UserDto user)
 		{
 			return user.Roles.Select(role => new Claim(ClaimTypes.Role, role.Identifier.ToString())).ToList();
 		}

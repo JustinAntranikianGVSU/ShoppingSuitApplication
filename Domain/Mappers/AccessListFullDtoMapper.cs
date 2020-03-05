@@ -9,7 +9,7 @@ namespace Domain.Mappers
 	{
 		public AccessListFullDto Map(AccessListEntity accessList)
 		{
-			var users = accessList.Users.Select(oo => new User(oo.UserId, oo.User.FirstName, oo.User.LastName)).ToList();
+			var users = accessList.Users.Select(oo => new UserDto(oo.UserId, oo.User.FirstName, oo.User.LastName)).ToList();
 			var locations = accessList.Locations.Select(oo => new LocationBasicDto(oo.LocationId, oo.Location.Name)).ToList();
 			return new AccessListFullDto(accessList.Id, accessList.Name, locations, users);
 		}

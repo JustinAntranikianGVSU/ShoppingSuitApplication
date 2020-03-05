@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Domain
 {
-	public class User
+	public class UserDto
 	{
 		public int Id { get; set; }
 
@@ -15,10 +15,7 @@ namespace Domain
 		/// <summary>
 		/// First and Last names seperated by a single space.
 		/// </summary>
-		public string FullName
-		{
-			get => FirstName + " " + LastName;
-		}
+		public string FullName { get => FirstName + " " + LastName; }
 
 		public string Email { get; set; }
 
@@ -26,12 +23,12 @@ namespace Domain
 
 		public Guid? ClientIdentifier { get; set; }
 
-		public User() {}
+		public UserDto() {}
 
-		public User(string firstName, string lastName) => (FirstName, LastName) = (firstName, lastName);
+		public UserDto(string firstName, string lastName) => (FirstName, LastName) = (firstName, lastName);
 
-		public User(string firstName, string lastName, string email) : this(firstName, lastName) => Email = email;
+		public UserDto(string firstName, string lastName, string email) : this(firstName, lastName) => Email = email;
 		
-		public User(int id, string firstName, string lastName) : this(firstName, lastName) => Id = id;
+		public UserDto(int id, string firstName, string lastName) : this(firstName, lastName) => Id = id;
 	}
 }

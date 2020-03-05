@@ -19,14 +19,10 @@ namespace Domain.Orchestrators
 		Task<ServiceResult<LoginReponseDto>> GetLoginReponse(LoginRequestDto loginReqestDto);
 	}
 
-	public class LoginOrchestrator : OrchestratorBase<LoginReponseDto>, ILoginOrchestrator
+	public class LoginOrchestrator : DbContextOrchestratorBase<LoginReponseDto>, ILoginOrchestrator
 	{
-		private readonly AppDbContext _dbContext;
+		public LoginOrchestrator(AppDbContext dbContext) : base(dbContext) {}
 
-		public LoginOrchestrator(AppDbContext dbContext)
-		{
-			_dbContext = dbContext;
-		}
 		public async Task<ServiceResult<LoginReponseDto>> GetLoginReponse(LoginRequestDto loginReqestDto)
 		{
 			var userEntity = await _dbContext.Users.Include(oo => oo.Roles).SingleOrDefaultAsync(oo => oo.Email == loginReqestDto.Email);

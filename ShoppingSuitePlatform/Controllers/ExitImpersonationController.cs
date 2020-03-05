@@ -48,7 +48,7 @@ namespace ShoppingSuitePlatform.Controllers
 			return Ok(new { token = jwtToken });
 		}
 
-		private List<Claim> GetRoleClaims(User user)
+		private List<Claim> GetRoleClaims(UserDto user)
 		{
 			return user.Roles.Select(role => new Claim(ClaimTypes.Role, role.Identifier.ToString())).ToList();
 		}
@@ -58,7 +58,7 @@ namespace ShoppingSuitePlatform.Controllers
 			return new Claim(AppClaimTypes.ImpersonationUserId, impersonatingUserId.ToString());
 		}
 
-		private Claim GetImpersonationClientIdClaim(User userDto)
+		private Claim GetImpersonationClientIdClaim(UserDto userDto)
 		{
 			var clientId = userDto.ClientIdentifier.HasValue ? userDto.ClientIdentifier : Guid.Empty;
 			return new Claim(AppClaimTypes.ImpersonationClientId, clientId.ToString());

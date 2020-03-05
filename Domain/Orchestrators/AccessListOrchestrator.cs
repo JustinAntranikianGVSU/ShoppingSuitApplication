@@ -2,6 +2,7 @@
 using CoreLibrary.RequestContexts;
 using CoreLibrary.ServiceResults;
 using DataAccess;
+using DataAccess.Repositories;
 using Domain.Dtos;
 using Domain.Mappers;
 using Microsoft.EntityFrameworkCore;
@@ -44,12 +45,7 @@ namespace Domain.Orchestrators
 		/// <returns></returns>
 		public async Task<ServiceResult<AccessListFullDto>> Get(int accessListId)
 		{
-			var accessList = await _dbContext.AccessLists
-										.Include(oo => oo.Users).ThenInclude(oo => oo.User)
-										.Include(oo => oo.Locations).ThenInclude(oo => oo.Location)
-										.AsNoTracking()
-										.SingleAsync(oo => oo.Id == accessListId);
-
+			var accessList = await new AccessListRepository(_dbContext).GetFullAccessList(accessListId);
 			var accessListDto = new AccessListFullDtoMapper().Map(accessList);
 			return new ServiceResult<AccessListFullDto>(accessListDto, ServiceResultStatus.Processed);
 		}

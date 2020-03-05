@@ -30,7 +30,7 @@ namespace DomainTest
 		[Fact]
 		public void ServiceError_CreateNotSetServiceError_UsingNameof()
 		{
-			var userInfo = new User();
+			var userInfo = new UserDto();
 			var serviceError = ServiceError.CreateNotSetError(nameof(userInfo.FirstName), nameof(CreateUserOrchestrator));
 
 			Assert.Equal("FirstName must be set.", serviceError.Message);
@@ -41,7 +41,7 @@ namespace DomainTest
 		[Fact]
 		public void ServiceError_CreateNotSetServiceError_WithTypeof()
 		{
-			var userInfo = new User();
+			var userInfo = new UserDto();
 			var serviceError = ServiceError.CreateNotSetError(nameof(userInfo.FirstName), typeof(CreateUserOrchestrator));
 
 			Assert.Equal("FirstName must be set.", serviceError.Message);

@@ -7,10 +7,10 @@ namespace Domain
 	{
 		public MappingProfile()
 		{
-			CreateMap<User, UserEntity>()
+			CreateMap<UserDto, UserEntity>()
 				.ForMember(oo => oo.Roles, opt => opt.Ignore());
 
-			CreateMap<UserEntity, User>()
+			CreateMap<UserEntity, UserDto>()
 				.ForMember(oo => oo.Roles, opt => opt.Ignore());
 		}
 	}

@@ -13,10 +13,10 @@ namespace Domain.Orchestrators
 {
 	public interface ICreateUserOrchestrator
 	{
-		Task<ServiceResult<User>> Create(User user);
+		Task<ServiceResult<UserDto>> Create(UserDto user);
 	}
 
-	public class CreateUserOrchestrator : OrchestratorBase<User>, ICreateUserOrchestrator
+	public class CreateUserOrchestrator : OrchestratorBase<UserDto>, ICreateUserOrchestrator
 	{
 		private readonly AppDbContext _dbContext;
 		private readonly IMapper _mapper;
@@ -27,7 +27,7 @@ namespace Domain.Orchestrators
 			_mapper = mapper;
 		}
 
-		public async Task<ServiceResult<User>> Create(User user)
+		public async Task<ServiceResult<UserDto>> Create(UserDto user)
 		{
 			var errors = GetServiceErrors(user).ToList();
 			var userByEmail = await _dbContext.Users.GetByEmail(user.Email);
@@ -50,11 +50,11 @@ namespace Domain.Orchestrators
 			await _dbContext.AddAsync(userEntity);
 			await _dbContext.SaveChangesAsync();
 
-			var newUser = _mapper.Map<User>(userEntity);
+			var newUser = _mapper.Map<UserDto>(userEntity);
 			return GetProcessedResult(newUser);
 		}
 
-		private IEnumerable<ServiceError> GetServiceErrors(User user)
+		private IEnumerable<ServiceError> GetServiceErrors(UserDto user)
 		{
 			if (string.IsNullOrWhiteSpace(user.FirstName))
 			{

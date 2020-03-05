@@ -48,7 +48,7 @@ namespace ShoppingSuitePlatform.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> Post([FromBody] User user)
+		public async Task<ActionResult> Post([FromBody] UserDto user)
 		{
 			var result = await _createUserOrchestrator.Create(user);
 

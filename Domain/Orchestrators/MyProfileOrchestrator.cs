@@ -10,6 +10,7 @@ using System.Linq;
 using CoreLibrary.RequestContexts;
 using CoreLibrary.ServiceResults;
 using CoreLibrary.Orchestrators;
+using DataAccess.Repositories;
 
 namespace Domain.Orchestrators
 {
@@ -18,16 +19,11 @@ namespace Domain.Orchestrators
 		Task<ServiceResult<MyProfileDto>> Get();
 	}
 
-	public class MyProfileOrchestrator : OrchestratorBase<MyProfileDto>, IMyProfileOrchestrator
+	public class MyProfileOrchestrator : JwtContextOrchestratorBase<MyProfileDto>, IMyProfileOrchestrator
 	{
-		private readonly AppDbContext _dbContext;
-		private readonly JwtRequestContext _jwtRequestContext;
 		private readonly IMapper _mapper;
 
-		public MyProfileOrchestrator(AppDbContext dbContext, JwtRequestContext jwtRequestContext, IMapper mapper)
-		{
-			(_dbContext, _jwtRequestContext, _mapper) = (dbContext, jwtRequestContext, mapper);
-		}
+		public MyProfileOrchestrator(AppDbContext dbContext, JwtRequestContext jwtRequestContext, IMapper mapper) : base(dbContext, jwtRequestContext) => _mapper = mapper;
 
 		public async Task<ServiceResult<MyProfileDto>> Get()
 		{
@@ -51,7 +47,7 @@ namespace Domain.Orchestrators
 			return GetProcessedResult(myProfleDto);
 		}
 
-		private async Task<User?> GetImpersonationUser()
+		private async Task<UserDto?> GetImpersonationUser()
 		{
 			if (!_jwtRequestContext.ImpersonationUserId.HasValue)
 			{
@@ -75,14 +71,8 @@ namespace Domain.Orchestrators
 
 		private async Task<List<LocationBasicDto>> GetLocations(int userId)
 		{
-			// TODO: this is duplicated
-			var query = from userLists in _dbContext.UserAccessLists
-						join listLocations in _dbContext.AccessListLocations on userLists.AccessListId equals listLocations.AccessListId
-						join locations in _dbContext.Locations on listLocations.LocationId equals locations.Id
-						where userLists.UserId == userId
-						select new LocationBasicDto(locations.Id, locations.Name);
-
-			var locationDtos = await query.ToListAsync();
+			var query = new UsersRepository(_dbContext).GetLocations(userId);
+			var locationDtos = await query.Select(oo => new LocationBasicDto(oo.Id, oo.Name)).ToListAsync();
 			return locationDtos;
 		}
 	}
