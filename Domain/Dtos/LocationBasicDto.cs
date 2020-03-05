@@ -1,13 +1,13 @@
 ﻿
 namespace Domain.Dtos
 {
-	public class LocationDto
+	public class LocationBasicDto
 	{
 		public int Id { get; set; }
 
 		public string Name { get; set; }
 
-		public LocationDto(int id, string name)
+		public LocationBasicDto(int id, string name)
 		{
 			Id = id;
 			Name = name;

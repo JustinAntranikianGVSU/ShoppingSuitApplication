@@ -3,20 +3,14 @@ using System.Collections.Generic;
 
 namespace Domain.Dtos
 {
-	public class LocationWithAccessListDto
+	public class LocationWithAccessListDto : LocationBasicDto
 	{
-		public int LocationId { get; set; }
-
-		public string LocationName { get; set; }
-
-		public List<AccessListDto> AccessListDtos { get; set; }
+		public List<AccessListBasicDto> AccessListDtos { get; set; }
 
 		public Client Client { get; set; }
 
-		public LocationWithAccessListDto(int locationId, string locationName, List<AccessListDto> accessListDtos, Client client)
+		public LocationWithAccessListDto(int id, string name, List<AccessListBasicDto> accessListDtos, Client client) : base(id, name)
 		{
-			LocationId = locationId;
-			LocationName = locationName;
 			AccessListDtos = accessListDtos;
 			Client = client;
 		}

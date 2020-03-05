@@ -7,7 +7,7 @@ namespace Domain.Dtos
 	{
 		public User LoggedInUser { get; set; }
 
-		public List<LocationDto> LoggedInUserLocations { get; set; }
+		public List<LocationBasicDto> LoggedInUserLocations { get; set; }
 
 		public Client? LoggedInClient { get; set; }
 
@@ -17,6 +17,6 @@ namespace Domain.Dtos
 
 		public Client? ImpersonatingClient { get; set; }
 
-		public List<LocationDto>? ImpersonatingUserLocations { get; set; }
+		public List<LocationBasicDto>? ImpersonatingUserLocations { get; set; }
 	}
 }

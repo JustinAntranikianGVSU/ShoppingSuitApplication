@@ -14,12 +14,12 @@ namespace Domain.Orchestrators
 		/// Gets the locations for the logged in user (impersonation takes priority).
 		/// </summary>
 		/// <returns></returns>
-		Task<ServiceResult<List<LocationDto>>> Get();
+		Task<ServiceResult<List<LocationBasicDto>>> Get();
 
-		Task<ServiceResult<List<LocationDto>>> Get(int userId);
+		Task<ServiceResult<List<LocationBasicDto>>> Get(int userId);
 	}
 
-	public class GetLocationsByUserOrchestrator : OrchestratorBase<List<LocationDto>>, IGetLocationsByUserOrchestrator
+	public class GetLocationsByUserOrchestrator : OrchestratorBase<List<LocationBasicDto>>, IGetLocationsByUserOrchestrator
 	{
 		private readonly AppDbContext _dbContext;
 		private readonly JwtRequestContext _jwtRequestContext;
@@ -29,15 +29,15 @@ namespace Domain.Orchestrators
 			(_dbContext, _jwtRequestContext) = (dbContext, jwtRequestContext);
 		}
 
-		public async Task<ServiceResult<List<LocationDto>>> Get() => await Get(_jwtRequestContext.GetUserId());
+		public async Task<ServiceResult<List<LocationBasicDto>>> Get() => await Get(_jwtRequestContext.GetUserId());
 
-		public async Task<ServiceResult<List<LocationDto>>> Get(int userId)
+		public async Task<ServiceResult<List<LocationBasicDto>>> Get(int userId)
 		{
 			var query = from userLists in _dbContext.UserAccessLists
 						join listLocations in _dbContext.AccessListLocations on userLists.AccessListId equals listLocations.AccessListId
 						join locations in _dbContext.Locations on listLocations.LocationId equals locations.Id
 						where userLists.UserId == userId
-						select new LocationDto(locations.Id, locations.Name);
+						select new LocationBasicDto(locations.Id, locations.Name);
 
 			var locationDtos = await query.ToListAsync();
 			return GetProcessedResult(locationDtos);

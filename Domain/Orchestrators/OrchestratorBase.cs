@@ -18,6 +18,5 @@ namespace Domain.Orchestrators
 		protected ServiceError GetError(string message, string fieldName) => new ServiceError(message, GetType().Name, fieldName);
 
 		protected ServiceError GetError(string message) => new ServiceError(message, GetType().Name);
-
 	}
 }

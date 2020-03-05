@@ -71,13 +71,13 @@ namespace Domain.Orchestrators
 			return ClientLookup.GetClient(_jwtRequestContext.ImpersonationClientIdentifier.Value);
 		}
 
-		private async Task<List<LocationDto>> GetLocations(int userId)
+		private async Task<List<LocationBasicDto>> GetLocations(int userId)
 		{
 			var query = from userLists in _dbContext.UserAccessLists
 						join listLocations in _dbContext.AccessListLocations on userLists.AccessListId equals listLocations.AccessListId
 						join locations in _dbContext.Locations on listLocations.LocationId equals locations.Id
 						where userLists.UserId == userId
-						select new LocationDto(locations.Id, locations.Name);
+						select new LocationBasicDto(locations.Id, locations.Name);
 
 			var locationDtos = await query.ToListAsync();
 			return locationDtos;

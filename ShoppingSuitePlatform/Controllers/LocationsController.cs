@@ -12,10 +12,12 @@ namespace ShoppingSuitePlatform.Controllers
 	public class LocationsController : ControllerBase
 	{
 		private readonly IGetLocationsOrchestrator _orchestrator;
+		private readonly IGetUsersByLocationOrchestrator _getUsersByLocationOrchestrator;
 
-		public LocationsController(IGetLocationsOrchestrator orchestrator)
+		public LocationsController(IGetLocationsOrchestrator orchestrator, IGetUsersByLocationOrchestrator getUsersByLocationOrchestrator)
 		{
 			_orchestrator = orchestrator;
+			_getUsersByLocationOrchestrator = getUsersByLocationOrchestrator;
 		}
 
 		[HttpGet()]
@@ -41,7 +43,7 @@ namespace ShoppingSuitePlatform.Controllers
 		[Authorize(Policy = AppPolicy.ViewEmployee)]
 		public async Task<ActionResult> Get(int id)
 		{
-			var result = await _orchestrator.GetUsersByLocation(id);
+			var result = await _getUsersByLocationOrchestrator.Get(id);
 
 			if (result.Errors.Any())
 			{

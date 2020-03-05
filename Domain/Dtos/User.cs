@@ -26,18 +26,12 @@ namespace Domain
 
 		public Guid? ClientIdentifier { get; set; }
 
-		public User() { }
+		public User() {}
 
-		public User(string firstName, string lastName, string email)
-		{
-			FirstName = firstName;
-			LastName = lastName;
-			Email = email;
-		}
+		public User(string firstName, string lastName) => (FirstName, LastName) = (firstName, lastName);
 
-		public User(int id, string firstName, string lastName, string email) : this(firstName, lastName, email)
-		{
-			Id = id;
-		}
+		public User(string firstName, string lastName, string email) : this(firstName, lastName) => Email = email;
+		
+		public User(int id, string firstName, string lastName) : this(firstName, lastName) => Id = id;
 	}
 }
