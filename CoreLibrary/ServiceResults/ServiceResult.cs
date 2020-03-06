@@ -10,6 +10,8 @@ namespace CoreLibrary.ServiceResults
 
 		public List<ServiceError> Errors;
 
+		public bool NotProcessed => Status != ServiceResultStatus.Processed;
+
 		public ServiceResult(List<ServiceError> errors, ServiceResultStatus status)
 		{
 			(Status, Errors) = (status, errors);

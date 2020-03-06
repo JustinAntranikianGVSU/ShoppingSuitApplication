@@ -2,14 +2,14 @@
 using CoreLibrary;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 using System.Threading.Tasks;
+using ShoppingSuitePlatform.Controllers.BaseControllers;
 
 namespace ShoppingSuitePlatform.Controllers
 {
 	[ApiController]
 	[Route("[controller]")]
-	public class AccessListController : ControllerBase
+	public class AccessListController : AppControllerBase
 	{
 		private readonly IAccessListOrchestrator _orchestrator;
 
@@ -23,13 +23,7 @@ namespace ShoppingSuitePlatform.Controllers
 		public async Task<ActionResult> Get()
 		{
 			var result = await _orchestrator.Get();
-
-			if (result.Errors.Any())
-			{
-				return NotFound(result.Errors);
-			}
-
-			return Ok(result.Value);
+			return NotFoundIfNotProcessed(result);
 		}
 
 		[HttpGet("{id}")]
@@ -37,13 +31,7 @@ namespace ShoppingSuitePlatform.Controllers
 		public async Task<ActionResult> Get(int id)
 		{
 			var result = await _orchestrator.Get(id);
-
-			if (result.Errors.Any())
-			{
-				return NotFound(result.Errors);
-			}
-
-			return Ok(result.Value);
+			return NotFoundIfNotProcessed(result);
 		}
 	}
 }

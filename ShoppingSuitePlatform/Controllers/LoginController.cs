@@ -2,39 +2,27 @@
 using Domain.Orchestrators;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using ShoppingSuitePlatform.Helpers;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
+using ShoppingSuitePlatform.Controllers.BaseControllers;
 using System.Threading.Tasks;
 
 namespace ShoppingSuitePlatform.Controllers
 {
 	[ApiController]
 	[Route("[controller]")]
-	public class LoginController : ControllerBase
+	public class LoginController : TokenGeneratorControllerBase
 	{
 		private readonly ILoginOrchestrator _loginOrchestrator;
 
-		private readonly IConfiguration _config;
-
-		public LoginController(ILoginOrchestrator loginOrchestrator, IConfiguration config)
+		public LoginController(ILoginOrchestrator loginOrchestrator, IConfiguration config) : base(config)
 		{
-			(_loginOrchestrator, _config) = (loginOrchestrator, config);
+			_loginOrchestrator = loginOrchestrator;
 		}
 
 		[HttpPost]
 		public async Task<ActionResult> Post([FromBody] LoginRequestDto loginRequestDto)
 		{
-			var result = await _loginOrchestrator.GetLoginReponse(loginRequestDto);
-
-			if (result.Errors.Any())
-			{
-				return BadRequest(result.Errors);
-			}
-
-			var jwtToken = new JwtTokenHelper(_config).GenerateJSONWebToken(result.Value);
-			return Ok(new { token = jwtToken });
+			var result = await _loginOrchestrator.GetUserClaims(loginRequestDto);
+			return GetTokenResult(result);
 		}
 	}
 }

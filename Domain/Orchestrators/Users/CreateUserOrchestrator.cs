@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Domain.Orchestrators
+namespace Domain.Orchestrators.Users
 {
 	public interface ICreateUserOrchestrator
 	{

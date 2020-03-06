@@ -18,6 +18,8 @@ using System;
 using System.Text;
 using ShoppingSuitePlatform.Helpers;
 using CoreLibrary;
+using Domain.Orchestrators.Locations;
+using Domain.Orchestrators.Users;
 
 namespace ShoppingSuitePlatform
 {
@@ -85,7 +87,6 @@ namespace ShoppingSuitePlatform
 
 			// Orchestrators
 			services.AddScoped<ICreateUserOrchestrator, CreateUserOrchestrator>();
-			services.AddScoped<IGetLocationsByUserOrchestrator, GetLocationsByUserOrchestrator>();
 			services.AddScoped<IGetLocationsOrchestrator, GetLocationsOrchestrator>();
 			services.AddScoped<IGetUserOrchestrator, GetUserOrchestrator>();
 			services.AddScoped<ILoginOrchestrator, LoginOrchestrator>();

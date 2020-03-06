@@ -1,29 +1,24 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Domain;
-using Domain.Orchestrators;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using CoreLibrary;
+using Domain.Orchestrators.Users;
+using ShoppingSuitePlatform.Controllers.BaseControllers;
 
 namespace ShoppingSuitePlatform.Controllers
 {
 	[ApiController]
 	[Route("[controller]")]
-	public class UserController : ControllerBase
+	public class UserController : AppControllerBase
 	{
 		private readonly ICreateUserOrchestrator _createUserOrchestrator;
-
 		private readonly IGetUserOrchestrator _getUserOrchestrator;
 
-		public UserController
-		(
-			ICreateUserOrchestrator createUserOrchestrator,
-			IGetUserOrchestrator getUserOrchestrator
-		)
+		public UserController(ICreateUserOrchestrator createUserOrchestrator, IGetUserOrchestrator getUserOrchestrator)
 		{
-			_createUserOrchestrator = createUserOrchestrator;
-			_getUserOrchestrator = getUserOrchestrator;
+			(_createUserOrchestrator, _getUserOrchestrator) = (createUserOrchestrator, getUserOrchestrator);
 		}
 
 		[HttpGet]
@@ -38,26 +33,14 @@ namespace ShoppingSuitePlatform.Controllers
 		public async Task<ActionResult> Get(int id)
 		{
 			var result = await _getUserOrchestrator.Get(id);
-
-			if (result.Errors.Any())
-			{
-				return NotFound(result.Errors);
-			}
-
-			return Ok(result.Value);
+			return NotFoundIfNotProcessed(result);
 		}
 
 		[HttpPost]
 		public async Task<ActionResult> Post([FromBody] UserDto user)
 		{
 			var result = await _createUserOrchestrator.Create(user);
-
-			if (result.Errors.Any())
-			{
-				return BadRequest(result.Errors);
-			}
-
-			return Ok(result.Value);
+			return BadRequestIfNotProcessed(result);
 		}
 	}
 }

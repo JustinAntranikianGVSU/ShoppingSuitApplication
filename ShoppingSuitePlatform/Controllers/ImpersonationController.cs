@@ -3,35 +3,27 @@ using CoreLibrary;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using ShoppingSuitePlatform.Helpers;
 using System.Threading.Tasks;
+using ShoppingSuitePlatform.Controllers.BaseControllers;
 
 namespace ShoppingSuitePlatform.Controllers
 {
 	[Route("[controller]")]
 	[ApiController]
-	public class ImpersonationController : ControllerBase
+	public class ImpersonationController : TokenGeneratorControllerBase
 	{
-		private readonly IConfiguration _config;
 		private readonly IImpersonateOrchestrator _orchestrator;
 
-		public ImpersonationController(IConfiguration config, IImpersonateOrchestrator orchestrator)
+		public ImpersonationController(IImpersonateOrchestrator orchestrator, IConfiguration config) : base(config)
 		{
-			(_config, _orchestrator) = (config, orchestrator);
+			_orchestrator = orchestrator;
 		}
 
 		[Authorize(Policy = AppPolicy.ViewEmployee)]
 		public async Task<ActionResult> Post([FromBody] int impersonatingUserId)
 		{
 			var result = await _orchestrator.GetImpersonateClaims(impersonatingUserId);
-
-			if (result.Value is null)
-			{
-				return NotFound(result.Errors);
-			}
-
-			var jwtToken = new JwtTokenHelper(_config).GenerateJSONWebToken(result.Value);
-			return Ok(new { token = jwtToken });
+			return GetTokenResult(result);
 		}
 	}
 }

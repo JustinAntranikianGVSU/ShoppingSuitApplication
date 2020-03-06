@@ -3,6 +3,7 @@ using CoreLibrary.Orchestrators;
 using CoreLibrary.ServiceResults;
 using DataAccess;
 using DataAccess.Entities;
+using DataAccess.Repositories;
 using Domain.Dtos;
 using Domain.Mappers;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Domain.Orchestrators
+namespace Domain.Orchestrators.Locations
 {
 	public interface IGetLocationsOrchestrator
 	{
@@ -19,20 +20,25 @@ namespace Domain.Orchestrators
 
 	public class GetLocationsOrchestrator : JwtContextOrchestratorBase<List<LocationWithAccessListDto>>, IGetLocationsOrchestrator
 	{
-		public GetLocationsOrchestrator(AppDbContext dbContext, JwtRequestContext jwtRequestContext) : base(dbContext, jwtRequestContext) {}
+		private readonly LocationsRepository _locationsRepository;
+
+		public GetLocationsOrchestrator(AppDbContext dbContext, JwtRequestContext jwtRequestContext) : base(dbContext, jwtRequestContext)
+		{
+			_locationsRepository = new LocationsRepository(_dbContext);
+		}
 
 		public async Task<ServiceResult<List<LocationWithAccessListDto>>> Get()
 		{
-			var locationEntities = await GetQueryable().ToListAsync();
+			var locationEntities = await GetQuery().ToListAsync();
 			var locationWithAccessListDtos = new LocationWithAccessListMapper().Map(locationEntities);
 			return GetProcessedResult(locationWithAccessListDtos);
 		}
 
-		private IQueryable<LocationEntity> GetQueryable()
+		private IQueryable<LocationEntity> GetQuery()
 		{
-			var initalQuery = _dbContext.Locations.Include(oo => oo.AccessLists).ThenInclude(oo => oo.AccessList).AsNoTracking();
+			var queryable = _locationsRepository.GetLocationsWithAccessListsQuery();
 			var clientId = _jwtRequestContext.GetClientId();
-			return clientId.HasValue ? initalQuery.Where(oo => oo.ClientIdentifier == clientId) : initalQuery;
+			return clientId.HasValue ? queryable.Where(oo => oo.ClientIdentifier == clientId) : queryable;
 		}
 	}
 }

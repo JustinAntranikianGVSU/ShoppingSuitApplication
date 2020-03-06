@@ -22,13 +22,13 @@ namespace Domain.Orchestrators
 
 	public class AccessListOrchestrator : JwtContextOrchestratorBase<AccessListBasicDto>, IAccessListOrchestrator
 	{
-		private readonly AccessListRepository _accessListRepository;
 		private readonly AccessListFullDtoMapper _accessListFullDtoMapper;
+		private readonly AccessListRepository _accessListRepository;
 
 		public AccessListOrchestrator(AppDbContext dbContext, JwtRequestContext jwtRequestContext) : base(dbContext, jwtRequestContext)
 		{
-			_accessListRepository = new AccessListRepository(_dbContext);
 			_accessListFullDtoMapper = new AccessListFullDtoMapper();
+			_accessListRepository = new AccessListRepository(dbContext);
 		}
 
 		public async Task<ServiceResult<List<AccessListBasicDto>>> Get()

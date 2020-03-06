@@ -5,7 +5,6 @@ using DataAccess;
 using DataAccess.Repositories;
 using Domain.Dtos;
 using Domain.Mappers;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -14,7 +13,7 @@ namespace Domain.Orchestrators
 {
 	public interface ILoginOrchestrator
 	{
-		Task<ServiceResult<List<Claim>>> GetLoginReponse(LoginRequestDto loginReqestDto);
+		Task<ServiceResult<List<Claim>>> GetUserClaims(LoginRequestDto loginReqestDto);
 	}
 
 	public class LoginOrchestrator : DbContextOrchestratorBase<List<Claim>>, ILoginOrchestrator
@@ -25,12 +24,12 @@ namespace Domain.Orchestrators
 		public LoginOrchestrator(AppDbContext dbContext, IMapper mapper) : base(dbContext)
 		{
 			_userMapper = new UserMapper(mapper);
-			_usersWithRolesRepository = new UsersWithRolesRepository(_dbContext);
+			_usersWithRolesRepository = new UsersWithRolesRepository(dbContext);
 		}
 
-		public async Task<ServiceResult<List<Claim>>> GetLoginReponse(LoginRequestDto loginReqestDto)
+		public async Task<ServiceResult<List<Claim>>> GetUserClaims(LoginRequestDto loginReqestDto)
 		{
-			var userEntity = await _usersWithRolesRepository.GetReadOnlyQuery().SingleOrDefaultAsync(oo => oo.Email == loginReqestDto.Email);
+			var userEntity = await _usersWithRolesRepository.GetByEmail(loginReqestDto.Email);
 
 			if (userEntity is null)
 			{

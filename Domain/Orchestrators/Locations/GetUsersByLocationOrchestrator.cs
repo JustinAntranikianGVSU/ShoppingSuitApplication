@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Domain.Orchestrators
+namespace Domain.Orchestrators.Locations
 {
 	public interface IGetUsersByLocationOrchestrator
 	{
@@ -16,7 +16,12 @@ namespace Domain.Orchestrators
 
 	public class GetUsersByLocationOrchestrator : DbContextOrchestratorBase<List<UserBasicDto>>, IGetUsersByLocationOrchestrator
 	{
-		public GetUsersByLocationOrchestrator(AppDbContext dbContext) : base(dbContext) {}
+		private readonly LocationsRepository _locationsRepository;
+
+		public GetUsersByLocationOrchestrator(AppDbContext dbContext) : base(dbContext)
+		{
+			_locationsRepository = new LocationsRepository(_dbContext);
+		}
 
 		/// <summary>
 		/// Gets a list of users assocated to a given location by going through the accessLists.
@@ -25,7 +30,7 @@ namespace Domain.Orchestrators
 		/// <returns></returns>
 		public async Task<ServiceResult<List<UserBasicDto>>> Get(int locationId)
 		{
-			var query = new LocationsRepository(_dbContext).GetUsers(locationId);
+			var query = _locationsRepository.GetUsers(locationId);
 			var userDtos = await query.Select(oo => new UserBasicDto(oo.Id, oo.FirstName, oo.LastName)).ToListAsync();
 			return GetProcessedResult(userDtos);
 		}

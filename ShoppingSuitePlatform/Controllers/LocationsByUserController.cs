@@ -1,9 +1,8 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using Domain.Orchestrators;
+﻿using System.Threading.Tasks;
 using CoreLibrary;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Domain.Orchestrators.Users;
 
 namespace ShoppingSuitePlatform.Controllers
 {
@@ -11,9 +10,9 @@ namespace ShoppingSuitePlatform.Controllers
 	[Route("[controller]")]
 	public class LocationsByUserController : ControllerBase
 	{
-		private readonly IGetLocationsByUserOrchestrator _orchestrator;
+		private readonly IGetUserOrchestrator _orchestrator;
 
-		public LocationsByUserController(IGetLocationsByUserOrchestrator orchestrator)
+		public LocationsByUserController(IGetUserOrchestrator orchestrator)
 		{
 			_orchestrator = orchestrator;
 		}
@@ -22,13 +21,7 @@ namespace ShoppingSuitePlatform.Controllers
 		[Authorize(Policy = AppPolicy.ViewEmployee)]
 		public async Task<ActionResult> Get()
 		{
-			var result = await _orchestrator.Get();
-
-			if (result.Errors.Any())
-			{
-				return NotFound(result.Errors);
-			}
-
+			var result = await _orchestrator.GetLocationsForLoggedInUser();
 			return Ok(result.Value);
 		}
 
@@ -36,13 +29,7 @@ namespace ShoppingSuitePlatform.Controllers
 		[Authorize(Policy = AppPolicy.ViewEmployee)]
 		public async Task<ActionResult> Get(int id)
 		{
-			var result = await _orchestrator.Get(id);
-
-			if (result.Errors.Any())
-			{
-				return NotFound(result.Errors);
-			}
-
+			var result = await _orchestrator.GetLocations(id);
 			return Ok(result.Value);
 		}
 	}

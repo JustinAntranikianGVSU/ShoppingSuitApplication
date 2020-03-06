@@ -1,15 +1,15 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Domain.Orchestrators;
 using CoreLibrary;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ShoppingSuitePlatform.Controllers.BaseControllers;
 
 namespace ShoppingSuitePlatform.Controllers
 {
 	[ApiController]
 	[Route("[controller]")]
-	public class MyProfileController : ControllerBase
+	public class MyProfileController : AppControllerBase
 	{
 		private readonly IMyProfileOrchestrator _orchestrator;
 
@@ -23,13 +23,7 @@ namespace ShoppingSuitePlatform.Controllers
 		public async Task<ActionResult> Get()
 		{
 			var result = await _orchestrator.Get();
-
-			if (result.Errors.Any())
-			{
-				return NotFound(result.Errors);
-			}
-
-			return Ok(result.Value);
+			return NotFoundIfNotProcessed(result);
 		}
 	}
 }

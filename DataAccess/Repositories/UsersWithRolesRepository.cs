@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Repositories
 {
-	public class UsersWithRolesRepository : BaseRepository
+	public sealed class UsersWithRolesRepository : UserBaseRepository
 	{
 		public UsersWithRolesRepository(AppDbContext dbContext) : base(dbContext) {}
 
-		public IQueryable<UserEntity> GetReadOnlyQuery() => _dbContext.Users.Include(oo => oo.Roles).AsNoTracking();
+		public override IQueryable<UserEntity> GetReadOnlyQuery() => _dbContext.Users.Include(oo => oo.Roles).AsNoTracking();
 
 		public async Task<UserEntity> SingleAsync(int userId)
 		{

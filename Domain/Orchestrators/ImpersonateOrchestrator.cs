@@ -46,7 +46,7 @@ namespace Domain.Orchestrators
 			if (userEntity is null)
 			{
 				var error = GetError(GetResourceNotFoundMessage(impersonateUserId));
-				return GetNotFoundResult(error);
+				return GetBadRequestResult(error);
 			}
 
 			var userClaims = _httpContextAccessor.HttpContext.User.GetUserAndClientClaims();

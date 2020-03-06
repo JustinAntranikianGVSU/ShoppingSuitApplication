@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using DataAccess.Entities;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
@@ -7,6 +8,13 @@ namespace DataAccess.Repositories
 	public class LocationsRepository : BaseRepository
 	{
 		public LocationsRepository(AppDbContext dbContext) : base(dbContext) {}
+
+		public IQueryable<LocationEntity> GetLocationsWithAccessListsQuery()
+		{
+			return _dbContext.Locations
+						.AsNoTracking()
+						.Include(oo => oo.AccessLists).ThenInclude(oo => oo.AccessList);
+		}
 
 		public IQueryable<UserEntity> GetUsers(int locationId)
 		{

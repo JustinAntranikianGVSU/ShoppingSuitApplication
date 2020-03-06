@@ -2,15 +2,14 @@
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace DataAccess.Repositories
 {
-	public class UsersRepository : BaseRepository
+	public class UsersRepository : UserBaseRepository
 	{
 		public UsersRepository(AppDbContext dbContext) : base(dbContext) {}
 
-		public async Task<UserEntity> GetByEmail(string email) => await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(oo => oo.Email == email);
+		public override IQueryable<UserEntity> GetReadOnlyQuery() => _dbContext.Users.AsNoTracking();
 
 		public IQueryable<LocationEntity> GetLocations(int userId)
 		{
