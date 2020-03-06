@@ -3,6 +3,7 @@ using CoreLibrary.Orchestrators;
 using CoreLibrary.RequestContexts;
 using CoreLibrary.ServiceResults;
 using DataAccess;
+using DataAccess.Repositories;
 using Domain.Mappers;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -41,13 +42,11 @@ namespace Domain.Orchestrators
 
 		public async Task<ServiceResult<UserDto>> Get(int id)
 		{
-			var userEntity = await _dbContext.Users.Include(oo => oo.Roles).AsNoTracking().SingleOrDefaultAsync(oo => oo.Id == id);
+			var userEntity = await new UsersRepository(_dbContext).SingleOrDefaultAsync(id);
 
 			if (userEntity == null)
 			{
-				var message = GetResourceNotFoundMessage(id);
-				var error = GetError(message);
-				return GetNotFoundResult(error);
+				return GetNotFoundResult(GetResourceNotFoundMessage(id));
 			}
 
 			var userDto = new UserMapper(_mapper).Map(userEntity);

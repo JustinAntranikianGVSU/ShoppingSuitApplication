@@ -1,67 +1,37 @@
-﻿using CoreLibrary.Constants;
-using Domain;
-using Domain.Orchestrators;
-using CoreLibrary;
+﻿using Domain.Orchestrators;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using ShoppingSuitePlatform.Helpers;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace ShoppingSuitePlatform.Controllers
 {
 	[Route("[controller]")]
     [ApiController]
-    public class ImpersonationController : ControllerBase
+    public class ExitImpersonationController : ControllerBase
     {
 		private readonly IConfiguration _config;
+		private readonly IImpersonateOrchestrator _orchestrator;
 
-		private readonly IGetUserOrchestrator _orchestrator;
-
-		public ImpersonationController(IConfiguration config, IGetUserOrchestrator orchestrator)
+		public ExitImpersonationController(IConfiguration config, IImpersonateOrchestrator orchestrator)
 		{
 			(_config, _orchestrator) = (config, orchestrator);
 		}
 
-		[Authorize(Policy = AppPolicy.ViewEmployee)]
-		public async Task<ActionResult> Post([FromBody] int impersonatingUserId)
+		[Authorize()]
+		public async Task<ActionResult> Post()
 		{
-			var userResult = await _orchestrator.Get(impersonatingUserId);
+			var result = await _orchestrator.GetExitImpersonateClaims();
 
-			if (userResult.Value is null)
+			if (result.Errors.Any())
 			{
-				return NotFound(userResult.Errors);
+				return BadRequest(result.Errors);
 			}
 
-			var claims = HttpContext.User.GetUserAndClientClaims();
-
-			claims.AddRange(GetRoleClaims(userResult.Value));
-			claims.Add(GetImpersonationUserClaim(impersonatingUserId));
-			claims.Add(GetImpersonationClientIdClaim(userResult.Value));
-
-			var jwtToken = new JwtTokenHelper(_config).GenerateJSONWebToken(claims);
+			var jwtToken = new JwtTokenHelper(_config).GenerateJSONWebToken(result.Value);
 			return Ok(new { token = jwtToken });
-		}
-
-		private List<Claim> GetRoleClaims(UserDto user)
-		{
-			return user.Roles.Select(role => new Claim(ClaimTypes.Role, role.Identifier.ToString())).ToList();
-		}
-
-		private Claim GetImpersonationUserClaim(int impersonatingUserId)
-		{
-			return new Claim(AppClaimTypes.ImpersonationUserId, impersonatingUserId.ToString());
-		}
-
-		private Claim GetImpersonationClientIdClaim(UserDto userDto)
-		{
-			var clientId = userDto.ClientIdentifier.HasValue ? userDto.ClientIdentifier : Guid.Empty;
-			return new Claim(AppClaimTypes.ImpersonationClientId, clientId.ToString());
 		}
 	}
 }

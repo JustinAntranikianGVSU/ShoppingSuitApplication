@@ -1,53 +1,37 @@
-﻿using CoreLibrary.RequestContexts;
-using Domain;
-using Domain.Orchestrators;
+﻿using Domain.Orchestrators;
+using CoreLibrary;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using ShoppingSuitePlatform.Helpers;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace ShoppingSuitePlatform.Controllers
 {
 	[Route("[controller]")]
-    [ApiController]
-    public class ExitImpersonationController : ControllerBase
-    {
+	[ApiController]
+	public class ImpersonationController : ControllerBase
+	{
 		private readonly IConfiguration _config;
-		private readonly IGetUserOrchestrator _orchestrator;
-		private readonly JwtRequestContext _jwtRequestContext;
+		private readonly IImpersonateOrchestrator _orchestrator;
 
-		public ExitImpersonationController(IConfiguration config, IGetUserOrchestrator orchestrator, JwtRequestContext jwtRequestContext)
+		public ImpersonationController(IConfiguration config, IImpersonateOrchestrator orchestrator)
 		{
-			(_config, _orchestrator, _jwtRequestContext) = (config, orchestrator, jwtRequestContext);
+			(_config, _orchestrator) = (config, orchestrator);
 		}
 
-		[Authorize()]
-		public async Task<ActionResult> Post()
+		[Authorize(Policy = AppPolicy.ViewEmployee)]
+		public async Task<ActionResult> Post([FromBody] int impersonatingUserId)
 		{
-			var userId = _jwtRequestContext.LoggedInUserId;
-			var userResult = await _orchestrator.Get(userId);
+			var result = await _orchestrator.GetImpersonateClaims(impersonatingUserId);
 
-			if (userResult.Value is null)
+			if (result.Value is null)
 			{
-				return NotFound(userResult.Errors);
+				return NotFound(result.Errors);
 			}
 
-			var claims = HttpContext.User.GetUserAndClientClaims();
-
-			claims.AddRange(GetRoleClaims(userResult.Value));
-
-			var jwtToken = new JwtTokenHelper(_config).GenerateJSONWebToken(claims);
+			var jwtToken = new JwtTokenHelper(_config).GenerateJSONWebToken(result.Value);
 			return Ok(new { token = jwtToken });
-		}
-
-		private List<Claim> GetRoleClaims(UserDto user)
-		{
-			return user.Roles.Select(role => new Claim(ClaimTypes.Role, role.Identifier.ToString())).ToList();
 		}
 	}
 }

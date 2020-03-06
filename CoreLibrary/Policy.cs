@@ -1,5 +1,4 @@
-﻿using CoreLibrary;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace CoreLibrary
 {

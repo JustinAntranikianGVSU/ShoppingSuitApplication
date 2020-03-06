@@ -11,6 +11,7 @@ using CoreLibrary.RequestContexts;
 using CoreLibrary.ServiceResults;
 using CoreLibrary.Orchestrators;
 using DataAccess.Repositories;
+using System;
 
 namespace Domain.Orchestrators
 {
@@ -22,58 +23,50 @@ namespace Domain.Orchestrators
 	public class MyProfileOrchestrator : JwtContextOrchestratorBase<MyProfileDto>, IMyProfileOrchestrator
 	{
 		private readonly IMapper _mapper;
+		private readonly UsersRepository _usersRepository;
 
-		public MyProfileOrchestrator(AppDbContext dbContext, JwtRequestContext jwtRequestContext, IMapper mapper) : base(dbContext, jwtRequestContext) => _mapper = mapper;
+		public MyProfileOrchestrator(AppDbContext dbContext, JwtRequestContext jwtRequestContext, IMapper mapper) : base(dbContext, jwtRequestContext)
+		{
+			_mapper = mapper;
+			_usersRepository = new UsersRepository(_dbContext);
+		}
 
 		public async Task<ServiceResult<MyProfileDto>> Get()
 		{
-			var loggedInUserId = _jwtRequestContext.LoggedInUserId;
-			var userEntity = await _dbContext.Users.Include(oo => oo.Roles).AsNoTracking().SingleOrDefaultAsync(oo => oo.Id == loggedInUserId);
-			var userDto = new UserMapper(_mapper).Map(userEntity);
+			var context = _jwtRequestContext;
+			var userId = context.LoggedInUserId;
+			var clientId = context.LoggedInUserClientIdentifier;
 
-			var loggedInClient = _jwtRequestContext.LoggedInUserClientIdentifier.HasValue ? ClientLookup.GetClient(_jwtRequestContext.LoggedInUserClientIdentifier.Value) : null;
+			var impersonateUserId = context.ImpersonationUserId;
+			var impersonateClientId = context.ImpersonationClientIdentifier;
 
 			var myProfleDto = new MyProfileDto
 			{
-				LoggedInUser = userDto,
-				LoggedInClient = loggedInClient,
-				IsImpersonating = _jwtRequestContext.ImpersonationUserId.HasValue,
-				ImpersonatingUser = await GetImpersonationUser(),
-				ImpersonatingClient = GetImpersonationClient(),
-				LoggedInUserLocations = await GetLocations(_jwtRequestContext.LoggedInUserId),
-				ImpersonatingUserLocations = _jwtRequestContext.ImpersonationUserId.HasValue ? await GetLocations(_jwtRequestContext.ImpersonationUserId.Value) : null
+				LoggedInUser = await GetUser(userId),
+				LoggedInUserLocations = await GetLocations(userId),
+				LoggedInClient = GetClient(clientId),
+				IsImpersonating = impersonateUserId.HasValue,
+				ImpersonatingUser = impersonateUserId.HasValue ? await GetUser(impersonateUserId.Value) : null,
+				ImpersonatingClient = GetClient(impersonateClientId),
+				ImpersonatingUserLocations = impersonateUserId.HasValue ? await GetLocations(impersonateUserId.Value) : null
 			};
 
 			return GetProcessedResult(myProfleDto);
 		}
 
-		private async Task<UserDto?> GetImpersonationUser()
-		{
-			if (!_jwtRequestContext.ImpersonationUserId.HasValue)
-			{
-				return null;
-			}
-
-			var userEntity = await _dbContext.Users.Include(oo => oo.Roles).AsNoTracking().SingleOrDefaultAsync(oo => oo.Id == _jwtRequestContext.ImpersonationUserId);
-			var userDto = new UserMapper(_mapper).Map(userEntity);
-			return userDto;
-		}
-
-		private Client? GetImpersonationClient()
-		{
-			if (!_jwtRequestContext.ImpersonationClientIdentifier.HasValue)
-			{
-				return null;
-			}
-
-			return ClientLookup.GetClient(_jwtRequestContext.ImpersonationClientIdentifier.Value);
-		}
-
 		private async Task<List<LocationBasicDto>> GetLocations(int userId)
 		{
-			var query = new UsersRepository(_dbContext).GetLocations(userId);
+			var query = _usersRepository.GetLocations(userId);
 			var locationDtos = await query.Select(oo => new LocationBasicDto(oo.Id, oo.Name)).ToListAsync();
 			return locationDtos;
 		}
+
+		private async Task<UserDto> GetUser(int userId)
+		{
+			var userEntity = await _usersRepository.SingleAsync(userId);
+			return new UserMapper(_mapper).Map(userEntity);
+		}
+
+		private Client? GetClient(Guid? clientId) => clientId.HasValue ? ClientLookup.GetClient(clientId.Value) : null;
 	}
 }

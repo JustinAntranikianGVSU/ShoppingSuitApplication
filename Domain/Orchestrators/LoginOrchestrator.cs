@@ -1,14 +1,12 @@
-﻿using CoreLibrary.Constants;
+﻿using AutoMapper;
 using CoreLibrary.Orchestrators;
 using CoreLibrary.ServiceResults;
 using DataAccess;
+using DataAccess.Repositories;
 using Domain.Dtos;
-using Domain.Entities;
+using Domain.Mappers;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -16,16 +14,23 @@ namespace Domain.Orchestrators
 {
 	public interface ILoginOrchestrator
 	{
-		Task<ServiceResult<LoginReponseDto>> GetLoginReponse(LoginRequestDto loginReqestDto);
+		Task<ServiceResult<List<Claim>>> GetLoginReponse(LoginRequestDto loginReqestDto);
 	}
 
-	public class LoginOrchestrator : DbContextOrchestratorBase<LoginReponseDto>, ILoginOrchestrator
+	public class LoginOrchestrator : DbContextOrchestratorBase<List<Claim>>, ILoginOrchestrator
 	{
-		public LoginOrchestrator(AppDbContext dbContext) : base(dbContext) {}
+		private readonly UserMapper _userMapper;
+		private readonly UsersRepository _usersRepository;
 
-		public async Task<ServiceResult<LoginReponseDto>> GetLoginReponse(LoginRequestDto loginReqestDto)
+		public LoginOrchestrator(AppDbContext dbContext, IMapper mapper) : base(dbContext)
 		{
-			var userEntity = await _dbContext.Users.Include(oo => oo.Roles).SingleOrDefaultAsync(oo => oo.Email == loginReqestDto.Email);
+			_userMapper = new UserMapper(mapper);
+			_usersRepository = new UsersRepository(_dbContext);
+		}
+
+		public async Task<ServiceResult<List<Claim>>> GetLoginReponse(LoginRequestDto loginReqestDto)
+		{
+			var userEntity = await _usersRepository.GetRolesQuery().SingleOrDefaultAsync(oo => oo.Email == loginReqestDto.Email);
 
 			if (userEntity is null)
 			{
@@ -34,21 +39,8 @@ namespace Domain.Orchestrators
 				return GetBadRequestResult(error);
 			}
 
-			var claims = GetClaims(userEntity).ToList();
-			return GetProcessedResult(new LoginReponseDto(claims, userEntity.Id));
-		}
-
-		private static IEnumerable<Claim> GetClaims(UserEntity userEntity)
-		{
-			foreach (var role in userEntity.Roles)
-			{
-				yield return new Claim(ClaimTypes.Role, role.RoleGuid.ToString());
-			}
-
-			yield return new Claim(JwtRegisteredClaimNames.Sub, userEntity.Id.ToString());
-
-			var clientId = userEntity.ClientIdentifier.HasValue ? userEntity.ClientIdentifier : Guid.Empty;
-			yield return new Claim(AppClaimTypes.ClientId, clientId.ToString());
+			var userClaims = _userMapper.Map(userEntity).GetUserClaims();
+			return GetProcessedResult(userClaims);
 		}
 	}
 }

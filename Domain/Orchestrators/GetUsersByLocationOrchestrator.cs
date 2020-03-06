@@ -11,10 +11,10 @@ namespace Domain.Orchestrators
 {
 	public interface IGetUsersByLocationOrchestrator
 	{
-		Task<ServiceResult<List<UserDto>>> Get(int id);
+		Task<ServiceResult<List<UserBasicDto>>> Get(int id);
 	}
 
-	public class GetUsersByLocationOrchestrator : DbContextOrchestratorBase<List<UserDto>>, IGetUsersByLocationOrchestrator
+	public class GetUsersByLocationOrchestrator : DbContextOrchestratorBase<List<UserBasicDto>>, IGetUsersByLocationOrchestrator
 	{
 		public GetUsersByLocationOrchestrator(AppDbContext dbContext) : base(dbContext) {}
 
@@ -23,10 +23,10 @@ namespace Domain.Orchestrators
 		/// </summary>
 		/// <param name="locationId"></param>
 		/// <returns></returns>
-		public async Task<ServiceResult<List<UserDto>>> Get(int locationId)
+		public async Task<ServiceResult<List<UserBasicDto>>> Get(int locationId)
 		{
 			var query = new LocationsRepository(_dbContext).GetUsers(locationId);
-			var userDtos = await query.Select(oo => new UserDto(oo.Id, oo.FirstName, oo.LastName)).ToListAsync();
+			var userDtos = await query.Select(oo => new UserBasicDto(oo.Id, oo.FirstName, oo.LastName)).ToListAsync();
 			return GetProcessedResult(userDtos);
 		}
 	}

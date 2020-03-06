@@ -33,8 +33,7 @@ namespace ShoppingSuitePlatform.Controllers
 				return BadRequest(result.Errors);
 			}
 
-			var tokenHelper = new JwtTokenHelper(_config);
-			var jwtToken = tokenHelper.GenerateJSONWebToken(result.Value?.Claims ?? new List<Claim>());
+			var jwtToken = new JwtTokenHelper(_config).GenerateJSONWebToken(result.Value);
 			return Ok(new { token = jwtToken });
 		}
 	}

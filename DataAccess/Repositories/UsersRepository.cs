@@ -1,9 +1,8 @@
 ﻿using DataAccess.Entities;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace DataAccess.Repositories
 {
@@ -18,6 +17,18 @@ namespace DataAccess.Repositories
 						.Where(oo => oo.UserId == userId)
 						.SelectMany(oo => oo.AccessList.Locations)
 						.Select(oo => oo.Location);
+		}
+
+		public IQueryable<UserEntity> GetRolesQuery() => _dbContext.Users.Include(oo => oo.Roles).AsNoTracking();
+
+		public async Task<UserEntity> SingleAsync(int userId)
+		{
+			return await GetRolesQuery().SingleAsync(oo => oo.Id == userId);
+		}
+
+		public async Task<UserEntity?> SingleOrDefaultAsync(int userId)
+		{
+			return await GetRolesQuery().SingleOrDefaultAsync(oo => oo.Id == userId);
 		}
 	}
 }

@@ -37,7 +37,7 @@ namespace DomainTest.OrchestratorTests
 		{
 			var dbContext = GetInMemoryDb();
 			var orchestrator = new CreateUserOrchestrator(dbContext, GetMapper());
-			var result = await orchestrator.Create(new UserDto());
+			var result = await orchestrator.Create(new UserDto(1, "J", "A"));
 
 			Assert.Equal(3, result.Errors.Count);
 
@@ -74,7 +74,7 @@ namespace DomainTest.OrchestratorTests
 			dbContext.SaveChanges();
 
 			var orchestrator = new CreateUserOrchestrator(dbContext, GetMapper());
-			var newUser = new UserDto("J", "A", "J");
+			var newUser = new UserDto(1, "J", "A") { Email = "J" };
 			var result = await orchestrator.Create(newUser);
 
 			Assert.Single(result.Errors);
@@ -97,7 +97,7 @@ namespace DomainTest.OrchestratorTests
 			dbContext.SaveChanges();
 
 			var orchestrator = new CreateUserOrchestrator(dbContext, GetMapper());
-			var newUser = new UserDto("J", "A", "J");
+			var newUser = new UserDto(1, "J", "A") { Email = "J" };
 			var result = await orchestrator.Create(newUser);
 
 			Assert.Empty(result.Errors);
