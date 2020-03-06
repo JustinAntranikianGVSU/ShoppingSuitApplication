@@ -8,7 +8,7 @@ namespace Domain.Dtos
 
 		public List<UserBasicDto> Users { get; set; }
 
-		public AccessListFullDto(int accessListId, string accessListName, List<LocationBasicDto> locations, List<UserBasicDto> users) : base(accessListId, accessListName)
+		public AccessListFullDto(int id, string name, List<LocationBasicDto> locations, List<UserBasicDto> users) : base(id, name)
 		{
 			(Locations, Users) = (locations, users);
 		}

@@ -23,13 +23,13 @@ namespace Domain.Orchestrators
 	public class ImpersonateOrchestrator : JwtContextOrchestratorBase<List<Claim>>, IImpersonateOrchestrator
 	{
 		private readonly UserMapper _userMapper;
-		private readonly UsersRepository _usersRepository;
+		private readonly UsersWithRolesRepository _usersWithRolesRepository;
 		private readonly IHttpContextAccessor _httpContextAccessor;
 
 		public ImpersonateOrchestrator(AppDbContext dbContext, JwtRequestContext jwtRequestContext, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(dbContext, jwtRequestContext)
 		{
 			_userMapper = new UserMapper(mapper);
-			_usersRepository = new UsersRepository(_dbContext);
+			_usersWithRolesRepository = new UsersWithRolesRepository(_dbContext);
 			_httpContextAccessor = httpContextAccessor;
 		}
 
@@ -41,7 +41,7 @@ namespace Domain.Orchestrators
 		/// <returns></returns>
 		public async Task<ServiceResult<List<Claim>>> GetImpersonateClaims(int impersonateUserId)
 		{
-			var userEntity = await _usersRepository.SingleOrDefaultAsync(impersonateUserId);
+			var userEntity = await _usersWithRolesRepository.SingleOrDefaultAsync(impersonateUserId);
 
 			if (userEntity is null)
 			{
@@ -64,7 +64,7 @@ namespace Domain.Orchestrators
 				return GetBadRequestResult(errorMessage);
 			}
 
-			var userEntity = await _usersRepository.SingleAsync(_jwtRequestContext.LoggedInUserId);
+			var userEntity = await _usersWithRolesRepository.SingleAsync(_jwtRequestContext.LoggedInUserId);
 			var userClaims = _userMapper.Map(userEntity).GetClaims();
 			return GetProcessedResult(userClaims);
 		}

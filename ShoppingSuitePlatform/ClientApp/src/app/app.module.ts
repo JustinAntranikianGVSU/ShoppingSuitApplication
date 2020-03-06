@@ -44,7 +44,7 @@ import { AccessListEditComponent } from './access-list-edit/access-list-edit.com
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'user-list', component: UserListComponent, canActivate: [AuthGuard] },
       { path: 'user-edit/:id', component: UserEditComponent, canActivate: [AuthGuard] },
-      { path: 'locations', component: LocationsComponent, canActivate: [AuthGuard] },
+      { path: 'mylocations', component: LocationsComponent, canActivate: [AuthGuard] },
       { path: 'accessLists', component: AccessListsComponent, canActivate: [AuthGuard] },
       { path: 'accessListEdit/:id', component: AccessListEditComponent, canActivate: [AuthGuard] },
       { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },

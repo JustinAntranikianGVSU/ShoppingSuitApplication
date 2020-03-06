@@ -21,13 +21,15 @@ namespace Domain.Orchestrators
 
 	public class MyProfileOrchestrator : JwtContextOrchestratorBase<MyProfileDto>, IMyProfileOrchestrator
 	{
-		private readonly IMapper _mapper;
+		private readonly UserMapper _userMapper;
 		private readonly UsersRepository _usersRepository;
+		private readonly UsersWithRolesRepository _usersWithRolesRepository;
 
 		public MyProfileOrchestrator(AppDbContext dbContext, JwtRequestContext jwtRequestContext, IMapper mapper) : base(dbContext, jwtRequestContext)
 		{
-			_mapper = mapper;
+			_userMapper = new UserMapper(mapper);
 			_usersRepository = new UsersRepository(_dbContext);
+			_usersWithRolesRepository = new UsersWithRolesRepository(_dbContext);
 		}
 
 		public async Task<ServiceResult<MyProfileDto>> Get()
@@ -62,8 +64,8 @@ namespace Domain.Orchestrators
 
 		private async Task<UserDto> GetUser(int userId)
 		{
-			var userEntity = await _usersRepository.SingleAsync(userId);
-			return new UserMapper(_mapper).Map(userEntity);
+			var userEntity = await _usersWithRolesRepository.SingleAsync(userId);
+			return _userMapper.Map(userEntity);
 		}
 
 		private Client? GetClient(Guid? clientId) => clientId.HasValue ? ClientLookup.GetClient(clientId.Value) : null;

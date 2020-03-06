@@ -20,5 +20,7 @@ namespace Domain.Mappers
 		}
 
 		public List<UserDto> Map(List<UserEntity> entities) => entities.Select(Map).ToList();
+
+		public UserEntity Map(UserDto userDto) => _mapper.Map<UserEntity>(userDto);
 	}
 }

@@ -66,7 +66,7 @@ export class UserListComponent implements OnInit {
   }
 
   private handleImpersonationLinkClicked = (linkType: string) => {
-    linkType === 'Reload' ? window.location.reload() : this.router.navigate(['/locations'])
+    linkType === 'Reload' ? window.location.reload() : this.router.navigate(['/mylocations'])
   }
 
   public onFirstNameFilterClicked() {

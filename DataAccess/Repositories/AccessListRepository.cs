@@ -1,5 +1,6 @@
 ﻿using DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DataAccess.Repositories
@@ -8,6 +9,8 @@ namespace DataAccess.Repositories
 	{
 		public AccessListRepository(AppDbContext dbContext) : base(dbContext) {}
 
+		public IQueryable<AccessListEntity> GetReadOnlyQuery() => _dbContext.AccessLists.AsNoTracking();
+
 		/// <summary>
 		/// Gets accessList along with locations, and users. Could be an expensive call.
 		/// </summary>
@@ -15,10 +18,9 @@ namespace DataAccess.Repositories
 		/// <returns></returns>
 		public async Task<AccessListEntity> GetFullAccessList(int accessListId)
 		{
-			return await _dbContext.AccessLists
+			return await GetReadOnlyQuery()
 							.Include(oo => oo.Users).ThenInclude(oo => oo.User)
 							.Include(oo => oo.Locations).ThenInclude(oo => oo.Location)
-							.AsNoTracking()
 							.SingleAsync(oo => oo.Id == accessListId);
 		}
 	}

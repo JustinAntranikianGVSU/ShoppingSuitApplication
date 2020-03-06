@@ -4,7 +4,8 @@ using CoreLibrary.Orchestrators;
 using CoreLibrary.ServiceResults;
 using DataAccess;
 using DataAccess.Entities;
-using Domain.Entities;
+using DataAccess.Repositories;
+using Domain.Mappers;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,26 +17,26 @@ namespace Domain.Orchestrators
 		Task<ServiceResult<UserDto>> Create(UserDto user);
 	}
 
-	public class CreateUserOrchestrator : OrchestratorBase<UserDto>, ICreateUserOrchestrator
+	public class CreateUserOrchestrator : DbContextOrchestratorBase<UserDto>, ICreateUserOrchestrator
 	{
-		private readonly AppDbContext _dbContext;
-		private readonly IMapper _mapper;
+		private readonly UserMapper _userMapper;
+		private readonly UsersRepository _usersRepository;
 
-		public CreateUserOrchestrator(AppDbContext dbContext, IMapper mapper)
+		public CreateUserOrchestrator(AppDbContext dbContext, IMapper mapper) : base(dbContext)
 		{
-			_dbContext = dbContext;
-			_mapper = mapper;
+			_userMapper = new UserMapper(mapper);
+			_usersRepository = new UsersRepository(dbContext);
 		}
 
 		public async Task<ServiceResult<UserDto>> Create(UserDto user)
 		{
 			var errors = GetServiceErrors(user).ToList();
-			var userByEmail = await _dbContext.Users.GetByEmail(user.Email);
+			var userByEmail = await _usersRepository.GetByEmail(user.Email);
 
-			if (userByEmail is {})
+			if (userByEmail is { Email: var email })
 			{
-				var message = $"{userByEmail.Email} is already in use.";
-				var error = GetError(message, nameof(user.Email));
+				var message = $"{email} is already in use.";
+				var error = GetError(message, nameof(email));
 				errors.Add(error);
 			}
 
@@ -44,13 +45,13 @@ namespace Domain.Orchestrators
 				return GetBadRequestResult(errors.ToArray());
 			}
 
-			var userEntity = _mapper.Map<UserEntity>(user);
+			var userEntity = _userMapper.Map(user);
 			userEntity.Roles.Add(new UserRoleEntity { RoleGuid = RoleLookup.TrainingUserRoleGuid });
 
 			await _dbContext.AddAsync(userEntity);
 			await _dbContext.SaveChangesAsync();
 
-			var newUser = _mapper.Map<UserDto>(userEntity);
+			var newUser = _userMapper.Map(userEntity);
 			return GetProcessedResult(newUser);
 		}
 

@@ -2,6 +2,7 @@
 using CoreLibrary.Orchestrators;
 using CoreLibrary.ServiceResults;
 using DataAccess;
+using DataAccess.Entities;
 using DataAccess.Repositories;
 using Domain.Dtos;
 using Domain.Mappers;
@@ -19,23 +20,28 @@ namespace Domain.Orchestrators
 		Task<ServiceResult<AccessListFullDto>> Get(int accessListId);
 	}
 
-	public class AccessListOrchestrator : JwtContextOrchestratorBase<List<AccessListBasicDto>>, IAccessListOrchestrator
+	public class AccessListOrchestrator : JwtContextOrchestratorBase<AccessListBasicDto>, IAccessListOrchestrator
 	{
-		public AccessListOrchestrator(AppDbContext dbContext, JwtRequestContext jwtRequestContext) : base(dbContext, jwtRequestContext) {}
+		private readonly AccessListRepository _accessListRepository;
+		private readonly AccessListFullDtoMapper _accessListFullDtoMapper;
+
+		public AccessListOrchestrator(AppDbContext dbContext, JwtRequestContext jwtRequestContext) : base(dbContext, jwtRequestContext)
+		{
+			_accessListRepository = new AccessListRepository(_dbContext);
+			_accessListFullDtoMapper = new AccessListFullDtoMapper();
+		}
 
 		public async Task<ServiceResult<List<AccessListBasicDto>>> Get()
 		{
-			var initalQuery = _dbContext.AccessLists.AsNoTracking();
+			var accessListDtos = await GetAccessListQuery().Select(oo => new AccessListBasicDto(oo.Id, oo.Name)).ToListAsync();
+			return GetProcessedResult(accessListDtos);
+		}
+
+		private IQueryable<AccessListEntity> GetAccessListQuery()
+		{
 			var clientId = _jwtRequestContext.GetClientId();
-
-			if (clientId.HasValue)
-			{
-				initalQuery = initalQuery.Where(oo => oo.ClientIdentifier == clientId);
-			}
-
-			var accessListEntites = await initalQuery.ToListAsync();
-			var accessListDtos = accessListEntites.Select(oo => new AccessListBasicDto(oo.Id, oo.Name));
-			return GetProcessedResult(accessListDtos.ToList());
+			var queryable = _accessListRepository.GetReadOnlyQuery();
+			return clientId.HasValue ? queryable.Where(oo => oo.ClientIdentifier == clientId.Value) : queryable;
 		}
 
 		/// <summary>
@@ -45,8 +51,8 @@ namespace Domain.Orchestrators
 		/// <returns></returns>
 		public async Task<ServiceResult<AccessListFullDto>> Get(int accessListId)
 		{
-			var accessList = await new AccessListRepository(_dbContext).GetFullAccessList(accessListId);
-			var accessListDto = new AccessListFullDtoMapper().Map(accessList);
+			var accessList = await _accessListRepository.GetFullAccessList(accessListId);
+			var accessListDto = _accessListFullDtoMapper.Map(accessList);
 			return new ServiceResult<AccessListFullDto>(accessListDto, ServiceResultStatus.Processed);
 		}
 	}

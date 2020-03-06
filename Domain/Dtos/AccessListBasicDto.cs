@@ -2,14 +2,14 @@
 {
 	public class AccessListBasicDto
 	{
-		public int AccessListId { get; set; }
+		public int Id { get; set; }
 
-		public string AccessListName { get; set; }
+		public string Name { get; set; }
 
-		public AccessListBasicDto(int accessListId, string accessListName)
+		public AccessListBasicDto(int id, string name)
 		{
-			AccessListId = accessListId;
-			AccessListName = accessListName;
+			Id = id;
+			Name = name;
 		}
 	}
 }

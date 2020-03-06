@@ -20,17 +20,17 @@ namespace Domain.Orchestrators
 	public class LoginOrchestrator : DbContextOrchestratorBase<List<Claim>>, ILoginOrchestrator
 	{
 		private readonly UserMapper _userMapper;
-		private readonly UsersRepository _usersRepository;
+		private readonly UsersWithRolesRepository _usersWithRolesRepository;
 
 		public LoginOrchestrator(AppDbContext dbContext, IMapper mapper) : base(dbContext)
 		{
 			_userMapper = new UserMapper(mapper);
-			_usersRepository = new UsersRepository(_dbContext);
+			_usersWithRolesRepository = new UsersWithRolesRepository(_dbContext);
 		}
 
 		public async Task<ServiceResult<List<Claim>>> GetLoginReponse(LoginRequestDto loginReqestDto)
 		{
-			var userEntity = await _usersRepository.GetRolesQuery().SingleOrDefaultAsync(oo => oo.Email == loginReqestDto.Email);
+			var userEntity = await _usersWithRolesRepository.GetReadOnlyQuery().SingleOrDefaultAsync(oo => oo.Email == loginReqestDto.Email);
 
 			if (userEntity is null)
 			{

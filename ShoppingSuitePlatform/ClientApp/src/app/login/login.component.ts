@@ -27,7 +27,7 @@ export class LoginComponent {
 
   public onLoginClicked() {
     this.loginService.post(this.loginInfo).subscribe(
-      (data) => {
+      data => {
 
         localStorage.setItem('userToken', data.token)
 
