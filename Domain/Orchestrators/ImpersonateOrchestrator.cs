@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using CoreLibrary;
 using CoreLibrary.Orchestrators;
-using CoreLibrary.RequestContexts;
 using CoreLibrary.ServiceResults;
 using DataAccess;
 using DataAccess.Repositories;
@@ -51,7 +50,7 @@ namespace Domain.Orchestrators
 			}
 
 			var userClaims = _httpContextAccessor.HttpContext.User.GetUserAndClientClaims();
-			var impersonateClaims = _userMapper.Map(userEntity).GetUserClaims();
+			var impersonateClaims = _userMapper.Map(userEntity).GetClaimsForImpersonation();
 
 			var combinedClaims = userClaims.Concat(impersonateClaims).ToList();
 			return GetProcessedResult(combinedClaims);
@@ -66,7 +65,7 @@ namespace Domain.Orchestrators
 			}
 
 			var userEntity = await _usersRepository.SingleAsync(_jwtRequestContext.LoggedInUserId);
-			var userClaims = _userMapper.Map(userEntity).GetUserClaims();
+			var userClaims = _userMapper.Map(userEntity).GetClaims();
 			return GetProcessedResult(userClaims);
 		}
 	}

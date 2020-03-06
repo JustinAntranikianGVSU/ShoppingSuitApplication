@@ -1,8 +1,6 @@
-﻿using CoreLibrary.Constants;
-using CoreLibrary.RequestContexts;
+﻿using CoreLibrary;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System;
-using System.Security.Claims;
 
 namespace ShoppingSuitePlatform.Helpers
 {
@@ -23,46 +21,11 @@ namespace ShoppingSuitePlatform.Helpers
 
 		public void InitContext()
 		{
-			SetUserId();
-			SetClientId();
-			SetImpersonationId();
-			SetImpersonationClientId();
+			var principal = _tokenValidatedContext.Principal;
+			_jwtRequestContext.LoggedInUserId = principal.GetLoggedInUserId();
+			_jwtRequestContext.LoggedInUserClientIdentifier = principal.GetClientId();
+			_jwtRequestContext.ImpersonationUserId = principal.GetImpersonationUserId();
+			_jwtRequestContext.ImpersonationClientIdentifier = principal.GetImpersonationClientId();
 		}
-
-		private void SetUserId()
-		{
-			_jwtRequestContext.LoggedInUserId = Convert.ToInt32(GetClaimValue(ClaimTypes.NameIdentifier));
-		}
-
-		private void SetClientId()
-		{
-			var clientId = Guid.Parse(GetClaimValue(AppClaimTypes.ClientId));
-			if (clientId != default)
-			{
-				_jwtRequestContext.LoggedInUserClientIdentifier = clientId;
-			}
-		}
-
-		private void SetImpersonationId()
-		{
-			var claim = GetClaim(AppClaimTypes.ImpersonationUserId);
-			if (claim is { Value: var value })
-			{
-				_jwtRequestContext.ImpersonationUserId = Convert.ToInt32(value);
-			}
-		}
-
-		private void SetImpersonationClientId()
-		{
-			var claim = GetClaim(AppClaimTypes.ImpersonationClientId);
-			if (claim is { Value: var value })
-			{
-				_jwtRequestContext.ImpersonationClientIdentifier = Guid.Parse(value);
-			}
-		}
-
-		private string GetClaimValue(string claimType) => _tokenValidatedContext.Principal.FindFirstValue(claimType);
-
-		private Claim GetClaim(string claimType) => _tokenValidatedContext.Principal.FindFirst(claimType);
 	}
 }

@@ -17,7 +17,6 @@ using ShoppingSuitePlatform.MiddleWare;
 using System;
 using System.Text;
 using ShoppingSuitePlatform.Helpers;
-using CoreLibrary.RequestContexts;
 using CoreLibrary;
 
 namespace ShoppingSuitePlatform

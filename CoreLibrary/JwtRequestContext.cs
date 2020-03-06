@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CoreLibrary.RequestContexts
+namespace CoreLibrary
 {
 	public class JwtRequestContext
 	{

@@ -39,7 +39,7 @@ namespace Domain.Orchestrators
 				return GetBadRequestResult(error);
 			}
 
-			var userClaims = _userMapper.Map(userEntity).GetUserClaims();
+			var userClaims = _userMapper.Map(userEntity).GetClaims();
 			return GetProcessedResult(userClaims);
 		}
 	}
