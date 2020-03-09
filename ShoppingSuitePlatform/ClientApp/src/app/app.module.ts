@@ -11,7 +11,6 @@ import { UserEditComponent } from './user-edit/user-edit.component';
 import { UserEditService } from './_services/user-edit.service';
 import { UserListComponent } from './user-list/user-list.component';
 import { LoginService } from './_services/login.service';
-import { LogoutService } from './_services/logout.service';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './_guards/authGuard';
 import { JwtInterceptor } from './_guards/jwtInterceptor';
@@ -55,7 +54,6 @@ import { AccessListEditComponent } from './access-list-edit/access-list-edit.com
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },    
     UserEditService,
     LoginService,
-    LogoutService,
     LocationsService,
     ProfileService
   ],

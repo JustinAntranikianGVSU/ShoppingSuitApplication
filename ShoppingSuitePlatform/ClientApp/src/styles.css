@@ -32,3 +32,21 @@ body {
 ::selection { 
   background: peachpuff;
 }
+
+.breadcrumb {
+  background-color: #1E4A6F;
+}
+
+.breadcrumb-item {
+  color: white;
+}
+
+.breadcrumb-item.active {
+  color: white;
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+.breadcrumb-item a {
+  color: white;
+}

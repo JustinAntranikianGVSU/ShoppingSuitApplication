@@ -19,8 +19,8 @@
       </thead>
       <tbody>
         <tr *ngFor="let accessList of accessLists">
-          <th scope="row">{{ accessList.accessListId }}</th>
-          <td><a [routerLink]="['/accessListEdit', accessList.accessListId]">{{ accessList.accessListName }}</a></td>
+          <th scope="row">{{ accessList.id }}</th>
+          <td><a [routerLink]="['/accessListEdit', accessList.id]">{{ accessList.name }}</a></td>
         </tr>
       </tbody>
     </table>

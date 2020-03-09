@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { LocationsService } from '../_services/locations.service';
 import { ProfileService } from '../_services/profile.service';
 
 @Component({
@@ -9,23 +8,24 @@ import { ProfileService } from '../_services/profile.service';
 })
 export class ProfileComponent implements OnInit {
 
-  public profileData: any = {
-    loggedInUser: {},
-    loggedInClient: {},
-    isImpersonating: false,
-    impersonatingUser: {},
-    impersonatingClient: {},
-    loggedInUserLocations: [],
-    impersonatingUserLocations: []
-  }
-  public locations: any[] = []
+  public dataLoaded = false
+  public loggedInUserProfile: any
+  public impersonationUserProfile: any
+  public isImpersonating: boolean
 
-  constructor(
-    private readonly profileService: ProfileService
-  ) {}
+  constructor(private readonly profileService: ProfileService) {}
 
   ngOnInit() {
-    this.profileService.get().subscribe(data => this.profileData = data)
+    this.profileService.get().subscribe(data => {
+
+      const { loggedInUserProfile, impersonationUserProfile, isImpersonating } = data
+
+      this.loggedInUserProfile = loggedInUserProfile
+      this.impersonationUserProfile = impersonationUserProfile
+      this.isImpersonating = isImpersonating
+
+      this.dataLoaded = true
+    })
   }
 
 }

@@ -1,8 +1,6 @@
-﻿using AutoMapper;
-using DataAccess;
+﻿using DataAccess;
 using CoreLibrary;
 using Domain.Dtos;
-using Domain.Mappers;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -16,43 +14,39 @@ namespace Domain.Orchestrators
 {
 	public interface IMyProfileOrchestrator
 	{
-		Task<ServiceResult<MyProfileDto>> Get();
+		Task<ServiceResult<ProfileWithImpersonationDto>> Get();
 	}
 
-	public class MyProfileOrchestrator : JwtContextOrchestratorBase<MyProfileDto>, IMyProfileOrchestrator
+	public class MyProfileOrchestrator : JwtContextOrchestratorBase<ProfileWithImpersonationDto>, IMyProfileOrchestrator
 	{
-		private readonly UserMapper _userMapper;
 		private readonly UsersRepository _usersRepository;
 		private readonly UsersWithRolesRepository _usersWithRolesRepository;
 
-		public MyProfileOrchestrator(AppDbContext dbContext, JwtRequestContext jwtRequestContext, IMapper mapper) : base(dbContext, jwtRequestContext)
+		public MyProfileOrchestrator(AppDbContext dbContext, JwtRequestContext jwtRequestContext) : base(dbContext, jwtRequestContext)
 		{
-			_userMapper = new UserMapper(mapper);
 			_usersRepository = new UsersRepository(_dbContext);
 			_usersWithRolesRepository = new UsersWithRolesRepository(_dbContext);
 		}
 
-		public async Task<ServiceResult<MyProfileDto>> Get()
+		public async Task<ServiceResult<ProfileWithImpersonationDto>> Get()
 		{
-			var context = _jwtRequestContext;
-			var userId = context.LoggedInUserId;
-			var clientId = context.LoggedInUserClientIdentifier;
+			var loggedInUserId = _jwtRequestContext.LoggedInUserId;
+			var impersonationUserId = _jwtRequestContext.ImpersonationUserId;
 
-			var impersonateUserId = context.ImpersonationUserId;
-			var impersonateClientId = context.ImpersonationClientIdentifier;
+			var loggedInUser = await GetUserProfile(loggedInUserId);
+			var impersonationUser = impersonationUserId.HasValue ? await GetUserProfile(impersonationUserId.Value) : null;
 
-			var myProfleDto = new MyProfileDto
-			{
-				LoggedInUser = await GetUser(userId),
-				LoggedInUserLocations = await GetLocations(userId),
-				LoggedInClient = GetClient(clientId),
-				IsImpersonating = impersonateUserId.HasValue,
-				ImpersonatingUser = impersonateUserId.HasValue ? await GetUser(impersonateUserId.Value) : null,
-				ImpersonatingClient = GetClient(impersonateClientId),
-				ImpersonatingUserLocations = impersonateUserId.HasValue ? await GetLocations(impersonateUserId.Value) : null
-			};
+			var profileWithImpersonationDto = new ProfileWithImpersonationDto(loggedInUser, impersonationUser);
+			return GetProcessedResult(profileWithImpersonationDto);
+		}
 
-			return GetProcessedResult(myProfleDto);
+		private async Task<UserProfileDto> GetUserProfile(int userId)
+		{
+			var userEntity = await _usersWithRolesRepository.SingleAsync(userId);
+			var locations = await GetLocations(userId);
+			var clientName = GetClientName(userEntity.ClientIdentifier);
+
+			return new UserProfileDto(userEntity.Id, userEntity.FirstName, userEntity.LastName, locations, clientName);
 		}
 
 		private async Task<List<LocationBasicDto>> GetLocations(int userId)
@@ -62,12 +56,6 @@ namespace Domain.Orchestrators
 			return locationDtos;
 		}
 
-		private async Task<UserDto> GetUser(int userId)
-		{
-			var userEntity = await _usersWithRolesRepository.SingleAsync(userId);
-			return _userMapper.Map(userEntity);
-		}
-
-		private Client? GetClient(Guid? clientId) => clientId.HasValue ? ClientLookup.GetClient(clientId.Value) : null;
+		private string? GetClientName(Guid? clientId) => clientId.HasValue ? ClientLookup.GetClient(clientId.Value).Name : null;
 	}
 }

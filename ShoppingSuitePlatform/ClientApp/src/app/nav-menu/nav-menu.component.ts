@@ -1,33 +1,44 @@
-import { Component } from '@angular/core';
-import { LogoutService } from '../_services/logout.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
 import { ImpersonateService } from '../_services/impersonate.service';
+import { ProfileService } from '../_services/profile.service';
 
 @Component({
   selector: 'app-nav-menu',
   templateUrl: './nav-menu.component.html',
   styleUrls: ['./nav-menu.component.css']
 })
-export class NavMenuComponent {
-  isExpanded = false;
+export class NavMenuComponent implements OnInit {
+  
+  public isAuthenticated: boolean
+  public loggedInUserProfile: any
+  public impersonationUserProfile: any
+  public isImpersonating: boolean
+  public showWelcomeToast = false
 
   constructor(
-    private router: Router,
-    private logoutService: LogoutService,
-    private readonly impersonateService: ImpersonateService
+    private readonly impersonateService: ImpersonateService,
+    private readonly profileService: ProfileService
   ) {}
 
-  collapse() {
-    this.isExpanded = false;
-  }
+  ngOnInit() {
+    var userToken = localStorage.getItem('userToken')
+    this.isAuthenticated = userToken != null
 
-  toggle() {
-    this.isExpanded = !this.isExpanded;
+    this.profileService.get().subscribe(data => {
+
+      const { loggedInUserProfile, impersonationUserProfile, isImpersonating } = data
+
+      this.loggedInUserProfile = loggedInUserProfile
+      this.impersonationUserProfile = impersonationUserProfile
+      this.isImpersonating = isImpersonating
+
+      this.showWelcomeToast = true
+    })
   }
 
   public onLogoutClicked() {
     localStorage.removeItem('userToken');
-    this.router.navigate(['mylogin'])  
+    window.location.href = "/mylogin"
   }
 
   public onExitImpersonationClicked() {

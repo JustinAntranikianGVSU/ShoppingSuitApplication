@@ -26,7 +26,7 @@
         <td>{{ location.client.name }}</td>
         <td>
           <div *ngFor="let accessList of location.accessListDtos">
-            <a [routerLink]="['/accessListEdit', accessList.accessListId]">{{ accessList.accessListName }}</a>
+            <a [routerLink]="['/accessListEdit', accessList.id]">{{ accessList.name }}</a>
           </div>
         </td>
         <td (click)="onViewUsersClicked(location)">
@@ -38,6 +38,6 @@
   </table>
 
   <div *ngIf="!dataLoaded">
-    <i class="fa fa-refresh fa-spin fa-3x fa-fw mr-2"></i>Loading Users...
+    <i class="fa fa-refresh fa-spin fa-3x fa-fw mr-2"></i>Loading Locations...
   </div>
 </div>

@@ -24,7 +24,7 @@ export class LocationsComponent implements OnInit {
   }
 
   public onViewUsersClicked(location: any) {
-    this.locationService.getUsersByLocationId(location.locationId).subscribe(data => location.users = data)
+    this.locationService.getUsersByLocationId(location.id).subscribe(data => location.users = data)
   }
 
 }

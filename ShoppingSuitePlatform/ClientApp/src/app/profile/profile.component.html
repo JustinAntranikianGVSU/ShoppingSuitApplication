@@ -5,37 +5,39 @@
     <li class="breadcrumb-item active" aria-current="page">Profile</li>
   </ol>
 </nav>
-  
+
+<div *ngIf="dataLoaded">
+
 <div class="alert alert-info">
-  <div>Welcome, {{ profileData.loggedInUser.fullName }}.</div>
-  <div *ngIf="profileData.isImpersonating">You are <i>impersonating</i><strong> {{ profileData.impersonatingUser.fullName }}</strong></div>
+  <div>Welcome, {{ loggedInUserProfile.fullName }}.</div>
+  <div *ngIf="isImpersonating">You are <i>impersonating</i><strong> {{ impersonationUserProfile.fullName }}</strong></div>
 </div>
 
-<div *ngIf="profileData.isImpersonating" class="row mt-3">
+<div *ngIf="isImpersonating" class="row mt-3">
 
   <div class="col-sm-6">
     <div class="card">
-      <div class="card-header"><h3>Basic Info for {{ profileData.impersonatingUser.firstName }}</h3></div>
+      <div class="card-header"><h3>Basic Info for {{ impersonationUserProfile.firstName }}</h3></div>
       <div class="card-body">
 
         <div class="form-group row">
           <label for="impersonatefirstName" class="col-sm-3 col-form-label">First Name</label>
           <div class="col-sm-9">
-            <input type="text" readonly [(ngModel)]="profileData.impersonatingUser.firstName" class="form-control" id="impersonatefirstName">
+            <input type="text" readonly [(ngModel)]="impersonationUserProfile.firstName" class="form-control" id="impersonatefirstName">
           </div>
         </div>
         
         <div class="form-group row">
           <label for="impersonatelastName" class="col-sm-3 col-form-label">Last Name</label>
           <div class="col-sm-9">
-            <input type="text" readonly [(ngModel)]="profileData.impersonatingUser.lastName" class="form-control" id="impersonatelastName">
+            <input type="text" readonly [(ngModel)]="impersonationUserProfile.lastName" class="form-control" id="impersonatelastName">
           </div>
         </div>
 
         <div class="form-group row">
           <label for="impersonateClientName" class="col-sm-3 col-form-label">Client</label>
           <div class="col-sm-9">
-            <input type="text" readonly [(ngModel)]="profileData.impersonatingClient.clientName" class="form-control" id="impersonateClientName">
+            <input type="text" readonly [(ngModel)]="impersonationUserProfile.clientName" class="form-control" id="impersonateClientName">
           </div>
         </div>
 
@@ -45,10 +47,10 @@
 
   <div class="col-sm-6">
     <div class="card">
-      <div class="card-header"><h3>Locations for {{ profileData.impersonatingUser.firstName }}</h3></div>
+      <div class="card-header"><h3>Locations for {{ impersonationUserProfile.firstName }}</h3></div>
       <div class="card-body">
-        <ol><li *ngFor="let location of profileData.impersonatingUserLocations">{{ location.name }}</li></ol>
-        <div *ngIf="profileData.impersonatingUserLocations.length === 0" class="alert alert-info">You don't have any locations.</div>
+        <ol><li *ngFor="let location of impersonationUserProfile.locations">{{ location.name }}</li></ol>
+        <div *ngIf="impersonationUserProfile.locations.length === 0" class="alert alert-info">You don't have any locations.</div>
       </div>
     </div>
   </div>
@@ -65,14 +67,14 @@
         <div class="form-group row">
           <label for="loggedInfirstName" class="col-sm-3 col-form-label">First Name</label>
           <div class="col-sm-9">
-            <input type="text" readonly [(ngModel)]="profileData.loggedInUser.firstName" class="form-control" id="loggedInfirstName">
+            <input type="text" readonly [(ngModel)]="loggedInUserProfile.firstName" class="form-control" id="loggedInfirstName">
           </div>
         </div>
         
         <div class="form-group row">
           <label for="loggedInlastName" class="col-sm-3 col-form-label">Last Name</label>
           <div class="col-sm-9">
-            <input type="text" readonly [(ngModel)]="profileData.loggedInUser.lastName" class="form-control" id="loggedInlastName">
+            <input type="text" readonly [(ngModel)]="loggedInUserProfile.lastName" class="form-control" id="loggedInlastName">
           </div>
         </div>
 
@@ -84,10 +86,15 @@
     <div class="card">
       <div class="card-header"><h3>My Locations</h3></div>
       <div class="card-body">
-        <ol><li *ngFor="let location of profileData.loggedInUserLocations">{{ location.name }}</li></ol>
-        <div *ngIf="profileData.loggedInUserLocations.length === 0" class="alert alert-info">You don't have any locations.</div>
+        <ol><li *ngFor="let location of loggedInUserProfile.locations">{{ location.name }}</li></ol>
+        <div *ngIf="loggedInUserProfile.locations.length === 0" class="alert alert-info">You don't have any locations.</div>
       </div>
     </div>
-  </div>
-  
+  </div>  
+</div>
+
+</div>
+
+<div *ngIf="!dataLoaded">
+  <i class="fa fa-refresh fa-spin fa-3x fa-fw mr-2"></i>Loading Profile...
 </div>
