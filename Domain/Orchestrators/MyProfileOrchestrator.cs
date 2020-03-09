@@ -44,7 +44,7 @@ namespace Domain.Orchestrators
 		{
 			var userEntity = await _usersWithRolesRepository.SingleAsync(userId);
 			var locations = await GetLocations(userId);
-			var clientName = GetClientName(userEntity.ClientIdentifier);
+			var clientName = ClientLookup.GetClientName(userEntity.ClientIdentifier);
 
 			return new UserProfileDto(userEntity.Id, userEntity.FirstName, userEntity.LastName, locations, clientName);
 		}
@@ -55,7 +55,5 @@ namespace Domain.Orchestrators
 			var locationDtos = await query.Select(oo => new LocationBasicDto(oo.Id, oo.Name)).ToListAsync();
 			return locationDtos;
 		}
-
-		private string? GetClientName(Guid? clientId) => clientId.HasValue ? ClientLookup.GetClient(clientId.Value).Name : null;
 	}
 }

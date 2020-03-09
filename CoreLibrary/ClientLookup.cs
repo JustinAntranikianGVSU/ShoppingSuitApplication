@@ -32,5 +32,7 @@ namespace CoreLibrary
 
 			return client;
 		}
+
+		public static string? GetClientName(Guid? clientId) => clientId.HasValue ? ClientLookup.GetClient(clientId.Value).Name : null;
 	}
 }
