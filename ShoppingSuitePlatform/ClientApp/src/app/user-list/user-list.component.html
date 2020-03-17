@@ -6,71 +6,28 @@
   </ol>
 </nav>
 
-<div class="card">
-  <div class="card-header"><h3>User List</h3></div>
-  <div class="card-body">
+<ngb-toast [delay]="5000" class="bg-danger text-light" header="An error occurred" *ngIf="showErrorToast" (hide)="showErrorToast = false">
+  You do not have permissions for this action.
+</ngb-toast>
 
-    <ngb-toast [delay]="5000" class="bg-danger text-light" header="An error occurred" *ngIf="showErrorToast" (hide)="showErrorToast = false">
-      You do not have permissions for this action.
-    </ngb-toast>
-    
-    <ng-template #impersonationConfirm let-modal>
-    
-      <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Impersonate ?</h4>
-        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      
-      <div class="modal-body">
-        Are you sure you want to impersonate : {{ userToImpersonate.fullName }}
-      </div>
-      
-      <div class="modal-footer">
-        <button type="button" class="btn btn-outline-success" (click)="modal.close()">Ok</button>
-      </div>
-      
-    </ng-template>
-    
-    <ng-template #impersonationComplete let-modal>
-    
-      <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">You are now impersonating</h4>
-      </div>
-      
-      <div class="modal-body">
-        <p>You now impersonating : <strong>{{ this.userToImpersonate.fullName }}</strong>.</p>
-        <p>Permissions, data, and roles will now reflect what {{ this.userToImpersonate.fullName }} has <strong><i>ACCESS TO</i></strong>.</p>
-        <p>To exist impersonation, either click the 'Exist Impersonation' button or 'Logout' button.</p>
-        <p>You will need to <strong>navigate</strong> to another page or refresh the current page.</p>
-        <hr />
-        <p class="text-center">
-          <button class="btn btn-outline-primary" (click)="modal.close('Locations')"><i class="fa fa-location-arrow mr-1" aria-hidden="true"></i>Locations</button>
-          <span class="mx-4">OR</span>
-          <button class="btn btn-outline-primary" (click)="modal.close('Reload')"><i class="fa fa-users mr-1" aria-hidden="true"></i>Reload</button>
-        </p>
-      </div>
-      
-    </ng-template>
-    
-    <div class="row mb-3">
-      <div class="col-sm-6">
-        <div class="card" style="border-color: #1E4A6F;">
-          <div class="card-header" style="background-color: #1E4A6F; color: white;">
-            <h5>Filter by first name</h5>
-          </div>
-          <div class="card-body">
-            <input type="text" class="form-control" [(ngModel)]="filterModel" [ngbTypeahead]="searchUsers"/>
-            <div class="text-right"><button (click)="onFirstNameFilterClicked()" class="btn btn-outline-secondary mt-2">Filter</button></div>
-          </div>
+<div class="container-fluid">
+  <div class="row">
+
+    <div class="col-sm-2">
+      <div class="card" style="border-color: #1E4A6F;">
+        <div class="card-header" style="background-color: #1E4A6F; color: white;">
+          <h5>Filter by first name</h5>
+        </div>
+        <div class="card-body">
+          <input type="text" class="form-control" [(ngModel)]="filterModel" [ngbTypeahead]="searchUsers"/>
+          <div class="text-right"><button (click)="onFirstNameFilterClicked()" class="btn btn-outline-secondary mt-2">Filter</button></div>
         </div>
       </div>
     </div>
 
-    <div *ngIf="dataLoaded">
-      <table class="table table-striped">
-        <thead>
+    <div class="col-sm-10">
+      <table *ngIf="dataLoaded" class="table table-sm table-hover">
+        <thead class="thead-dark">
           <tr>
             <th scope="col">#</th>
             <th scope="col">First</th>
@@ -93,11 +50,52 @@
         </tbody>
       </table>
     </div>
-    
-    <div *ngIf="!dataLoaded">
-      <i class="fa fa-refresh fa-spin fa-3x fa-fw mr-2"></i>Loading Users...
-    </div>
 
   </div>
+</div>  
+
+<div *ngIf="!dataLoaded">
+  <i class="fa fa-refresh fa-spin fa-3x fa-fw mr-2"></i>Loading Users...
 </div>
 
+<!-- Templates Region -->
+
+<ng-template #impersonationConfirm let-modal>
+    
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Impersonate ?</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  
+  <div class="modal-body">
+    Are you sure you want to impersonate : {{ userToImpersonate.fullName }}
+  </div>
+  
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-success" (click)="modal.close()">Ok</button>
+  </div>
+  
+</ng-template>
+
+<ng-template #impersonationComplete let-modal>
+
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">You are now impersonating</h4>
+  </div>
+  
+  <div class="modal-body">
+    <p>You now impersonating : <strong>{{ this.userToImpersonate.fullName }}</strong>.</p>
+    <p>Permissions, data, and roles will now reflect what {{ this.userToImpersonate.fullName }} has <strong><i>ACCESS TO</i></strong>.</p>
+    <p>To exist impersonation, either click the 'Exist Impersonation' button or 'Logout' button.</p>
+    <p>You will need to <strong>navigate</strong> to another page or refresh the current page.</p>
+    <hr />
+    <p class="text-center">
+      <button class="btn btn-outline-primary" (click)="modal.close('Locations')"><i class="fa fa-location-arrow mr-1" aria-hidden="true"></i>Locations</button>
+      <span class="mx-4">OR</span>
+      <button class="btn btn-outline-primary" (click)="modal.close('Reload')"><i class="fa fa-users mr-1" aria-hidden="true"></i>Reload</button>
+    </p>
+  </div>
+  
+</ng-template>

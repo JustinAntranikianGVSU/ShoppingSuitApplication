@@ -20,8 +20,8 @@ export class LoginComponent {
   }
 
   constructor(
-    private route: ActivatedRoute,
-    private loginService: LoginService
+    private readonly route: ActivatedRoute,
+    private readonly loginService: LoginService
   ) {}
 
   public onLoginClicked() {

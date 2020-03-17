@@ -20,7 +20,7 @@ code {
 }
 
 body {
-  background-color: #1E4A6F;
+  /* background-color: #1E4A6F; */
 }
 
 .containerColor {
@@ -34,19 +34,19 @@ body {
 }
 
 .breadcrumb {
-  background-color: #1E4A6F;
+  background-color: transparent;
 }
 
 .breadcrumb-item {
-  color: white;
+  color: black;
 }
 
 .breadcrumb-item.active {
-  color: white;
+  color: black;
   text-decoration: underline;
   font-weight: bold;
 }
 
 .breadcrumb-item a {
-  color: white;
+  color: black;
 }

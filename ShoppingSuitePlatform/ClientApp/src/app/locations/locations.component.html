@@ -5,12 +5,10 @@
   </ol>
 </nav>
 
-<div class="card">
-  <div class="card-header"><h3>Locations</h3></div>
-  <div class="card-body">
+<div class="container">
 
-  <table class="table table-striped" *ngIf="dataLoaded">
-    <thead>
+  <table *ngIf="dataLoaded" class="table table-sm table-hover">
+    <thead class="thead-dark">
       <tr>
         <th scope="col">#</th>
         <th scope="col">Name</th>
@@ -37,7 +35,8 @@
     </tbody>
   </table>
 
-  <div *ngIf="!dataLoaded">
-    <i class="fa fa-refresh fa-spin fa-3x fa-fw mr-2"></i>Loading Locations...
-  </div>
+</div>
+
+<div *ngIf="!dataLoaded">
+  <i class="fa fa-refresh fa-spin fa-3x fa-fw mr-2"></i>Loading Locations...
 </div>

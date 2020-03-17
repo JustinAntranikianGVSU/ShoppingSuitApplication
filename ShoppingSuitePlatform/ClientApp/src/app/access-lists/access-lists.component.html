@@ -6,24 +6,21 @@
   </ol>
 </nav>
     
-<div class="card">
-  <div class="card-header"><h3>Access Lists</h3></div>
-  <div class="card-body">
+<div class="container">
       
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Name</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let accessList of accessLists">
-          <th scope="row">{{ accessList.id }}</th>
-          <td><a [routerLink]="['/accessListEdit', accessList.id]">{{ accessList.name }}</a></td>
-        </tr>
-      </tbody>
-    </table>
+  <table class="table table-sm table-hover">
+    <thead class="thead-dark">
+      <tr>
+        <th style="width: 33%;" scope="col">#</th>
+        <th style="width: 67%;" scope="col">Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let accessList of accessLists">
+        <th scope="row">{{ accessList.id }}</th>
+        <td><a [routerLink]="['/accessListEdit', accessList.id]">{{ accessList.name }}</a></td>
+      </tr>
+    </tbody>
+  </table>
 
-  </div>
 </div>
