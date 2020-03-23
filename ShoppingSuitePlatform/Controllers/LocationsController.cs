@@ -11,18 +11,18 @@ namespace ShoppingSuitePlatform.Controllers
 	[Route("[controller]")]
 	public class LocationsController : AppControllerBase
 	{
-		private readonly IGetLocationsOrchestrator _getLocationsOrchestrator;
+		private readonly ILocationsOrchestrator _locationsOrchestrator;
 
-		public LocationsController(IGetLocationsOrchestrator getLocationsOrchestrator)
+		public LocationsController(ILocationsOrchestrator locationsOrchestrator)
 		{
-			_getLocationsOrchestrator = getLocationsOrchestrator;
+			_locationsOrchestrator = locationsOrchestrator;
 		}
 
 		[HttpGet()]
 		[Authorize(Policy = AppPolicy.ViewEmployee)]
 		public async Task<ActionResult> Get()
 		{
-			var result = await _getLocationsOrchestrator.GetAll();
+			var result = await _locationsOrchestrator.GetAll();
 			return NotFoundIfNotProcessed(result);
 		}
 	}

@@ -1,7 +1,6 @@
 ﻿using DataAccess;
 using CoreLibrary;
 using Domain.Dtos;
-using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using CoreLibrary.ServiceResults;
 using CoreLibrary.Orchestrators;
@@ -40,7 +39,7 @@ namespace Domain.Orchestrators
 
 		private async Task<UserWithLocationsDto> GetUserProfile(int userId)
 		{
-			var userEntity = await _usersWithLocationsRepository.GetReadOnlyQuery().SingleAsync(oo => oo.Id == userId);
+			var userEntity = await _usersWithLocationsRepository.SingleAsync(userId);
 			return _userWithLocationsMapper.Map(userEntity);
 		}
 	}

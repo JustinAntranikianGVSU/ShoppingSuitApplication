@@ -20,12 +20,12 @@ namespace Domain.Orchestrators.Users
 	public class CreateUserOrchestrator : DbContextOrchestratorBase<UserDto>, ICreateUserOrchestrator
 	{
 		private readonly UserMapper _userMapper;
-		private readonly UsersRepository _usersRepository;
+		private readonly UsersWithRolesRepository _usersRepository;
 
 		public CreateUserOrchestrator(AppDbContext dbContext, IMapper mapper) : base(dbContext)
 		{
 			_userMapper = new UserMapper(mapper);
-			_usersRepository = new UsersRepository(dbContext);
+			_usersRepository = new UsersWithRolesRepository(dbContext);
 		}
 
 		public async Task<ServiceResult<UserDto>> Create(UserDto user)

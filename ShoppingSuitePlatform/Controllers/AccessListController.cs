@@ -22,7 +22,7 @@ namespace ShoppingSuitePlatform.Controllers
 		[Authorize(Policy = AppPolicy.ViewEmployee)]
 		public async Task<ActionResult> Get()
 		{
-			var result = await _orchestrator.Get();
+			var result = await _orchestrator.GetAll();
 			return NotFoundIfNotProcessed(result);
 		}
 

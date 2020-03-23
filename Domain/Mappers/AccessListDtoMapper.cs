@@ -4,13 +4,13 @@ using System.Linq;
 
 namespace Domain.Mappers
 {
-	public class AccessListFullDtoMapper : EntityToDtoMapperBase<AccessListEntity, AccessListFullDto>
+	public class AccessListDtoMapper : EntityToDtoMapperBase<AccessListEntity, AccessListDto>
 	{
-		public override AccessListFullDto Map(AccessListEntity accessList)
+		public override AccessListDto Map(AccessListEntity accessList)
 		{
 			var users = accessList.Users.Select(oo => new UserBasicDto(oo.UserId, oo.User.FirstName, oo.User.LastName)).ToList();
 			var locations = accessList.Locations.Select(oo => new LocationBasicDto(oo.LocationId, oo.Location.Name)).ToList();
-			return new AccessListFullDto(accessList.Id, accessList.Name, locations, users);
+			return new AccessListDto(accessList.Id, accessList.Name, locations, users);
 		}
 	}
 }

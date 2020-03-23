@@ -4,9 +4,6 @@
 	{
 		protected readonly AppDbContext _dbContext;
 
-		protected BaseRepository(AppDbContext dbContext)
-		{
-			_dbContext = dbContext;
-		}
+		protected BaseRepository(AppDbContext dbContext) => _dbContext = dbContext;
 	}
 }
