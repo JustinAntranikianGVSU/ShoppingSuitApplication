@@ -53,7 +53,7 @@ namespace Domain.Orchestrators
 		{
 			var accessList = await _accessListRepository.GetFullAccessList(accessListId);
 			var accessListDto = _accessListFullDtoMapper.Map(accessList);
-			return new ServiceResult<AccessListFullDto>(accessListDto, ServiceResultStatus.Processed);
+			return GetProcessedResult(accessListDto);
 		}
 	}
 }

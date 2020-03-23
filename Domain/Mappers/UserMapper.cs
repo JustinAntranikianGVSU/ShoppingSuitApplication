@@ -9,7 +9,7 @@ namespace Domain.Mappers
 {
 	public class UserMapper
 	{
-		private readonly IMapper _mapper;
+		protected readonly IMapper _mapper;
 
 		public UserMapper(IMapper mapper) => _mapper = mapper;
 

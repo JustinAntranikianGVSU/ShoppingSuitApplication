@@ -1,64 +1,138 @@
 
-<nav aria-label="breadcrumb">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a [routerLink]="['/']">Dashboard</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Users</li>
-  </ol>
-</nav>
+<div class="container">
 
-<ngb-toast [delay]="5000" class="bg-danger text-light" header="An error occurred" *ngIf="showErrorToast" (hide)="showErrorToast = false">
-  You do not have permissions for this action.
-</ngb-toast>
+  <h4>Users</h4>
 
-<div class="container-fluid">
-  <div class="row">
+  <ngb-toast [delay]="5000" class="bg-danger text-light" header="An error occurred" *ngIf="showErrorToast" (hide)="showErrorToast = false">
+    You do not have permissions for this action.
+  </ngb-toast>
 
-    <div class="col-sm-2">
-      <div class="card" style="border-color: #1E4A6F;">
-        <div class="card-header" style="background-color: #1E4A6F; color: white;">
-          <h5>Filter by first name</h5>
+  <div class="p-2 mb-4 border border-secondary" style="background-color: #BFE9EB;">
+    <h5>Filters</h5>
+    <hr />
+    <div class="row">
+      <div class="col-sm-3">
+        <div class="form-group">
+          <label for="firstNameFilter">First name</label>
+          <input [(ngModel)]="filterModel" [ngbTypeahead]="searchUsers" type="text" class="form-control" id="firstNameFilter" placeholder="Filter by first name" />
         </div>
-        <div class="card-body">
-          <input type="text" class="form-control" [(ngModel)]="filterModel" [ngbTypeahead]="searchUsers"/>
-          <div class="text-right"><button (click)="onFirstNameFilterClicked()" class="btn btn-outline-secondary mt-2">Filter</button></div>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-group">
+          <label for="lastNameFilter">Last name</label>
+          <input type="text" class="form-control" id="lastNameFilter" placeholder="Filter by last name" />
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-group">
+          <label for="emailFilter">Email</label>
+          <input type="text" class="form-control" id="emailFilter" placeholder="Filter by email" />
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-group">
+          <label for="roleFilter">Role</label>
+          <input type="text" class="form-control" id="roleFilter" placeholder="Filter by role" />
         </div>
       </div>
     </div>
 
-    <div class="col-sm-10">
-      <table *ngIf="dataLoaded" class="table table-sm table-hover">
-        <thead class="thead-dark">
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
-            <th scope="col">Email</th>
-            <th class="text-center" scope="col">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let user of users">
-            <th scope="row">{{ user.id }}</th>
-            <td>{{ user.firstName }}</td>
-            <td>{{ user.lastName }}</td>
-            <td>{{ user.email }}</td>
-            <td class="text-center">
-              <a class="btn btn-outline-primary" [routerLink]="['/user-edit', user.id]" placement="left" ngbTooltip="Edit : {{ user.fullName }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-              <button class="btn btn-outline-primary ml-2" (click)="onImpersonateClicked(user)" ngbTooltip="Impersonate : {{ user.fullName }}"><i class="fa fa-address-card" aria-hidden="true"></i></button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="text-right mt-4">
+      <button (click)="onFirstNameFilterClicked()" class="btn btn-info">Filter</button>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    
+    <div class="col-sm-6">
+      <h5>User Results</h5>
+    </div>
+    
+    <div class="col-md-6 text-right">
+      <div class="btn-group"> 
+        <button type="button" title="list view" (click)="listView = true" [class.active]="listView" class="btn btn-secondary btn-sm"><i class="fa fa-list"></i></button> 
+        <button type="button" title="expanded view" (click)="listView = false" [class.active]="!listView" class="btn btn-secondary btn-sm"><i class="fa fa-th"></i></button>
+      </div>
     </div>
 
   </div>
+
+  <div *ngIf="dataLoaded">
+    <div *ngIf="listView; then listViewTemplate else expandedViewTemplate"></div>
+  </div>
+
+  <div *ngIf="!dataLoaded">
+    <i class="fa fa-refresh fa-spin fa-3x fa-fw mr-2"></i>Loading Users...
+  </div>
+
 </div>  
 
-<div *ngIf="!dataLoaded">
-  <i class="fa fa-refresh fa-spin fa-3x fa-fw mr-2"></i>Loading Users...
-</div>
-
 <!-- Templates Region -->
+
+<ng-template #listViewTemplate>
+
+  <table *ngIf="dataLoaded" class="table table-sm table-hover table-bordered">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">First</th>
+        <th scope="col">Last</th>
+        <th scope="col">Email</th>
+        <th class="text-center" style="width: 15%;" scope="col">AccessList Count</th>
+        <th class="text-center" scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users">
+        <th scope="row">{{ user.id }}</th>
+        <td>{{ user.firstName }}</td>
+        <td>{{ user.lastName }}</td>
+        <td>{{ user.email }}</td>
+        <td class="text-center"><span (click)="listView = false" class="badge badge-pill badge-secondary">{{ user.accessLists.length }}</span></td>
+        <td class="text-center">
+          <a class="btn btn-info btn-sm" [routerLink]="['/user-edit', user.id]" placement="left" ngbTooltip="Edit : {{ user.fullName }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+          <button class="btn btn-info ml-2 btn-sm" (click)="onImpersonateClicked(user)" ngbTooltip="Impersonate : {{ user.fullName }}"><i class="fa fa-address-card" aria-hidden="true"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+</ng-template>
+
+<ng-template #expandedViewTemplate>
+
+  <div class="container-fluid">
+    <div class="row mb-5 py-3 border border-primary rounded" *ngFor="let user of users">
+      <div class="col-sm-2">
+        <h5>{{ user.id }}</h5>
+        <h5>{{ user.firstName }}</h5>
+        <h5>{{ user.lastName }}</h5>
+        <div>{{ user.email }}</div>
+      </div>
+      <div class="col-sm-3">
+        <ul>
+          <li *ngFor="let role of user.roles">{{ role.name }}</li>
+          <li *ngIf="user.roles.length == 0">This user has no roles.</li>
+        </ul>          
+      </div>
+      <div class="col-sm-3">
+        <div *ngFor="let accessList of user.accessLists">
+          <a class="text-info linkborder" [routerLink]="['/accessListEdit', accessList.id]">{{ accessList.name }}</a>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <ul>
+          <li *ngFor="let location of user.locations">{{ location.name }}</li>
+        </ul>          
+      </div>
+      <div class="col-sm-1 text-right">
+        <a class="btn btn-info btn-block" [routerLink]="['/user-edit', user.id]"><i class="fa fa-pencil-square-o"></i></a>
+        <button class="btn btn-info btn-block" (click)="onImpersonateClicked(user)"><i class="fa fa-address-card"></i></button>
+      </div>
+    </div>
+  </div>
+
+</ng-template>
 
 <ng-template #impersonationConfirm let-modal>
     
@@ -99,3 +173,4 @@
   </div>
   
 </ng-template>
+

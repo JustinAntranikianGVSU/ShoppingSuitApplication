@@ -2,18 +2,28 @@
 <body>
 
   <header>
-    <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom box-shadow">
+    <nav class="navbar navbar-expand-lg border-bottom">
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
   
       <a [routerLink]="['/']"><img src="../assets/images/companyNameCropped.PNG" style="height: 50px;" /></a>
     
-      <div *ngIf="isAuthenticated" class="collapse navbar-collapse" id="navbarTogglerDemo03">
+      <div *ngIf="isAuthenticated" class="collapse navbar-collapse">
+        
         <ul class="navbar-nav ml-auto">
+          <li *ngIf="isImpersonating" class="mr-4">
+            <span class="navbar-text">
+              <div style="margin: 0; padding: 0 10px;" class="alert alert-info alert-dismissible fade show" role="alert">
+                Welcome <strong>{{ loggedInUserProfile.fullName }}</strong> You are impersonating <i>{{ impersonationUserProfile.fullName }}</i>
+              </div>
+            </span>
+          </li>
           <li class="nav-item dropdown">
             <div ngbDropdown class="d-inline-block">
-              <button class="btn btn-outline-secondary" id="actionsDropDown" ngbDropdownToggle><i class="fa fa-cog" aria-hidden="true"></i></button>
+              <button style="border-radius: 30px;" class="btn btn-info" id="actionsDropDown" ngbDropdownToggle>
+                {{ initals }}
+              </button>
               <div ngbDropdownMenu aria-labelledby="actionsDropDown" class="dropdown-menu-right">
                 <a ngbDropdownItem [routerLink]="['/profile']"><i class="fa fa-wrench mr-2" aria-hidden="true"></i>My Profile</a>
                 <div class="dropdown-divider"></div>
@@ -23,7 +33,6 @@
             </div>
           </li>
         </ul>
-        <span style="padding: 12px; font-size: 16px; background-color: #1E4A6F;" class="badge badge-pill badge-info ml-3">JA</span>
       </div>
     </nav>  
   </header>
@@ -31,11 +40,11 @@
   <div class="container-fluid"><div class="row">
 
     <div class="col-sm-2" style="border-right: 1px solid #eaecef;">
-      <div class="p-2 mt-3"><a [routerLink]="['/']"><i class="fa fa-dashboard mr-2" aria-hidden="true"></i>Dashboard</a></div>
-      <div class="p-2"><a [routerLink]="['/mylocations']"><i class="fa fa-plane mr-2" aria-hidden="true"></i>Locations</a></div>
-      <div class="p-2"><a [routerLink]="['/accessLists']"><i class="fa fa-plug mr-2" aria-hidden="true"></i>Access Lists</a></div>
-      <div class="p-2"><a [routerLink]="['/user-list']"><i class="fa fa-users mr-2" aria-hidden="true"></i>Users</a></div>
-      <div class="p-2"><a [routerLink]="['/profile']"><i class="fa fa-wrench mr-2" aria-hidden="true"></i>Profile</a></div>
+      <div class="p-2 mt-3"><a [routerLink]="['/']" class="text-info linkborder"><i class="fa fa-dashboard mr-2" aria-hidden="true"></i>Dashboard</a></div>
+      <div class="p-2"><a [routerLink]="['/mylocations']" class="text-info linkborder"><i class="fa fa-plane mr-2" aria-hidden="true"></i>Locations</a></div>
+      <div class="p-2"><a [routerLink]="['/accessLists']" class="text-info linkborder"><i class="fa fa-plug mr-2" aria-hidden="true"></i>Access Lists</a></div>
+      <div class="p-2"><a [routerLink]="['/user-list']" class="text-info linkborder"><i class="fa fa-users mr-2" aria-hidden="true"></i>Users</a></div>
+      <div class="p-2"><a [routerLink]="['/profile']" class="text-info linkborder"><i class="fa fa-wrench mr-2" aria-hidden="true"></i>Profile</a></div>
     </div>
 
     <div class="col-sm-10">

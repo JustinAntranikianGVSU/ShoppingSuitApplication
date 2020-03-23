@@ -1,97 +1,44 @@
 
-<nav aria-label="breadcrumb">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a [routerLink]="['/']">Dashboard</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Profile</li>
-  </ol>
-</nav>
+<div class="container" *ngIf="dataLoaded">
 
-<div *ngIf="dataLoaded">
+  <h4>Profile</h4>
 
-<div class="alert alert-info">
-  <div>Welcome, {{ loggedInUserProfile.fullName }}.</div>
-  <div *ngIf="isImpersonating">You are <i>impersonating</i><strong> {{ impersonationUserProfile.fullName }}</strong></div>
-</div>
+  <div *ngIf="isImpersonating">
 
-<div *ngIf="isImpersonating" class="row mt-3">
+    <h6>Basic Info for Impersonation</h6>
 
-  <div class="col-sm-6">
-    <div class="card">
-      <div class="card-header"><h3>Basic Info for {{ impersonationUserProfile.firstName }}</h3></div>
-      <div class="card-body">
+    <ul>
+      <li>FirstName : {{ impersonationUserProfile.firstName }}</li>
+      <li>LastName : {{ impersonationUserProfile.lastName }}</li>
+      <li>ClientName : {{ impersonationUserProfile.clientName }}</li>
+    </ul>
 
-        <div class="form-group row">
-          <label for="impersonatefirstName" class="col-sm-3 col-form-label">First Name</label>
-          <div class="col-sm-9">
-            <input type="text" readonly [(ngModel)]="impersonationUserProfile.firstName" class="form-control" id="impersonatefirstName">
-          </div>
-        </div>
-        
-        <div class="form-group row">
-          <label for="impersonatelastName" class="col-sm-3 col-form-label">Last Name</label>
-          <div class="col-sm-9">
-            <input type="text" readonly [(ngModel)]="impersonationUserProfile.lastName" class="form-control" id="impersonatelastName">
-          </div>
-        </div>
+    <h6>Locations</h6>
 
-        <div class="form-group row">
-          <label for="impersonateClientName" class="col-sm-3 col-form-label">Client</label>
-          <div class="col-sm-9">
-            <input type="text" readonly [(ngModel)]="impersonationUserProfile.clientName" class="form-control" id="impersonateClientName">
-          </div>
-        </div>
+    <ol>
+      <li *ngFor="let location of impersonationUserProfile.locations">{{ location.name }}</li>
+    </ol>
 
-      </div>
-    </div>
+    <hr class="my-5" />
+
   </div>
 
-  <div class="col-sm-6">
-    <div class="card">
-      <div class="card-header"><h3>Locations for {{ impersonationUserProfile.firstName }}</h3></div>
-      <div class="card-body">
-        <ol><li *ngFor="let location of impersonationUserProfile.locations">{{ location.name }}</li></ol>
-        <div *ngIf="impersonationUserProfile.locations.length === 0" class="alert alert-info">You don't have any locations.</div>
-      </div>
-    </div>
+  <div>
+
+    <h6>Basic Info</h6>
+
+    <ul>
+      <li>FirstName : {{ loggedInUserProfile.firstName }}</li>
+      <li>LastName : {{ loggedInUserProfile.lastName }}</li>
+    </ul>
+
+    <h6>Locations</h6>
+
+    <ol>
+      <li *ngFor="let location of loggedInUserProfile.locations">{{ location.name }}</li>
+    </ol>
+
   </div>
-  
-</div>
-
-<div class="row mt-3">
-
-  <div class="col-sm-6">
-    <div class="card">
-      <div class="card-header"><h3>Basic Info </h3></div>
-      <div class="card-body">
-
-        <div class="form-group row">
-          <label for="loggedInfirstName" class="col-sm-3 col-form-label">First Name</label>
-          <div class="col-sm-9">
-            <input type="text" readonly [(ngModel)]="loggedInUserProfile.firstName" class="form-control" id="loggedInfirstName">
-          </div>
-        </div>
-        
-        <div class="form-group row">
-          <label for="loggedInlastName" class="col-sm-3 col-form-label">Last Name</label>
-          <div class="col-sm-9">
-            <input type="text" readonly [(ngModel)]="loggedInUserProfile.lastName" class="form-control" id="loggedInlastName">
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-  <div class="col-sm-6">
-    <div class="card">
-      <div class="card-header"><h3>My Locations</h3></div>
-      <div class="card-body">
-        <ol><li *ngFor="let location of loggedInUserProfile.locations">{{ location.name }}</li></ol>
-        <div *ngIf="loggedInUserProfile.locations.length === 0" class="alert alert-info">You don't have any locations.</div>
-      </div>
-    </div>
-  </div>  
-</div>
 
 </div>
 

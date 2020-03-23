@@ -19,8 +19,9 @@ export class UserListComponent implements OnInit {
   public dataLoaded = false
   public userToImpersonate: any
   public showErrorToast = false
-  public isFilterCollapsed = false;
-  public filterModel: any;
+  public isFilterCollapsed = false
+  public filterModel: any
+  public listView = true
 
   @ViewChild('impersonationComplete', null) 
   private impersonationCompleteRef: ElementRef

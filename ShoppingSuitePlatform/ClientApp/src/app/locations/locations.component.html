@@ -1,20 +1,22 @@
-<nav aria-label="breadcrumb">
+<!-- <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a [routerLink]="['/']">Dashboard</a></li>
     <li class="breadcrumb-item active" aria-current="page">Locations</li>
   </ol>
-</nav>
+</nav> -->
 
 <div class="container">
 
-  <table *ngIf="dataLoaded" class="table table-sm table-hover">
+  <h4>Locations</h4>
+
+  <table *ngIf="dataLoaded" class="table table-sm table-hover table-bordered">
     <thead class="thead-dark">
       <tr>
         <th scope="col">#</th>
         <th scope="col">Name</th>
         <th scope="col">Client Name</th>
         <th scope="col">Access Lists</th>
-        <th scope="col">Users</th>
+        <th class="text-center" scope="col">Users</th>
       </tr>
     </thead>
     <tbody>
@@ -24,12 +26,14 @@
         <td>{{ location.client.name }}</td>
         <td>
           <div *ngFor="let accessList of location.accessListDtos">
-            <a [routerLink]="['/accessListEdit', accessList.id]">{{ accessList.name }}</a>
+            <a class="text-info linkborder" [routerLink]="['/accessListEdit', accessList.id]">{{ accessList.name }}</a>
           </div>
         </td>
-        <td (click)="onViewUsersClicked(location)">
-          <div *ngIf="!location.users">View Users</div>
-          <div *ngFor="let user of location.users"><a [routerLink]="['/user-edit', user.id]">{{ user.fullName }}</a></div>
+        <td class="text-center">
+          <div *ngIf="!location.users">
+            <button (click)="onViewUsersClicked(location)" class="btn btn-info btn-sm">View Users</button>
+          </div>
+          <div *ngFor="let user of location.users"><a class="text-info linkborder" [routerLink]="['/user-edit', user.id]">{{ user.fullName }}</a></div>
         </td>
       </tr>
     </tbody>

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserEditService } from '../_services/user-edit.service';
-import { LocationsService } from '../_services/locations.service';
 
 @Component({
   selector: 'app-user-edit',
@@ -15,13 +14,11 @@ export class UserEditComponent implements OnInit {
 
   constructor(
     private readonly route: ActivatedRoute,
-    private readonly userService: UserEditService,
-    private readonly locationService: LocationsService
+    private readonly userService: UserEditService
   ) {}
 
   ngOnInit() {
     const userId = parseInt(this.route.snapshot.paramMap.get('id'))
     this.userService.getUser(userId).subscribe(data => this.user = data)
-    this.locationService.getByUserId(userId).subscribe(data => this.locations = data)
   }
 }

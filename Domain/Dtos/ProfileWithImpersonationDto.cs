@@ -2,13 +2,13 @@
 {
 	public class ProfileWithImpersonationDto
 	{
-		public UserProfileDto LoggedInUserProfile { get; set; }
+		public UserWithLocationsDto LoggedInUserProfile { get; set; }
 
-		public UserProfileDto? ImpersonationUserProfile { get; set; }
+		public UserWithLocationsDto? ImpersonationUserProfile { get; set; }
 
 		public bool IsImpersonating { get => ImpersonationUserProfile != null; }
 
-		public ProfileWithImpersonationDto(UserProfileDto loggedInUserProfile, UserProfileDto? impersonationUserProfile)
+		public ProfileWithImpersonationDto(UserWithLocationsDto loggedInUserProfile, UserWithLocationsDto? impersonationUserProfile)
 		{
 			LoggedInUserProfile = loggedInUserProfile;
 			ImpersonationUserProfile = impersonationUserProfile;

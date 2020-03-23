@@ -1,5 +1,4 @@
 ﻿using CoreLibrary.ServiceResults;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace CoreLibrary.Orchestrators
@@ -12,8 +11,6 @@ namespace CoreLibrary.Orchestrators
 
 		protected ServiceResult<TT> GetProcessedResult<TT>(TT value) where TT : class => new ServiceResult<TT>(value, ServiceResultStatus.Processed);
 
-		protected ServiceResult<List<T>> GetProcessedResult(List<T> value) => new ServiceResult<List<T>>(value, ServiceResultStatus.Processed);
-
 		protected ServiceResult<T> GetBadRequestResult(string errorMessage)
 		{
 			var errors = new[] { GetError(errorMessage) };
@@ -21,8 +18,6 @@ namespace CoreLibrary.Orchestrators
 		}
 
 		protected ServiceResult<T> GetBadRequestResult(params ServiceError[] errors) => new ServiceResult<T>(errors.ToList(), ServiceResultStatus.BadRequest);
-
-		protected ServiceResult<T> GetNotFoundResult(params ServiceError[] errors) => new ServiceResult<T>(errors.ToList(), ServiceResultStatus.NotFound);
 
 		protected ServiceResult<T> GetNotFoundResult(string errorMessage)
 		{

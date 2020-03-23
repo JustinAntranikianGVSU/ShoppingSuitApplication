@@ -1,32 +1,19 @@
-<nav aria-label="breadcrumb">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a [routerLink]="['/']">Dashboard</a></li>
-    <li class="breadcrumb-item"><a [routerLink]="['/mylocations']">Locations</a></li>
-    <li class="breadcrumb-item"><a [routerLink]="['/accessLists']">Access Lists</a></li>
-    <li class="breadcrumb-item active" aria-current="page">{{ accessList.name }}</li>
+
+<div class="container">
+
+  <h4>Edit Access List : <i>{{ accessList.name }}</i></h4>
+
+  <h6>Users</h6>
+
+  <ul>
+    <li *ngFor="let user of accessList.users"><a class="text-info linkborder" [routerLink]="['/user-edit', user.id]">{{ user.fullName }}</a></li>
+  </ul>
+
+  <h6>Locations</h6>
+
+  <ol>
+    <li *ngFor="let location of accessList.locations">{{ location.name }}</li>
   </ol>
-</nav>
 
-<div class="row">
-  <div class="col-sm-6">
-    <div class="card">
-      <div class="card-header"><h3>Users</h3></div>
-      <div class="card-body">
-        <div *ngFor="let user of accessList.users">
-            <a [routerLink]="['/user-edit', user.id]">{{ user.fullName }}</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-sm-6">
-    <div class="card">
-      <div class="card-header"><h3>Locations</h3></div>
-      <div class="card-body">
-        <div *ngFor="let location of accessList.locations">
-            {{ location.name }}
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
+

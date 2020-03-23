@@ -24,15 +24,10 @@ namespace CoreLibrary
 		public static Client GetClient(Guid identifier)
 		{
 			var client = Clients.SingleOrDefault(oo => oo.Identifier == identifier);
-
-			if (client is null)
-			{
-				throw new Exception($"Could not find {nameof(Client)} with identifier {identifier}. Please fix whatever data is refering to a client that doesn't exist.");
-			}
-
-			return client;
+			var errorMessage = $"Could not find {nameof(Client)} with identifier {identifier}. Please fix whatever data is refering to a client that doesn't exist.";
+			return client ?? throw new Exception(errorMessage);
 		}
 
-		public static string? GetClientName(Guid? clientId) => clientId.HasValue ? ClientLookup.GetClient(clientId.Value).Name : null;
+		public static string? GetClientName(Guid? clientId) => clientId.HasValue ? GetClient(clientId.Value).Name : null;
 	}
 }

@@ -9,14 +9,6 @@ export class LocationsService {
 
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) { }
 
-  public get(): Observable<any> {
-    return this.http.get<any[]>(this.baseUrl + `LocationsByUser`)
-  }
-
-  public getByUserId(userId: number): Observable<any> {
-    return this.http.get<any[]>(this.baseUrl + `LocationsByUser/${userId}`)
-  }
-
   public getAllForClient(): Observable<any> {
     return this.http.get<any[]>(this.baseUrl + `Locations`)
   }

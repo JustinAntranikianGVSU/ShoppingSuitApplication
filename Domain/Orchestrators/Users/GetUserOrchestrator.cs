@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using CoreLibrary;
+﻿using CoreLibrary;
 using CoreLibrary.Orchestrators;
 using CoreLibrary.ServiceResults;
 using DataAccess;
@@ -16,49 +15,39 @@ namespace Domain.Orchestrators.Users
 {
 	public interface IGetUserOrchestrator
 	{
-		Task<ServiceResult<List<UserDto>>> GetAll();
+		Task<ServiceResult<List<UserWithLocationsDto>>> GetAll();
 
-		Task<ServiceResult<UserDto>> Get(int id);
-
-		/// <summary>
-		/// Gets the locations for the logged in user (impersonation takes priority).
-		/// </summary>
-		/// <returns></returns>
-		Task<ServiceResult<List<LocationBasicDto>>> GetLocationsForLoggedInUser();
-
-		Task<ServiceResult<List<LocationBasicDto>>> GetLocations(int userId);
+		Task<ServiceResult<UserWithLocationsDto>> Get(int id);
 	}
 
-	public class GetUserOrchestrator : JwtContextOrchestratorBase<UserDto>, IGetUserOrchestrator
+	public class GetUserOrchestrator : JwtContextOrchestratorBase<UserWithLocationsDto>, IGetUserOrchestrator
 	{
-		private readonly UserMapper _userMapper;
-		private readonly UsersWithRolesRepository _usersWithRolesRepository;
-		private readonly UsersRepository _usersRepository;
+		private readonly UserWithLocationsMapper _userWithLocationsMapper;
+		private readonly UsersWithLocationsRepository _usersWithLocationsRepository;
 
-		public GetUserOrchestrator(AppDbContext dbContext, JwtRequestContext jwtRequestContext, IMapper mapper) : base(dbContext, jwtRequestContext)
+		public GetUserOrchestrator(AppDbContext dbContext, JwtRequestContext jwtRequestContext) : base(dbContext, jwtRequestContext)
 		{
-			_userMapper = new UserMapper(mapper);
-			_usersWithRolesRepository = new UsersWithRolesRepository(dbContext);
-			_usersRepository = new UsersRepository(dbContext);
+			_userWithLocationsMapper = new UserWithLocationsMapper();
+			_usersWithLocationsRepository = new UsersWithLocationsRepository(dbContext);
 		}
 
-		public async Task<ServiceResult<List<UserDto>>> GetAll()
+		public async Task<ServiceResult<List<UserWithLocationsDto>>> GetAll()
 		{
 			var userEntites = await GetUsersQuery().ToListAsync();
-			var users = _userMapper.Map(userEntites);
+			var users = _userWithLocationsMapper.Map(userEntites);
 			return GetProcessedResult(users);
 		}
 
 		private IQueryable<UserEntity> GetUsersQuery()
 		{
 			var clientId = _jwtRequestContext.GetClientId();
-			var queryable = _usersWithRolesRepository.GetReadOnlyQuery();
+			var queryable = _usersWithLocationsRepository.GetReadOnlyQuery();
 			return clientId.HasValue ? queryable.Where(oo => oo.ClientIdentifier == clientId.Value) : queryable;
 		}
 
-		public async Task<ServiceResult<UserDto>> Get(int id)
+		public async Task<ServiceResult<UserWithLocationsDto>> Get(int id)
 		{
-			var userEntity = await _usersWithRolesRepository.SingleOrDefaultAsync(id);
+			var userEntity = await _usersWithLocationsRepository.GetReadOnlyQuery().SingleOrDefaultAsync(oo => oo.Id == id);
 
 			if (userEntity is null)
 			{
@@ -66,16 +55,8 @@ namespace Domain.Orchestrators.Users
 				return GetNotFoundResult(message);
 			}
 
-			var userDto = _userMapper.Map(userEntity);
+			var userDto = _userWithLocationsMapper.Map(userEntity);
 			return GetProcessedResult(userDto);
-		}
-
-		public async Task<ServiceResult<List<LocationBasicDto>>> GetLocationsForLoggedInUser() => await GetLocations(_jwtRequestContext.GetUserId());
-
-		public async Task<ServiceResult<List<LocationBasicDto>>> GetLocations(int userId)
-		{
-			var locationDtos = await _usersRepository.GetLocations(userId).Select(oo => new LocationBasicDto(oo.Id, oo.Name)).ToListAsync();
-			return GetProcessedResult(locationDtos);
 		}
 	}
 }

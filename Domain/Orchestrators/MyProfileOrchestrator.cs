@@ -2,13 +2,11 @@
 using CoreLibrary;
 using Domain.Dtos;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Linq;
 using CoreLibrary.ServiceResults;
 using CoreLibrary.Orchestrators;
 using DataAccess.Repositories;
-using System;
+using Domain.Mappers;
 
 namespace Domain.Orchestrators
 {
@@ -19,13 +17,13 @@ namespace Domain.Orchestrators
 
 	public class MyProfileOrchestrator : JwtContextOrchestratorBase<ProfileWithImpersonationDto>, IMyProfileOrchestrator
 	{
-		private readonly UsersRepository _usersRepository;
-		private readonly UsersWithRolesRepository _usersWithRolesRepository;
+		private readonly UserWithLocationsMapper _userWithLocationsMapper;
+		private readonly UsersWithLocationsRepository _usersWithLocationsRepository;
 
 		public MyProfileOrchestrator(AppDbContext dbContext, JwtRequestContext jwtRequestContext) : base(dbContext, jwtRequestContext)
 		{
-			_usersRepository = new UsersRepository(_dbContext);
-			_usersWithRolesRepository = new UsersWithRolesRepository(_dbContext);
+			_userWithLocationsMapper = new UserWithLocationsMapper();
+			_usersWithLocationsRepository = new UsersWithLocationsRepository(_dbContext);
 		}
 
 		public async Task<ServiceResult<ProfileWithImpersonationDto>> Get()
@@ -40,20 +38,10 @@ namespace Domain.Orchestrators
 			return GetProcessedResult(profileWithImpersonationDto);
 		}
 
-		private async Task<UserProfileDto> GetUserProfile(int userId)
+		private async Task<UserWithLocationsDto> GetUserProfile(int userId)
 		{
-			var userEntity = await _usersWithRolesRepository.SingleAsync(userId);
-			var locations = await GetLocations(userId);
-			var clientName = ClientLookup.GetClientName(userEntity.ClientIdentifier);
-
-			return new UserProfileDto(userEntity.Id, userEntity.FirstName, userEntity.LastName, locations, clientName);
-		}
-
-		private async Task<List<LocationBasicDto>> GetLocations(int userId)
-		{
-			var query = _usersRepository.GetLocations(userId);
-			var locationDtos = await query.Select(oo => new LocationBasicDto(oo.Id, oo.Name)).ToListAsync();
-			return locationDtos;
+			var userEntity = await _usersWithLocationsRepository.GetReadOnlyQuery().SingleAsync(oo => oo.Id == userId);
+			return _userWithLocationsMapper.Map(userEntity);
 		}
 	}
 }

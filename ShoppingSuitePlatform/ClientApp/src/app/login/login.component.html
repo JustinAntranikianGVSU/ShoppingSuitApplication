@@ -1,55 +1,32 @@
 
-<div class="row">
-  <div class="col-sm-6">
-    <div class="card">
-      <div class="card-header">
-        <h3>Sign In</h3>
-      </div>
-      <div class="card-body">
-        <div class="form-group row">
-          <label for="email" class="col-sm-3 col-form-label">Email</label>
-            <div class="col-sm-9">
-            <input type="text" [(ngModel)]="loginInfo.email" class="form-control" id="email">
-          </div>
-        </div>
-          
-        <div class="form-group row">
-          <label for="password" class="col-sm-3 col-form-label">Password</label>
-            <div class="col-sm-9">
-            <input type="text" [(ngModel)]="loginInfo.password" class="form-control" id="password">
-          </div>
-        </div>
+<div class="container">
+
+  <div class="row">
     
-        <div class="text-right">
-          <button type="button" (click)="onLoginClicked()" class="btn btn-lg btn-outline-primary">Login</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-sm-6">
-    <div class="card">
-      <div class="card-header">
-        <h3>Create Account</h3>
-      </div>
-      <div class="card-body">
-        <div class="form-group row">
-          <label for="email" class="col-sm-3 col-form-label">Email</label>
-            <div class="col-sm-9">
-            <input type="text" [(ngModel)]="loginInfo.email" class="form-control" id="email">
-          </div>
-        </div>
-          
-        <div class="form-group row">
-          <label for="password" class="col-sm-3 col-form-label">Password</label>
-            <div class="col-sm-9">
-            <input type="text" [(ngModel)]="loginInfo.password" class="form-control" id="password">
-          </div>
-        </div>
+    <div class="col-sm-4">&nbsp;</div>
+    <div class="col-sm-4">
+
+      <h4>Sign In</h4>
+
+      <div class="p-3 border border-primary rounded">
     
-        <div class="text-right">
-          <button type="button" (click)="onLoginClicked()" class="btn btn-lg btn-outline-primary">Create Account</button>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="text" [(ngModel)]="loginInfo.email" class="form-control" id="email">
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="text" [(ngModel)]="loginInfo.password" class="form-control" id="password">
+        </div>
+
+        <div class="text-right mt-4">
+          <button (click)="onLoginClicked()" class="btn btn-info btn-block">Sign In</button>
         </div>
       </div>
+
     </div>
+    <div class="col-sm-4">&nbsp;</div>
   </div>
+
 </div>

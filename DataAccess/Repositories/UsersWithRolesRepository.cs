@@ -7,9 +7,14 @@ namespace DataAccess.Repositories
 {
 	public sealed class UsersWithRolesRepository : UserBaseRepository
 	{
-		public UsersWithRolesRepository(AppDbContext dbContext) : base(dbContext) {}
+		public UsersWithRolesRepository(AppDbContext dbContext) : base(dbContext) { }
 
-		public override IQueryable<UserEntity> GetReadOnlyQuery() => _dbContext.Users.Include(oo => oo.Roles).AsNoTracking();
+		public override IQueryable<UserEntity> GetReadOnlyQuery()
+		{
+			return _dbContext.Users
+						.AsNoTracking()
+						.Include(oo => oo.Roles);
+		}
 
 		public async Task<UserEntity> SingleAsync(int userId)
 		{
