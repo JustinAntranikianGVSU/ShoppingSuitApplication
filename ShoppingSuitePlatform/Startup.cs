@@ -88,10 +88,12 @@ namespace ShoppingSuitePlatform
 			services.AddScoped<ICreateUserOrchestrator, CreateUserOrchestrator>();
 			services.AddScoped<ILocationsOrchestrator, LocationsOrchestrator>();
 			services.AddScoped<IGetUserOrchestrator, GetUserOrchestrator>();
+			services.AddScoped<IUpdateUserOrchestrator, UpdateUserOrchestrator>();
 			services.AddScoped<ILoginOrchestrator, LoginOrchestrator>();
 			services.AddScoped<IMyProfileOrchestrator, MyProfileOrchestrator>();
 			services.AddScoped<IAccessListOrchestrator, AccessListOrchestrator>();
 			services.AddScoped<IImpersonateOrchestrator, ImpersonateOrchestrator>();
+			services.AddScoped<IRolesOrchestrator, RolesOrchestrator>();
 		}
 
 		public static JwtRequestContext BuildJwtUserContext(IServiceProvider serviceProvider)

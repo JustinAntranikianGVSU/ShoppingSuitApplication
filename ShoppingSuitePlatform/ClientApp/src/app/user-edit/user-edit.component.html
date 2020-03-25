@@ -3,35 +3,92 @@
 
   <h4>Edit User</h4>
 
-  <h6>Basic Info</h6>
-  
-  <ul>
-    <li>FirstName : {{ user.firstName }}</li>
-    <li>LastName : {{ user.lastName }}</li>
-  </ul>
+  <div class="p-2 pb-5 border border-secondary" style="background-color: #BFE9EB;">
+    <h5>Basic Info</h5>
+    <hr />
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="form-group">
+          <label for="firstName">First name</label>
+          <input [(ngModel)]="user.firstName" type="text" class="form-control" id="firstName" />
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="form-group">
+          <label for="lastName">Last name</label>
+          <input [(ngModel)]="user.lastName" type="text" class="form-control" id="lastName" />
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input [(ngModel)]="user.email" type="text" class="form-control" id="email" />
+        </div>
+      </div>
+    </div>
 
-  <h6>Locations</h6>
+    <div class="row mt-4">
+      <div class="col-sm-4">
+        <div class="form-group">
+          <label for="clientName">Client Name</label>
+          <input [(ngModel)]="user.clientName" readonly type="text" class="form-control" id="clientName" />
+        </div>
+      </div>
+    </div>
 
-  <ol>
-    <li *ngFor="let location of user.locations">
-      {{ location.name }}
-    </li>
-  </ol>
+  </div>
 
-  <h6>Access Lists</h6>
+  <div class="p-2 pb-5 mt-5 border border-secondary" style="background-color: #BFE9EB;">
+    <h5>Locations</h5>
+    <hr />
 
-  <ol>
-    <li *ngFor="let accessList of user.accessLists">
-      {{ accessList.name }}
-    </li>
-  </ol>
+    <div class="row">
+      <div class="col-sm-3" *ngFor="let chunk of locationChunks">
+        <div class="form-check" *ngFor="let location of chunk">
+          <input type="checkbox" [(ngModel)]="location.isChecked" class="form-check-input" id="location{{ location.id }}" disabled>
+          <label class="form-check-label" for="location{{ location.id }}">{{ location.name }}</label>
+        </div>
+      </div>
+    </div>
 
-  <h6>Roles</h6>
+  </div>
 
-  <ul>
-    <li *ngFor="let role of user.roles">
-      {{ role.name }}
-    </li>
-  </ul>
+  <div class="p-2 pb-5 mt-5 border border-secondary" style="background-color: #BFE9EB;">
+    <h5>AccessLists</h5>
+    <hr />
+
+    <div class="row">
+      <div class="col-sm-3" *ngFor="let chunk of accessListChunks">
+        <div class="form-check" *ngFor="let accessList of chunk">
+          <input type="checkbox" [(ngModel)]="accessList.isChecked" class="form-check-input" id="accessList{{ accessList.id }}">
+          <label class="form-check-label" for="accessList{{ accessList.id }}">{{ accessList.name }}</label>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="p-2 pb-5 mt-5 border border-secondary" style="background-color: #BFE9EB;">
+    <h5>Roles</h5>
+    <hr />
+
+    <div class="row">
+      <div class="col-sm-3" *ngFor="let chunk of roleChunks">
+        <div class="form-check" *ngFor="let role of chunk">
+          <input type="checkbox" [(ngModel)]="role.isChecked" class="form-check-input" id="role{{ role.id }}">
+          <label class="form-check-label" for="role{{ role.id }}">{{ role.name }}</label>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <hr class="my-3" />
+
+  <div class="mb-5 text-right">
+    <a [routerLink]="['/user-list']" class="btn btn-info mr-5">View All Users</a>
+    <button class="btn btn-warning mr-2">Undo</button>
+    <button (click)="onUpdateUserClicked()" class="btn btn-success">Update</button>
+  </div>
 
 </div>

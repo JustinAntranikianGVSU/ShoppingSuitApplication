@@ -7,7 +7,7 @@ namespace CoreLibrary
 {
 	public class Role
 	{
-		public Guid Identifier { get; set; }
+		public Guid Id { get; set; }
 
 		public string Name { get; set; }
 
@@ -23,7 +23,7 @@ namespace CoreLibrary
 
 		public Role(Guid id, string name)
 		{
-			Identifier = id;
+			Id = id;
 			Name = name;
 			Permissions = new List<Permission>();
 			HasGlobalPermissions = true;
@@ -31,7 +31,7 @@ namespace CoreLibrary
 
 		public Role(Guid id, string name, params Permission[] permissions)
 		{
-			Identifier = id;
+			Id = id;
 			Name = name;
 			Permissions = permissions.ToList();
 		}

@@ -15,5 +15,11 @@
     <li *ngFor="let location of accessList.locations">{{ location.name }}</li>
   </ol>
 
+  <hr class="my-3" />
+
+  <div class="mt-2">
+    <a [routerLink]="['/accessLists']" class="btn btn-info">View All Access Lists</a>
+  </div>
+
 </div>
 

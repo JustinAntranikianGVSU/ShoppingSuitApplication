@@ -10,21 +10,14 @@ export class LocationsComponent implements OnInit {
 
   public dataLoaded = false
   public locations: any[] = [];
-  public users: any[] = [];
 
-  constructor(
-    private readonly locationService: LocationsService
-  ) { }
+  constructor(private readonly locationService: LocationsService) {}
 
   ngOnInit() {
     this.locationService.getAllForClient().subscribe(data => { 
       this.locations = data
       this.dataLoaded = true
     })
-  }
-
-  public onViewUsersClicked(location: any) {
-    this.locationService.getUsersByLocationId(location.id).subscribe(data => location.users = data)
   }
 
 }

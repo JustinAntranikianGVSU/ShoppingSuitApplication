@@ -16,4 +16,8 @@ export class UserEditService {
   public getUser(userId: number): Observable<any[]> {
     return this.http.get<any[]>(this.baseUrl + `User/${userId}`)
   }
+
+  public updateUser(id: number, userData: any): Observable<any> {
+    return this.http.put<any[]>(this.baseUrl + `User/${id}`, userData)
+  }
 }

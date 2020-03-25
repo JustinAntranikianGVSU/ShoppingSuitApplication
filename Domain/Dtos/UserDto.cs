@@ -7,6 +7,19 @@ using System.Security.Claims;
 
 namespace Domain
 {
+	public class UserUpdateDto
+	{
+		public string FirstName { get; set; }
+
+		public string LastName { get; set; }
+
+		public string Email { get; set; }
+
+		public List<int> AccessListIds { get; set; }
+
+		public List<Guid> RoleIds { get; set; }
+	}
+
 	public class UserDto : UserBasicDto
 	{
 		public string Email { get; set; }
@@ -59,7 +72,7 @@ namespace Domain
 
 		private IEnumerable<Claim> GetRoleClaims()
 		{
-			return Roles.Select(oo => new Claim(ClaimTypes.Role, oo.Identifier.ToString()));
+			return Roles.Select(oo => new Claim(ClaimTypes.Role, oo.Id.ToString()));
 		}
 	}
 }

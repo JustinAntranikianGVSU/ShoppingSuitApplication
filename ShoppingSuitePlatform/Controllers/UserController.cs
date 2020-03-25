@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,10 +14,11 @@ namespace ShoppingSuitePlatform.Controllers
 	{
 		private readonly ICreateUserOrchestrator _createUserOrchestrator;
 		private readonly IGetUserOrchestrator _getUserOrchestrator;
+		private readonly IUpdateUserOrchestrator _updateUserOrchestrator;
 
-		public UserController(ICreateUserOrchestrator createUserOrchestrator, IGetUserOrchestrator getUserOrchestrator)
+		public UserController(ICreateUserOrchestrator createUserOrchestrator, IGetUserOrchestrator getUserOrchestrator, IUpdateUserOrchestrator updateUserOrchestrator)
 		{
-			(_createUserOrchestrator, _getUserOrchestrator) = (createUserOrchestrator, getUserOrchestrator);
+			(_createUserOrchestrator, _getUserOrchestrator, _updateUserOrchestrator) = (createUserOrchestrator, getUserOrchestrator, updateUserOrchestrator);
 		}
 
 		[HttpGet]
@@ -37,9 +37,18 @@ namespace ShoppingSuitePlatform.Controllers
 		}
 
 		[HttpPost]
+		[Authorize(Policy = AppPolicy.ViewEmployee)]
 		public async Task<ActionResult> Post([FromBody] UserDto user)
 		{
 			var result = await _createUserOrchestrator.Create(user);
+			return BadRequestIfNotProcessed(result);
+		}
+
+		[HttpPut("{id}")]
+		[Authorize(Policy = AppPolicy.ViewEmployee)]
+		public async Task<ActionResult> Put(int id, [FromBody] UserUpdateDto userUpdateDto)
+		{
+			var result = await _updateUserOrchestrator.Update(id, userUpdateDto);
 			return BadRequestIfNotProcessed(result);
 		}
 	}

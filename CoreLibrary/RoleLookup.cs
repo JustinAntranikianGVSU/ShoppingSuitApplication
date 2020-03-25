@@ -25,7 +25,7 @@ namespace CoreLibrary
 
 		public static Role GetRole(Guid identifier)
 		{
-			var role = Roles.SingleOrDefault(oo => oo.Identifier == identifier);
+			var role = Roles.SingleOrDefault(oo => oo.Id == identifier);
 			return role ?? throw new Exception($"Could not find Role with identifier {identifier}. Please fix whatever data is refering to a role that doesn't exist.");
 		}
 	}

@@ -13,15 +13,15 @@ export class LocationsService {
     return this.http.get<any[]>(this.baseUrl + `Locations`)
   }
 
-  public getUsersByLocationId(locationId: number): Observable<any> {
-    return this.http.get<any[]>(this.baseUrl + `Locations/${locationId}`)
-  }
-
   public getAccessLists(): Observable<any> {
     return this.http.get<any[]>(this.baseUrl + `AccessList`)
   }
 
   public getAccessList(accessListId: number): Observable<any> {
     return this.http.get<any[]>(this.baseUrl + `AccessList/${accessListId}`)
+  }
+
+  public getRoles(): Observable<any> {
+    return this.http.get<any[]>(this.baseUrl + `Roles`)
   }
 }
