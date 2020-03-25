@@ -21,6 +21,10 @@ export class LocationsService {
     return this.http.get<any[]>(this.baseUrl + `AccessList/${accessListId}`)
   }
 
+  public updateAccessList(id: number, data: any): Observable<any> {
+    return this.http.put<any[]>(this.baseUrl + `AccessList/${id}`, data)
+  }
+
   public getRoles(): Observable<any> {
     return this.http.get<any[]>(this.baseUrl + `Roles`)
   }

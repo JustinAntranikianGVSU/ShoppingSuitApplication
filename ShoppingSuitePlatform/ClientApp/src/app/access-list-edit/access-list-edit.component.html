@@ -1,24 +1,58 @@
 
 <div class="container">
 
-  <h4>Edit Access List : <i>{{ accessList.name }}</i></h4>
+  <h4>Edit Access List</h4>
 
-  <h6>Users</h6>
+  <div class="p-2 pb-5 border border-secondary" style="background-color: #BFE9EB;">
+    <h5>Basic Info</h5>
+    <hr />
 
-  <ul>
-    <li *ngFor="let user of accessList.users"><a class="text-info linkborder" [routerLink]="['/user-edit', user.id]">{{ user.fullName }}</a></li>
-  </ul>
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input [(ngModel)]="accessList.name" type="text" class="form-control" id="name" />
+        </div>
+      </div>
+    </div>
+  </div>
 
-  <h6>Locations</h6>
+  <div class="p-2 pb-5 mt-5 border border-secondary" style="background-color: #BFE9EB;">
+    <h5>Locations</h5>
+    <hr />
 
-  <ol>
-    <li *ngFor="let location of accessList.locations">{{ location.name }}</li>
-  </ol>
+    <div class="row">
+      <div class="col-sm-3" *ngFor="let chunk of locationChunks">
+        <div class="form-check" *ngFor="let location of chunk">
+          <input type="checkbox" [(ngModel)]="location.isChecked" class="form-check-input" id="location{{ location.id }}">
+          <label class="form-check-label" for="location{{ location.id }}">{{ location.name }}</label>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="p-2 pb-5 mt-5 border border-secondary" style="background-color: #BFE9EB;">
+    <h5>Users</h5>
+    <hr />
+
+    <div class="row">
+      <div class="col-sm-3" *ngFor="let chunk of userChunks">
+        <div class="form-check" *ngFor="let user of chunk">
+          <input type="checkbox" [(ngModel)]="user.isChecked" class="form-check-input" id="user{{ user.id }}">
+          <label class="form-check-label" for="user{{ user.id }}">{{ user.fullName }}</label>
+        </div>
+      </div>
+    </div>
+
+  </div>
 
   <hr class="my-3" />
 
-  <div class="mt-2">
-    <a [routerLink]="['/accessLists']" class="btn btn-info">View All Access Lists</a>
+  <div class="mb-5 text-right">
+    <a [routerLink]="['/accessLists']" class="btn btn-info mr-5">View All Access Lists</a>
+    <button class="btn btn-warning mr-2">Undo</button>
+    <button (click)="onUpdateClicked()" class="btn btn-success">Update</button>
   </div>
 
 </div>

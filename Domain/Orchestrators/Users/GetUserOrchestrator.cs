@@ -17,7 +17,7 @@ namespace Domain.Orchestrators.Users
 		Task<ServiceResult<UserWithLocationsDto>> Get(int id);
 	}
 
-	public class GetUserOrchestrator : JwtContextOrchestratorBase<UserWithLocationsDto>, IGetUserOrchestrator
+	public class GetUserOrchestrator : OrchestratorBase, IGetUserOrchestrator
 	{
 		private readonly UserWithLocationsMapper _userWithLocationsMapper;
 		private readonly UsersWithLocationsRepository _usersWithLocationsRepository;

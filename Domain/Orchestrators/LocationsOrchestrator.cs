@@ -15,7 +15,7 @@ namespace Domain.Orchestrators
 		Task<ServiceResult<List<LocationWithUsersDto>>> GetAll();
 	}
 
-	public class LocationsOrchestrator : JwtContextOrchestratorBase<List<LocationWithUsersDto>>, ILocationsOrchestrator
+	public class LocationsOrchestrator : OrchestratorBase, ILocationsOrchestrator
 	{
 		private readonly LocationWithAccessListMapper _locationWithAccessListMapper;
 		private readonly LocationsWithUsersRepository _locationsRepository;

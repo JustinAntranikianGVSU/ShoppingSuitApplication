@@ -10,7 +10,7 @@ namespace Domain.Orchestrators
 		public ServiceResult<List<Role>> GetRoles();
 	}
 
-	public class RolesOrchestrator : OrchestratorBase<Role>, IRolesOrchestrator
+	public class RolesOrchestrator : OrchestratorBase, IRolesOrchestrator
 	{
 		public RolesOrchestrator() {}
 

@@ -1,10 +1,11 @@
 ﻿using System.Threading.Tasks;
-using Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using CoreLibrary;
 using Domain.Orchestrators.Users;
 using ShoppingSuitePlatform.Controllers.BaseControllers;
+using Domain;
+using Domain.Dtos;
 
 namespace ShoppingSuitePlatform.Controllers
 {

@@ -16,7 +16,7 @@ namespace Domain.Orchestrators
 		Task<ServiceResult<List<Claim>>> GetUserClaims(LoginRequestDto loginReqestDto);
 	}
 
-	public class LoginOrchestrator : DbContextOrchestratorBase<List<Claim>>, ILoginOrchestrator
+	public class LoginOrchestrator : OrchestratorBase<List<Claim>>, ILoginOrchestrator
 	{
 		private readonly UserMapper _userMapper;
 		private readonly UsersWithRolesRepository _usersWithRolesRepository;

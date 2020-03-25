@@ -7,7 +7,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { UserEditComponent } from './user-edit/user-edit.component';
-import { UserEditService } from './_services/user-edit.service';
+import { UserService } from './_services/user-edit.service';
 import { UserListComponent } from './user-list/user-list.component';
 import { LoginService } from './_services/login.service';
 import { LoginComponent } from './login/login.component';
@@ -50,7 +50,7 @@ import { AccessListEditComponent } from './access-list-edit/access-list-edit.com
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },    
-    UserEditService,
+    UserService,
     LoginService,
     LocationsService,
     ProfileService

@@ -17,7 +17,7 @@ namespace Domain.Orchestrators.Users
 		Task<ServiceResult<UserDto>> Create(UserDto user);
 	}
 
-	public class CreateUserOrchestrator : DbContextOrchestratorBase<UserDto>, ICreateUserOrchestrator
+	public class CreateUserOrchestrator : OrchestratorBase<UserDto>, ICreateUserOrchestrator
 	{
 		private readonly UserMapper _userMapper;
 		private readonly UsersWithRolesRepository _usersRepository;

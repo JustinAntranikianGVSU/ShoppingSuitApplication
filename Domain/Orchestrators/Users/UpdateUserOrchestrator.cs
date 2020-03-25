@@ -18,7 +18,7 @@ namespace Domain.Orchestrators.Users
 		public Task<ServiceResult<UserWithLocationsDto>> Update(int id, UserUpdateDto userUpdateDto);
 	}
 
-	public class UpdateUserOrchestrator : DbContextOrchestratorBase<UserWithLocationsDto>, IUpdateUserOrchestrator
+	public class UpdateUserOrchestrator : OrchestratorBase, IUpdateUserOrchestrator
 	{
 		private readonly UserWithLocationsMapper _userWithLocationsMapper;
 

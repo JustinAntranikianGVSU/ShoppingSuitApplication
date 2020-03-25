@@ -20,7 +20,7 @@ namespace Domain.Orchestrators
 		Task<ServiceResult<List<Claim>>> GetExitImpersonateClaims();
 	}
 
-	public class ImpersonateOrchestrator : JwtContextOrchestratorBase<List<Claim>>, IImpersonateOrchestrator
+	public class ImpersonateOrchestrator : OrchestratorBase<List<Claim>>, IImpersonateOrchestrator
 	{
 		private readonly UserMapper _userMapper;
 		private readonly UsersWithRolesRepository _usersWithRolesRepository;
@@ -45,8 +45,8 @@ namespace Domain.Orchestrators
 
 			if (userEntity is null)
 			{
-				var error = GetError(GetResourceNotFoundMessage(impersonateUserId));
-				return GetBadRequestResult(error);
+				var errorMessage = GetResourceNotFoundMessage(impersonateUserId);
+				return GetBadRequestResult(errorMessage);
 			}
 
 			var userClaims = _httpContextAccessor.HttpContext.User.GetUserAndClientClaims();

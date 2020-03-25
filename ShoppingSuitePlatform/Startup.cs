@@ -94,6 +94,7 @@ namespace ShoppingSuitePlatform
 			services.AddScoped<IAccessListOrchestrator, AccessListOrchestrator>();
 			services.AddScoped<IImpersonateOrchestrator, ImpersonateOrchestrator>();
 			services.AddScoped<IRolesOrchestrator, RolesOrchestrator>();
+			services.AddScoped<IUpdateAccessListOrchestrator, UpdateAccessListOrchestrator>();
 		}
 
 		public static JwtRequestContext BuildJwtUserContext(IServiceProvider serviceProvider)

@@ -90,8 +90,8 @@
         <td>{{ user.email }}</td>
         <td class="text-center"><span (click)="listView = false" class="badge badge-pill badge-secondary">{{ user.accessLists.length }}</span></td>
         <td class="text-center">
-          <a class="btn btn-info btn-sm" [routerLink]="['/user-edit', user.id]" placement="left" ngbTooltip="Edit : {{ user.fullName }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-          <button class="btn btn-info ml-2 btn-sm" (click)="onImpersonateClicked(user)" ngbTooltip="Impersonate : {{ user.fullName }}"><i class="fa fa-address-card" aria-hidden="true"></i></button>
+          <a class="btn btn-info btn-sm" [routerLink]="['/user-edit', user.id]" placement="left" ngbTooltip="Edit : {{ user.fullName }}"><i class="fa fa-pencil-square-o"></i></a>
+          <button class="btn btn-info ml-2 btn-sm" (click)="onImpersonateClicked(user)" ngbTooltip="Impersonate : {{ user.fullName }}"><i class="fa fa-address-card"></i></button>
         </td>
       </tr>
     </tbody>

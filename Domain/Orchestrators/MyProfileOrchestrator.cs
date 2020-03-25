@@ -14,7 +14,7 @@ namespace Domain.Orchestrators
 		Task<ServiceResult<ProfileWithImpersonationDto>> Get();
 	}
 
-	public class MyProfileOrchestrator : JwtContextOrchestratorBase<ProfileWithImpersonationDto>, IMyProfileOrchestrator
+	public class MyProfileOrchestrator : OrchestratorBase, IMyProfileOrchestrator
 	{
 		private readonly UserWithLocationsMapper _userWithLocationsMapper;
 		private readonly UsersWithLocationsRepository _usersWithLocationsRepository;

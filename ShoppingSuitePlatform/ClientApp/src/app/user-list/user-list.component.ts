@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { UserEditService } from '../_services/user-edit.service';
+import { UserService } from '../_services/user-edit.service';
 import { ImpersonateService } from '../_services/impersonate.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
@@ -30,7 +30,7 @@ export class UserListComponent implements OnInit {
   private impersonationConfirmRef: ElementRef
 
   constructor(
-    private readonly userService: UserEditService,
+    private readonly userService: UserService,
     private readonly impersonateService: ImpersonateService,
     private readonly router: Router,
     private readonly modalService: NgbModal

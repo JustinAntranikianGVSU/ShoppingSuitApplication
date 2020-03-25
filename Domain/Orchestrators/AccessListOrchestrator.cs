@@ -17,7 +17,7 @@ namespace Domain.Orchestrators
 		Task<ServiceResult<AccessListDto>> Get(int accessListId);
 	}
 
-	public class AccessListOrchestrator : JwtContextOrchestratorBase<AccessListDto>, IAccessListOrchestrator
+	public class AccessListOrchestrator : OrchestratorBase, IAccessListOrchestrator
 	{
 		private readonly AccessListDtoMapper _accessListFullDtoMapper;
 		private readonly AccessListRepository _accessListRepository;
