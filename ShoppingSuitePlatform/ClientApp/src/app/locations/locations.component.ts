@@ -20,5 +20,4 @@ export class LocationsComponent extends ComponentBase implements OnInit {
       this.dataLoaded = true
     })
   }
-
 }

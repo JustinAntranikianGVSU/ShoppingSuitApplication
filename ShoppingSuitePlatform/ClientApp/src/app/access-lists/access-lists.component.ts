@@ -16,5 +16,4 @@ export class AccessListsComponent extends ComponentBase implements OnInit {
   ngOnInit() {
     this.apiClientService.getAccessLists().subscribe(data => this.accessLists = data)
   }
-
 }

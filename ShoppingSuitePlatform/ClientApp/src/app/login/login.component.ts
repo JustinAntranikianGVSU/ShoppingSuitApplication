@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ApiClientService } from '../_services/api-client.service';
 import { AppConstants } from '../_shared/appConstants';
 import { LoginDto } from '../_models/login';
+import { UserTokenResponse } from '../_models/userTokenResponse';
 
 @Component({
   selector: 'app-login',
@@ -22,13 +23,12 @@ export class LoginComponent {
   }
 
   public onLoginClicked() {
-    this.apiClientService.login(this.loginInfo).subscribe(
-      data => {
-        localStorage.setItem(AppConstants.UserToken, data.token)
-        const returnUrl = this.route.snapshot.queryParams['returnUrl']
-        window.location.href = returnUrl || '/'
-      },
-      error => console.log(error)
-    )
+    this.apiClientService.login(this.loginInfo).subscribe(this.handleLoginCompleted)
+  }
+
+  private handleLoginCompleted = (tokenResponse: UserTokenResponse) => {
+    localStorage.setItem(AppConstants.UserToken, tokenResponse.token)
+    const returnUrl = this.route.snapshot.queryParams['returnUrl']
+    window.location.href = returnUrl || '/'
   }
 }

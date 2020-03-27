@@ -63,7 +63,7 @@ export class UserListComponent extends ComponentBase implements OnInit {
     
     this.userToImpersonate = user
 
-    this.modalService.open(this.impersonationConfirmRef, {ariaLabelledBy: 'modal-basic-title'}).result.then(
+    this.modalService.open(this.impersonationConfirmRef, { ariaLabelledBy: 'modal-basic-title' }).result.then(
       this.handleImpersonationConfirmed, 
       () => {}
     );
@@ -86,15 +86,15 @@ export class UserListComponent extends ComponentBase implements OnInit {
     linkType === 'Reload' ? window.location.reload() : this.router.navigate([this.LocationsPage])
   }
 
-  public onFirstNameFilterClicked() {
-    this.users = this.users.filter(oo => oo.firstName.toLowerCase() == this.filterModel.toLowerCase())
-  }
-
   public searchUsers = (text$: Observable<string>) => {
     return text$.pipe(
       debounceTime(200),
       distinctUntilChanged(),
       map(term => term.length < 2 ? [] : commonNames.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
     )
+  }
+
+  public onFirstNameFilterClicked() {
+    this.users = this.users.filter(oo => oo.firstName.toLowerCase() == this.filterModel.toLowerCase())
   }
 }
