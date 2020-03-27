@@ -1,6 +1,6 @@
 ﻿namespace Domain.Dtos
 {
-	public class LoginRequestDto
+	public class LoginDto
 	{
 		public string Email { get; set; }
 

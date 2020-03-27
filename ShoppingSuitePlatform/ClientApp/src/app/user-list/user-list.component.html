@@ -50,8 +50,8 @@
     
     <div class="col-md-6 text-right">
       <div class="btn-group"> 
-        <button type="button" title="list view" (click)="listView = true" [class.active]="listView" class="btn btn-secondary btn-sm"><i class="fa fa-list"></i></button> 
-        <button type="button" title="expanded view" (click)="listView = false" [class.active]="!listView" class="btn btn-secondary btn-sm"><i class="fa fa-th"></i></button>
+        <a routerLink='.' fragment="listView" title="list view" class="btn btn-secondary btn-sm"><i class="fa fa-list"></i></a> 
+        <a routerLink='.' fragment="expandedView" title="expanded view" class="btn btn-secondary btn-sm"><i class="fa fa-th"></i></a>
       </div>
     </div>
 
@@ -71,7 +71,7 @@
 
 <ng-template #listViewTemplate>
 
-  <table *ngIf="dataLoaded" class="table table-sm table-hover table-bordered">
+  <table class="table table-sm table-hover table-bordered">
     <thead class="thead-dark">
       <tr>
         <th scope="col">#</th>
@@ -88,9 +88,11 @@
         <td>{{ user.firstName }}</td>
         <td>{{ user.lastName }}</td>
         <td>{{ user.email }}</td>
-        <td class="text-center"><span (click)="listView = false" class="badge badge-pill badge-secondary">{{ user.accessLists.length }}</span></td>
         <td class="text-center">
-          <a class="btn btn-info btn-sm" [routerLink]="['/user-edit', user.id]" placement="left" ngbTooltip="Edit : {{ user.fullName }}"><i class="fa fa-pencil-square-o"></i></a>
+          <a routerLink='.' fragment="expandedView"><span class="badge badge-pill badge-secondary">{{ user.accessLists.length }}</span></a>
+        </td>
+        <td class="text-center">
+          <a class="btn btn-info btn-sm" [routerLink]="[UserEditPage, user.id]" placement="left" ngbTooltip="Edit : {{ user.fullName }}"><i class="fa fa-pencil-square-o"></i></a>
           <button class="btn btn-info ml-2 btn-sm" (click)="onImpersonateClicked(user)" ngbTooltip="Impersonate : {{ user.fullName }}"><i class="fa fa-address-card"></i></button>
         </td>
       </tr>
@@ -117,7 +119,7 @@
       </div>
       <div class="col-sm-3">
         <div *ngFor="let accessList of user.accessLists">
-          <a class="text-info linkborder" [routerLink]="['/accessListEdit', accessList.id]">{{ accessList.name }}</a>
+          <a class="text-info linkborder" [routerLink]="[AccessListEditPage, accessList.id]">{{ accessList.name }}</a>
         </div>
       </div>
       <div class="col-sm-3">
@@ -126,7 +128,7 @@
         </ul>          
       </div>
       <div class="col-sm-1 text-right">
-        <a class="btn btn-info btn-block" [routerLink]="['/user-edit', user.id]"><i class="fa fa-pencil-square-o"></i></a>
+        <a class="btn btn-info btn-block" [routerLink]="[UserEditPage, user.id]"><i class="fa fa-pencil-square-o"></i></a>
         <button class="btn btn-info btn-block" (click)="onImpersonateClicked(user)"><i class="fa fa-address-card"></i></button>
       </div>
     </div>

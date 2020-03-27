@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { AppConstants } from '../_shared/appConstants';
 
 @Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate {
@@ -8,7 +9,7 @@ export class AuthGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
 
-    if (localStorage.getItem('userToken')) {
+    if (localStorage.getItem(AppConstants.UserToken)) {
       return true;
     }
 

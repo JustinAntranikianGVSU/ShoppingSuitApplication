@@ -17,6 +17,12 @@ namespace ShoppingSuitePlatform.Helpers
 			_config = config;
 		}
 
+		/// <summary>
+		/// Boiler plate code to generate a JWT token in C#.
+		/// See https://stackoverflow.com/questions/40281050/jwt-authentication-for-asp-net-web-api
+		/// </summary>
+		/// <param name="claims"></param>
+		/// <returns></returns>
 		public string GenerateJSONWebToken(List<Claim> claims)
 		{
 			var key = _config["Jwt:Key"];

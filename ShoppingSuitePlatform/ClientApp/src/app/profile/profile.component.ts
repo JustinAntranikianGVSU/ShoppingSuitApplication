@@ -1,22 +1,24 @@
 import { Component, OnInit } from '@angular/core';
-import { ProfileService } from '../_services/profile.service';
+import { ApiClientService } from '../_services/api-client.service';
+import { User } from '../_models/user';
+import { ComponentBase } from '../_shared/componentBase';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent extends ComponentBase implements OnInit {
 
   public dataLoaded = false
-  public loggedInUserProfile: any
-  public impersonationUserProfile: any
+  public loggedInUserProfile: User
+  public impersonationUserProfile: User
   public isImpersonating: boolean
 
-  constructor(private readonly profileService: ProfileService) {}
+  constructor(private readonly apiClientService: ApiClientService) { super() }
 
   ngOnInit() {
-    this.profileService.get().subscribe(data => {
+    this.apiClientService.getProfile().subscribe(data => {
 
       const { loggedInUserProfile, impersonationUserProfile, isImpersonating } = data
 

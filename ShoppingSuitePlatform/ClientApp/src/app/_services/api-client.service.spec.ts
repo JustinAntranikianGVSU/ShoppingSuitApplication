@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { LoginService } from './login.service';
+import { ApiClientService } from './api-client.service';
 
-describe('LoginService', () => {
+describe('ApiClientService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: LoginService = TestBed.get(LoginService);
+    const service: ApiClientService = TestBed.get(ApiClientService);
     expect(service).toBeTruthy();
   });
 });

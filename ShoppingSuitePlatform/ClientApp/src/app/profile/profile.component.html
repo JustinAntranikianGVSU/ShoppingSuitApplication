@@ -5,39 +5,141 @@
 
   <div *ngIf="isImpersonating">
 
-    <h6>Basic Info for Impersonation</h6>
+    <div class="p-2 pb-5 border border-secondary" style="background-color: #BFE9EB;">
+      <h5>Basic Info (For Impersonation)</h5>
+      <hr />
+      <div class="row">
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label for="firstName">First name</label>
+            <input [(ngModel)]="impersonationUserProfile.firstName" type="text" class="form-control" id="firstName" />
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label for="lastName">Last name</label>
+            <input [(ngModel)]="impersonationUserProfile.lastName" type="text" class="form-control" id="lastName" />
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input [(ngModel)]="impersonationUserProfile.email" type="text" class="form-control" id="email" />
+          </div>
+        </div>
+      </div>
+  
+      <div class="row mt-4">
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label for="clientName">Client Name</label>
+            <input [(ngModel)]="impersonationUserProfile.clientName" readonly type="text" class="form-control" id="clientName" />
+          </div>
+        </div>
+      </div>
+  
+    </div>
 
-    <ul>
-      <li>FirstName : {{ impersonationUserProfile.firstName }}</li>
-      <li>LastName : {{ impersonationUserProfile.lastName }}</li>
-      <li>ClientName : {{ impersonationUserProfile.clientName }}</li>
-    </ul>
+    <div class="p-2 pb-5 mt-5 border border-secondary" style="background-color: #BFE9EB;">
+      <h5>Locations (For Impersonation)</h5>
+      <hr />
+  
+      <div class="row">
+        <div class="col-sm-3">
+          <div class="form-check" *ngFor="let location of impersonationUserProfile.locations">
+            <input type="checkbox" checked="true" class="form-check-input" disabled>
+            <label class="form-check-label">{{ location.name }}</label>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    <h6>Locations</h6>
+    <div class="p-2 pb-5 mt-5 border border-secondary" style="background-color: #BFE9EB;">
+      <h5>AccessLists (For Impersonation)</h5>
+      <hr />
+  
+      <div class="row">
+        <div class="col-sm-3">
+          <div class="form-check" *ngFor="let accessList of impersonationUserProfile.accessLists">
+            <input type="checkbox" checked="true" class="form-check-input" disabled>
+            <label class="form-check-label">{{ accessList.name }}</label>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    <ol>
-      <li *ngFor="let location of impersonationUserProfile.locations">{{ location.name }}</li>
-    </ol>
+    <div class="p-2 pb-5 mt-5 border border-secondary" style="background-color: #BFE9EB;">
+      <h5>Roles (For Impersonation)</h5>
+      <hr />
+  
+      <div class="row">
+        <div class="col-sm-3">
+          <div class="form-check" *ngFor="let role of impersonationUserProfile.roles">
+            <input type="checkbox" checked="true" class="form-check-input" disabled>
+            <label class="form-check-label">{{ role.name }}</label>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <hr class="my-5" />
 
   </div>
 
-  <div>
+  <div class="p-2 pb-5 border border-secondary" style="background-color: #BFE9EB;">
+    <h5>Basic Info</h5>
+    <hr />
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="form-group">
+          <label for="firstName">First name</label>
+          <input [(ngModel)]="loggedInUserProfile.firstName" type="text" class="form-control" id="firstName" />
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="form-group">
+          <label for="lastName">Last name</label>
+          <input [(ngModel)]="loggedInUserProfile.lastName" type="text" class="form-control" id="lastName" />
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input [(ngModel)]="loggedInUserProfile.email" type="text" class="form-control" id="email" />
+        </div>
+      </div>
+    </div>
 
-    <h6>Basic Info</h6>
+    <div class="row mt-4">
+      <div class="col-sm-4">
+        <div class="form-group">
+          <label for="clientName">Client Name</label>
+          <input [(ngModel)]="loggedInUserProfile.clientName" readonly type="text" class="form-control" id="clientName" />
+        </div>
+      </div>
+    </div>
 
-    <ul>
-      <li>FirstName : {{ loggedInUserProfile.firstName }}</li>
-      <li>LastName : {{ loggedInUserProfile.lastName }}</li>
-    </ul>
+  </div>
 
-    <h6>Locations</h6>
+  <div class="p-2 pb-5 mt-5 border border-secondary" style="background-color: #BFE9EB;">
+    <h5>Locations</h5>
+    <hr />
 
-    <ol>
-      <li *ngFor="let location of loggedInUserProfile.locations">{{ location.name }}</li>
-    </ol>
+    <div class="row">
+      <div class="col-sm-3">
+        <div class="form-check" *ngFor="let location of loggedInUserProfile.locations">
+          <input type="checkbox" class="form-check-input" disabled>
+          <label class="form-check-label">{{ location.name }}</label>
+        </div>
+      </div>
+    </div>
+  </div>
 
+  <hr class="my-3" />
+
+  <div class="mb-5 text-right">
+    <a [routerLink]='UsersPage' class="btn btn-info mr-5">View All Users</a>
+    <button class="btn btn-warning mr-2">Undo</button>
   </div>
 
 </div>

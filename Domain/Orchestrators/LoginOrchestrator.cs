@@ -13,7 +13,7 @@ namespace Domain.Orchestrators
 {
 	public interface ILoginOrchestrator
 	{
-		Task<ServiceResult<List<Claim>>> GetUserClaims(LoginRequestDto loginReqestDto);
+		Task<ServiceResult<List<Claim>>> GetUserClaims(LoginDto loginReqestDto);
 	}
 
 	public class LoginOrchestrator : OrchestratorBase<List<Claim>>, ILoginOrchestrator
@@ -27,7 +27,7 @@ namespace Domain.Orchestrators
 			_usersWithRolesRepository = new UsersWithRolesRepository(dbContext);
 		}
 
-		public async Task<ServiceResult<List<Claim>>> GetUserClaims(LoginRequestDto loginReqestDto)
+		public async Task<ServiceResult<List<Claim>>> GetUserClaims(LoginDto loginReqestDto)
 		{
 			var userEntity = await _usersWithRolesRepository.GetByEmail(loginReqestDto.Email);
 

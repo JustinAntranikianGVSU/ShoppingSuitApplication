@@ -19,7 +19,7 @@ namespace ShoppingSuitePlatform.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> Post([FromBody] LoginRequestDto loginRequestDto)
+		public async Task<ActionResult> Post([FromBody] LoginDto loginRequestDto)
 		{
 			var result = await _loginOrchestrator.GetUserClaims(loginRequestDto);
 			return GetTokenResult(result);

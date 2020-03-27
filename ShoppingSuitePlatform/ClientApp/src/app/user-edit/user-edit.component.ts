@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { UserService } from '../_services/user-edit.service';
-import { LocationsService } from '../_services/locations.service';
+import { CheckBoxComponentBase } from '../_shared/CheckBoxComponentBase';
+import { ApiClientService } from '../_services/api-client.service';
 import { concat, forkJoin } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import * as _ from 'lodash';
-import { CheckBoxComponentBase } from '../_shared/CheckBoxComponentBase';
+import { User, UserUpdateDto } from '../_models/user';
+import { Role } from '../_models/role';
+import { AccessList } from '../_models/accessList';
+import { Location } from '../_models/location';
 
 @Component({
   selector: 'app-user-edit',
@@ -14,40 +17,36 @@ import { CheckBoxComponentBase } from '../_shared/CheckBoxComponentBase';
 })
 export class UserEditComponent extends CheckBoxComponentBase implements OnInit {
 
-  public user: any
-  public locationChunks: any[][]
-  public accessListChunks: any[][]
-  public roleChunks: any[][]
-  private userId: number
+  public user: User
+  public locationChunks: Location[][]
+  public accessListChunks: AccessList[][]
+  public roleChunks: Role[][]
 
   constructor(
-    private readonly route: ActivatedRoute,
-    private readonly userService: UserService,
-    private readonly locationService: LocationsService
+    private readonly apiClientService: ApiClientService,
+    private readonly route: ActivatedRoute
   ) { super() }
 
   ngOnInit() {
-    this.userId = parseInt(this.route.snapshot.paramMap.get('id'))
-
     concat(this.getUser$(), this.getParallelObservables$()).subscribe(() => {})
   }
 
   private getUser$ = () => {
-    return this.userService.getUser(this.userId).pipe(
+    return this.apiClientService.getUser(this.getId()).pipe(
       tap(data => {
         this.user = data
       })
     )
   }
 
-  // combines these three api calls into a single observable that is executed at once, but only after the getUser call completes. 
+  // combines these three api calls into a single observable that is executed in parallel, but only after the getUser api call completes. 
   private getParallelObservables$ = () => {
     const parallelCalls$ = [this.getLocations$(), this.getAccessLists$(), this.getRoles$()]
     return forkJoin(...parallelCalls$)
   }
 
   private getLocations$ = () => {
-    return this.locationService.getAllForClient().pipe(
+    return this.apiClientService.getLocations().pipe(
       tap(data => {
         const ids = this.user.locations.map(oo => oo.id)
         this.locationChunks = this.mapToCheckboxChunks(data, ids)
@@ -56,7 +55,7 @@ export class UserEditComponent extends CheckBoxComponentBase implements OnInit {
   }
 
   private getAccessLists$ = () => {
-    return this.locationService.getAccessLists().pipe(
+    return this.apiClientService.getAccessLists().pipe(
       tap(data => {
         const ids = this.user.accessLists.map(oo => oo.id)
         this.accessListChunks = this.mapToCheckboxChunks(data, ids)
@@ -65,7 +64,7 @@ export class UserEditComponent extends CheckBoxComponentBase implements OnInit {
   }
 
   private getRoles$ = () => {
-    return this.locationService.getRoles().pipe(
+    return this.apiClientService.getRoles().pipe(
       tap(data => {
         const ids = this.user.roles.map(oo => oo.id)
         this.roleChunks = this.mapToCheckboxChunks(data, ids)
@@ -75,16 +74,17 @@ export class UserEditComponent extends CheckBoxComponentBase implements OnInit {
 
   public onUpdateUserClicked() {
 
-    const userData = {
-      ...this.user,
-      roleIds: this.extractCheckedIds(this.roleChunks),
-      accessListIds: this.extractCheckedIds(this.accessListChunks)
-    }
+    const {firstName, lastName, email} = this.user
+    const accessListIds = this.extractCheckedIds(this.accessListChunks)
+    const roleIds = this.extractCheckedIds(this.roleChunks)
 
-    this.userService.updateUser(this.userId, userData).subscribe(data => {
+    const userUpdateDto = new UserUpdateDto(firstName, lastName, email, accessListIds, roleIds)
+
+    this.apiClientService.updateUser(this.getId(), userUpdateDto).subscribe(data => {
       const ids = data.locations.map(oo => oo.id);
       this.locationChunks = this.mapToCheckboxChunks(_.flatten(this.locationChunks), ids)
     })
   }
 
+  private getId = () => parseInt(this.route.snapshot.paramMap.get('id'))
 }

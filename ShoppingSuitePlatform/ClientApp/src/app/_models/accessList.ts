@@ -1,4 +1,4 @@
-import { User } from "./user"
+import { UserBasic } from "./user"
 import { Location } from "./location"
 
 export class AccessListBasic {
@@ -8,5 +8,14 @@ export class AccessListBasic {
 
 export class AccessList extends AccessListBasic {
   locations: Location[]
-  users: User[]
+  users: UserBasic[]
+}
+
+export class AccessListUpdateDto {
+
+  constructor(
+    public name: string,
+    public locationIds: number[],
+    public userIds: number[]
+  ) {}  
 }

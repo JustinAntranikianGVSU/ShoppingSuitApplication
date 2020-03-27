@@ -1,10 +1,12 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { UserService } from '../_services/user-edit.service';
-import { ImpersonateService } from '../_services/impersonate.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Router } from '@angular/router';
-import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
+import { Router, ActivatedRoute, NavigationEnd, RoutesRecognized } from '@angular/router';
+import { debounceTime, distinctUntilChanged, map, filter } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { ComponentBase } from '../_shared/componentBase';
+import { ApiClientService } from '../_services/api-client.service';
+import { User } from '../_models/user';
+import { AppConstants } from '../_shared/appConstants';
 
 const commonNames = ['Justin', 'Bob', 'Barry', 'Calvin', 'Don', 'Chris']
 
@@ -13,15 +15,15 @@ const commonNames = ['Justin', 'Bob', 'Barry', 'Calvin', 'Don', 'Chris']
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.css']
 })
-export class UserListComponent implements OnInit {
+export class UserListComponent extends ComponentBase implements OnInit {
 
-  public users: any[]
+  public users: User[]
   public dataLoaded = false
   public userToImpersonate: any
   public showErrorToast = false
   public isFilterCollapsed = false
   public filterModel: any
-  public listView = true
+  public listView: boolean
 
   @ViewChild('impersonationComplete', null) 
   private impersonationCompleteRef: ElementRef
@@ -30,17 +32,31 @@ export class UserListComponent implements OnInit {
   private impersonationConfirmRef: ElementRef
 
   constructor(
-    private readonly userService: UserService,
-    private readonly impersonateService: ImpersonateService,
+    private readonly apiClientService: ApiClientService,
     private readonly router: Router,
+    private readonly route: ActivatedRoute,
     private readonly modalService: NgbModal
-  ) {}
+  ) { super() }
   
   ngOnInit() {
-    this.userService.getAll().subscribe(users => { 
+
+    this.listView = this.isListView()
+
+    const routerEvents$ = this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    )
+
+    routerEvents$.subscribe(() => this.listView = this.isListView());
+
+    this.apiClientService.getUsers().subscribe(users => { 
       this.users = users
       this.dataLoaded = true
     })
+  }
+
+  private isListView = () => {
+    const urlFragment = this.route.snapshot.fragment;
+    return !urlFragment || urlFragment === 'listView'
   }
 
   public onImpersonateClicked(user: any) {
@@ -57,9 +73,9 @@ export class UserListComponent implements OnInit {
 
     const {id} = this.userToImpersonate
 
-    this.impersonateService.post(id).subscribe(
+    this.apiClientService.impersonate(id).subscribe(
       data => {
-        localStorage.setItem('userToken', data.token)
+        localStorage.setItem(AppConstants.UserToken, data.token)
         this.modalService.open(this.impersonationCompleteRef).result.then(this.handleImpersonationLinkClicked)
       }, 
       error => this.showErrorToast = error.status === 403
@@ -67,7 +83,7 @@ export class UserListComponent implements OnInit {
   }
 
   private handleImpersonationLinkClicked = (linkType: string) => {
-    linkType === 'Reload' ? window.location.reload() : this.router.navigate(['/mylocations'])
+    linkType === 'Reload' ? window.location.reload() : this.router.navigate([this.LocationsPage])
   }
 
   public onFirstNameFilterClicked() {

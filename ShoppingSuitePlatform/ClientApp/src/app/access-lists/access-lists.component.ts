@@ -1,21 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { LocationsService } from '../_services/locations.service';
+import { ComponentBase } from '../_shared/componentBase';
+import { ApiClientService } from '../_services/api-client.service';
 
 @Component({
   selector: 'app-access-lists',
   templateUrl: './access-lists.component.html',
   styleUrls: ['./access-lists.component.css']
 })
-export class AccessListsComponent implements OnInit {
+export class AccessListsComponent extends ComponentBase implements OnInit {
 
   public accessLists: any[]
 
-  constructor(
-    private readonly locationService: LocationsService
-  ) {}
+  constructor(private readonly apiClientService: ApiClientService) { super() }
 
   ngOnInit() {
-    this.locationService.getAccessLists().subscribe(data => this.accessLists = data)
+    this.apiClientService.getAccessLists().subscribe(data => this.accessLists = data)
   }
 
 }

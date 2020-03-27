@@ -25,7 +25,7 @@
                 {{ initals }}
               </button>
               <div ngbDropdownMenu aria-labelledby="actionsDropDown" class="dropdown-menu-right">
-                <a ngbDropdownItem [routerLink]="['/profile']"><i class="fa fa-wrench mr-2" aria-hidden="true"></i>My Profile</a>
+                <a ngbDropdownItem [routerLink]="ProfilePage"><i class="fa fa-wrench mr-2" aria-hidden="true"></i>My Profile</a>
                 <div class="dropdown-divider"></div>
                 <button *ngIf="isImpersonating" ngbDropdownItem (click)="onExitImpersonationClicked()"><i class="fa fa-address-card mr-2" aria-hidden="true"></i>Exit Impersonation</button>
                 <button ngbDropdownItem (click)="onLogoutClicked()"><i class="fa fa-sign-out mr-1" aria-hidden="true"></i>Logout</button>
@@ -41,10 +41,10 @@
 
     <div class="col-sm-2" style="border-right: 1px solid #eaecef;">
       <div class="p-2 mt-3"><a [routerLink]="['/']" class="text-info linkborder"><i class="fa fa-dashboard mr-2" aria-hidden="true"></i>Dashboard</a></div>
-      <div class="p-2"><a [routerLink]="['/mylocations']" class="text-info linkborder"><i class="fa fa-plane mr-2" aria-hidden="true"></i>Locations</a></div>
-      <div class="p-2"><a [routerLink]="['/accessLists']" class="text-info linkborder"><i class="fa fa-plug mr-2" aria-hidden="true"></i>Access Lists</a></div>
-      <div class="p-2"><a [routerLink]="['/user-list']" class="text-info linkborder"><i class="fa fa-users mr-2" aria-hidden="true"></i>Users</a></div>
-      <div class="p-2"><a [routerLink]="['/profile']" class="text-info linkborder"><i class="fa fa-wrench mr-2" aria-hidden="true"></i>Profile</a></div>
+      <div class="p-2"><a [routerLink]="LocationsPage" class="text-info linkborder"><i class="fa fa-plane mr-2" aria-hidden="true"></i>Locations</a></div>
+      <div class="p-2"><a [routerLink]="AccessListsPage" class="text-info linkborder"><i class="fa fa-plug mr-2" aria-hidden="true"></i>Access Lists</a></div>
+      <div class="p-2"><a [routerLink]="UsersPage" class="text-info linkborder"><i class="fa fa-users mr-2" aria-hidden="true"></i>Users</a></div>
+      <div class="p-2"><a [routerLink]="ProfilePage" class="text-info linkborder"><i class="fa fa-wrench mr-2" aria-hidden="true"></i>Profile</a></div>
     </div>
 
     <div class="col-sm-10">

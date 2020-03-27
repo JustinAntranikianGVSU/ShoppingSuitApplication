@@ -1,50 +1,51 @@
 import { Component, OnInit } from '@angular/core';
-import { ImpersonateService } from './_services/impersonate.service';
-import { ProfileService } from './_services/profile.service';
+import { RouteConstants } from './_shared/routeConstants';
+import { ComponentBase } from './_shared/componentBase';
+import { ApiClientService } from './_services/api-client.service';
+import { AppConstants } from './_shared/appConstants';
+import { User } from './_models/user';
+import { ProfileData } from './_models/profileData';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html'
 })
-export class AppComponent implements OnInit {
+export class AppComponent extends ComponentBase implements OnInit {
   public isAuthenticated: boolean
-  public loggedInUserProfile: any
-  public impersonationUserProfile: any
+  public loggedInUserProfile: User
+  public impersonationUserProfile: User
   public isImpersonating: boolean
   public showWelcomeToast = false
-  public initals = false
+  public initals = ""
 
-  constructor(
-    private readonly impersonateService: ImpersonateService,
-    private readonly profileService: ProfileService
-  ) {}
+  constructor(private readonly apiClientService: ApiClientService) { super() }
 
   ngOnInit() {
-    var userToken = localStorage.getItem('userToken')
+    var userToken = localStorage.getItem(AppConstants.UserToken)
     this.isAuthenticated = userToken != null
+    this.apiClientService.getProfile().subscribe(this.handleGetProfileCompleted)
+  }
 
-    this.profileService.get().subscribe(data => {
+  private handleGetProfileCompleted = (data: ProfileData) => {
+    const {loggedInUserProfile, impersonationUserProfile, isImpersonating} = data
 
-      const { loggedInUserProfile, impersonationUserProfile, isImpersonating } = data
+    this.loggedInUserProfile = loggedInUserProfile
+    this.impersonationUserProfile = impersonationUserProfile
+    this.isImpersonating = isImpersonating
+    this.initals = (isImpersonating ? impersonationUserProfile : loggedInUserProfile).initals
 
-      this.loggedInUserProfile = loggedInUserProfile
-      this.impersonationUserProfile = impersonationUserProfile
-      this.isImpersonating = isImpersonating
-      this.initals = (isImpersonating ? impersonationUserProfile : loggedInUserProfile).initals
-
-      this.showWelcomeToast = true
-    })
+    this.showWelcomeToast = true
   }
 
   public onLogoutClicked() {
-    localStorage.removeItem('userToken');
-    window.location.href = "/mylogin"
+    localStorage.removeItem(AppConstants.UserToken);
+    window.location.href = RouteConstants.LoginPage
   }
 
   public onExitImpersonationClicked() {
 
-    this.impersonateService.exit().subscribe(data => {
-      localStorage.setItem('userToken', data.token)
+    this.apiClientService.exitImpersonation().subscribe(data => {
+      localStorage.setItem(AppConstants.UserToken, data.token)
       window.location.reload()
     })
   }

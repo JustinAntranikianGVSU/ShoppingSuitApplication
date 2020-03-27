@@ -15,11 +15,11 @@ namespace DataAccess.Repositories
 		{
 			return _dbContext.Users
 						.AsNoTracking()
-						.Include(oo => oo.Roles)
 						.Include(oo => oo.AccessLists)
 						.ThenInclude(oo => oo.AccessList)
 						.ThenInclude(oo => oo.Locations)
-						.ThenInclude(oo => oo.Location);
+						.ThenInclude(oo => oo.Location)
+						.Include(oo => oo.Roles);
 		}
 
 		public async Task<UserEntity> SingleAsync(int userId)

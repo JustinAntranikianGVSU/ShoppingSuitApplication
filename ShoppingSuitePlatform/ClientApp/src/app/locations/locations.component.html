@@ -1,9 +1,3 @@
-<!-- <nav aria-label="breadcrumb">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a [routerLink]="['/']">Dashboard</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Locations</li>
-  </ol>
-</nav> -->
 
 <div class="container">
 
@@ -26,12 +20,12 @@
         <td>{{ location.client.name }}</td>
         <td>
           <div *ngFor="let accessList of location.accessListDtos">
-            <a class="text-info linkborder" [routerLink]="['/accessListEdit', accessList.id]">{{ accessList.name }}</a>
+            <a class="text-info linkborder" [routerLink]="[AccessListEditPage, accessList.id]">{{ accessList.name }}</a>
           </div>
         </td>
         <td class="text-center">
           <div *ngFor="let user of location.users">
-            <a class="text-info linkborder" [routerLink]="['/user-edit', user.id]">{{ user.fullName }}</a>
+            <a class="text-info linkborder" [routerLink]="[UserEditPage, user.id]">{{ user.fullName }}</a>
           </div>
         </td>
       </tr>

@@ -4,6 +4,7 @@ using System.Security.Claims;
 using CoreLibrary.ServiceResults;
 using ShoppingSuitePlatform.Helpers;
 using Microsoft.Extensions.Configuration;
+using Domain.Dtos;
 
 namespace ShoppingSuitePlatform.Controllers.BaseControllers
 {
@@ -24,7 +25,7 @@ namespace ShoppingSuitePlatform.Controllers.BaseControllers
 			}
 
 			var jwtToken = new JwtTokenHelper(_config).GenerateJSONWebToken(result.Value);
-			return Ok(new { token = jwtToken });
+			return Ok(new TokenReponseDto(jwtToken));
 		}
 	}
 }

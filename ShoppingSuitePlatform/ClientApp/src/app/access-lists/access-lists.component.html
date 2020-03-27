@@ -19,7 +19,7 @@
         <td>{{ accessList.name }}</td>
         <td>
           <div *ngFor="let user of accessList.users">
-            <a class="text-info linkborder" [routerLink]="['/user-edit', user.id]">{{ user.fullName }}</a>
+            <a class="text-info linkborder" [routerLink]="[UserEditPage, user.id]">{{ user.fullName }}</a>
           </div>
         </td>
         <td>
@@ -27,7 +27,7 @@
             <a class="text-info linkborder">{{ location.name }}</a>
           </div>
         </td>
-        <td class="text-center"><a class="btn btn-info btn-sm" [routerLink]="['/accessListEdit', accessList.id]"><i class="fa fa-pencil-square-o"></i></a></td>
+        <td class="text-center"><a class="btn btn-info btn-sm" [routerLink]="[AccessListEditPage, accessList.id]"><i class="fa fa-pencil-square-o"></i></a></td>
       </tr>
     </tbody>
   </table>
