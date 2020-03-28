@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { User, UserUpdateDto } from '../_models/user';
+import { User, UserUpdateDto, UserSearchViewModel } from '../_models/user';
 import { AccessList, AccessListUpdateDto } from '../_models/accessList';
 import { Role } from '../_models/role';
 import { ProfileData } from '../_models/profileData';
@@ -30,6 +30,10 @@ export class ApiClientService {
 
   public updateUser(id: number, userUpdateDto: UserUpdateDto): Observable<User> {
     return this.http.put<User>(this.baseUrl + `User/${id}`, userUpdateDto)
+  }
+
+  public searchUsers(userSearchViewModel: UserSearchViewModel): Observable<User[]> {
+    return this.http.post<User[]>(this.baseUrl + `UserSearch`, userSearchViewModel)
   }
 
   // AccessLists

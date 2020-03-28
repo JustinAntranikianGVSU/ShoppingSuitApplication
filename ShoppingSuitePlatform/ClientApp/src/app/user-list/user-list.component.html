@@ -14,31 +14,105 @@
       <div class="col-sm-3">
         <div class="form-group">
           <label for="firstNameFilter">First name</label>
-          <input [(ngModel)]="filterModel" [ngbTypeahead]="searchUsers" type="text" class="form-control" id="firstNameFilter" placeholder="Filter by first name" />
+          <input [(ngModel)]="userSearch.firstName" [ngbTypeahead]="searchUsers" type="text" class="form-control" id="firstNameFilter" />
         </div>
       </div>
       <div class="col-sm-3">
         <div class="form-group">
           <label for="lastNameFilter">Last name</label>
-          <input type="text" class="form-control" id="lastNameFilter" placeholder="Filter by last name" />
+          <input [(ngModel)]="userSearch.lastName" type="text" class="form-control" id="lastNameFilter" />
         </div>
       </div>
       <div class="col-sm-3">
         <div class="form-group">
           <label for="emailFilter">Email</label>
-          <input type="text" class="form-control" id="emailFilter" placeholder="Filter by email" />
+          <input [(ngModel)]="userSearch.email" type="text" class="form-control" id="emailFilter" />
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-3">
+        <div class="form-group">
+          <label for="accessListName">accessList name</label>
+          <input [(ngModel)]="userSearch.accessListName" type="text" class="form-control" id="accessListName" />
         </div>
       </div>
       <div class="col-sm-3">
         <div class="form-group">
-          <label for="roleFilter">Role</label>
-          <input type="text" class="form-control" id="roleFilter" placeholder="Filter by role" />
+          <label for="accessListCount">accessList count</label>
+          <input [(ngModel)]="userSearch.accessListCount" type="text" class="form-control" id="accessListCount" />
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-3">
+        <div class="form-group">
+          <label for="location">location name</label>
+          <input [(ngModel)]="userSearch.locationName" type="text" class="form-control" id="location" />
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-group">
+          <label for="locationCount">location count</label>
+          <input [(ngModel)]="userSearch.locationCount" type="text" class="form-control" id="locationCount" />
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-3">
+        <div class="form-group">
+          <label for="roleName">role name</label>
+          <input [(ngModel)]="userSearch.roleName" type="text" class="form-control" id="roleName" />
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-group">
+          <label for="roleCount">role count</label>
+          <input [(ngModel)]="userSearch.roleCount" type="text" class="form-control" id="roleCount" />
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-3">
+        <div class="form-group">
+          <label for="skip">skip</label>
+          <input [(ngModel)]="userSearch.skip" type="text" class="form-control" id="skip" />
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-group">
+          <label for="take">take</label>
+          <input [(ngModel)]="userSearch.take" type="text" class="form-control" id="take" />
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-3">
+        <div class="form-group">
+          <label for="sortByField">sortByField</label>
+          <select [(ngModel)]="userSearch.sortByField" id="sortByField" class="form-control">
+            <option value="0">First Name</option>
+            <option value="1">Last Name</option>
+            <option value="2">Email</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-group">
+          <input type="checkbox" [(ngModel)]="userSearch.sortDescending" class="form-check-input" id="sortDescending">
+          <label class="form-check-label" for="sortDescending">sortDescending</label>
         </div>
       </div>
     </div>
 
     <div class="text-right mt-4">
-      <button (click)="onFirstNameFilterClicked()" class="btn btn-info">Filter</button>
+      <button (click)="onResetFiltersClicked()" class="btn btn-info mr-2">Reset Filters</button>
+      <button (click)="onFiltersClicked()" class="btn btn-info">Filter</button>
     </div>
   </div>
 

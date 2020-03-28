@@ -8,7 +8,7 @@ namespace DataAccess.Repositories
 	{
 		public UsersWithRolesRepository(AppDbContext dbContext) : base(dbContext) { }
 
-		protected override IQueryable<UserEntity> GetReadOnlyQuery()
+		public override IQueryable<UserEntity> GetReadOnlyQuery()
 		{
 			return _dbContext.Users
 						.AsNoTracking()

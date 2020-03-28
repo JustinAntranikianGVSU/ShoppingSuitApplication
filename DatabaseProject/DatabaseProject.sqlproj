@@ -6,14 +6,14 @@
     <Name>DatabaseProject</Name>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
-    <ProjectGuid>{e4713c7f-567f-4b8e-92b7-ae2008d9ce71}</ProjectGuid>
-    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql130DatabaseSchemaProvider</DSP>
+    <ProjectGuid>{b364a188-f316-499d-9c45-12b74620db8f}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql150DatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
     <RootPath>
     </RootPath>
     <RootNamespace>DatabaseProject</RootNamespace>
     <AssemblyName>DatabaseProject</AssemblyName>
-    <ModelCollation>1033, CI</ModelCollation>
+    <ModelCollation>1033,CI</ModelCollation>
     <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
     <DeployToDatabase>True</DeployToDatabase>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
@@ -22,6 +22,8 @@
     <SqlServerVerification>False</SqlServerVerification>
     <IncludeCompositeObjects>True</IncludeCompositeObjects>
     <TargetDatabaseSet>True</TargetDatabaseSet>
+    <DefaultCollation>SQL_Latin1_General_CP1_CI_AS</DefaultCollation>
+    <DefaultFilegroup>PRIMARY</DefaultFilegroup>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -56,5 +58,19 @@
   <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
+    <Folder Include="dbo\" />
+    <Folder Include="dbo\Tables\" />
+    <Folder Include="publishProfiles" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Tables\User.sql" />
+    <Build Include="dbo\Tables\User_Role.sql" />
+    <Build Include="dbo\Tables\Location.sql" />
+    <Build Include="dbo\Tables\AccessList.sql" />
+    <Build Include="dbo\Tables\User_AccessList.sql" />
+    <Build Include="dbo\Tables\AccessList_Location.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="publishProfiles\dev.publish.xml" />
   </ItemGroup>
 </Project>

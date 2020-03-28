@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiClientService } from '../_services/api-client.service';
-import { AppConstants } from '../_shared/appConstants';
 import { LoginDto } from '../_models/login';
 import { UserTokenResponse } from '../_models/userTokenResponse';
+import { LocalStorageService } from '../_services/local-storage.service';
 
 @Component({
   selector: 'app-login',
@@ -16,6 +16,7 @@ export class LoginComponent {
 
   constructor(
     private readonly apiClientService: ApiClientService,
+    private readonly localStorageService: LocalStorageService,
     private readonly route: ActivatedRoute
   )
   {
@@ -27,7 +28,7 @@ export class LoginComponent {
   }
 
   private handleLoginCompleted = (tokenResponse: UserTokenResponse) => {
-    localStorage.setItem(AppConstants.UserToken, tokenResponse.token)
+    this.localStorageService.setToken(tokenResponse.token)
     const returnUrl = this.route.snapshot.queryParams['returnUrl']
     window.location.href = returnUrl || '/'
   }

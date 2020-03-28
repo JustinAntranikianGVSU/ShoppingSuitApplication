@@ -17,6 +17,7 @@ import { AccessListsComponent } from './access-lists/access-lists.component';
 import { AccessListEditComponent } from './access-list-edit/access-list-edit.component';
 import { RouteConstants } from './_shared/routeConstants';
 import { ApiClientService } from './_services/api-client.service';
+import { LocalStorageService } from './_services/local-storage.service';
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import { ApiClientService } from './_services/api-client.service';
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },    
     ApiClientService,
+    LocalStorageService,
   ],
   bootstrap: [AppComponent]
 })

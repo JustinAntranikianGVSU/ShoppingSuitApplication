@@ -17,12 +17,18 @@ namespace ShoppingSuitePlatform.Controllers
 		private readonly IGetUserOrchestrator _getUserOrchestrator;
 		private readonly IUpdateUserOrchestrator _updateUserOrchestrator;
 
-		public UserController(ICreateUserOrchestrator createUserOrchestrator, IGetUserOrchestrator getUserOrchestrator, IUpdateUserOrchestrator updateUserOrchestrator)
+		public UserController
+		(
+			ICreateUserOrchestrator createUserOrchestrator,
+			IGetUserOrchestrator getUserOrchestrator,
+			IUpdateUserOrchestrator updateUserOrchestrator
+		)
 		{
 			(_createUserOrchestrator, _getUserOrchestrator, _updateUserOrchestrator) = (createUserOrchestrator, getUserOrchestrator, updateUserOrchestrator);
 		}
 
 		[HttpGet]
+		[Authorize(Policy = AppPolicy.ViewEmployee)]
 		public async Task<ActionResult> GetAll()
 		{
 			var result = await _getUserOrchestrator.GetAll();

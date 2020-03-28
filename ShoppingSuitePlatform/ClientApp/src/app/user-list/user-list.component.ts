@@ -1,12 +1,13 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Router, ActivatedRoute, NavigationEnd, RoutesRecognized } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { debounceTime, distinctUntilChanged, map, filter } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { ComponentBase } from '../_shared/componentBase';
 import { ApiClientService } from '../_services/api-client.service';
-import { User } from '../_models/user';
-import { AppConstants } from '../_shared/appConstants';
+import { User, UserSearchViewModel } from '../_models/user';
+import { LocalStorageService } from '../_services/local-storage.service';
+import { UserTokenResponse } from '../_models/userTokenResponse';
 
 const commonNames = ['Justin', 'Bob', 'Barry', 'Calvin', 'Don', 'Chris']
 
@@ -24,6 +25,7 @@ export class UserListComponent extends ComponentBase implements OnInit {
   public isFilterCollapsed = false
   public filterModel: any
   public listView: boolean
+  public userSearch: UserSearchViewModel = new UserSearchViewModel()
 
   @ViewChild('impersonationComplete', null) 
   private impersonationCompleteRef: ElementRef
@@ -33,6 +35,7 @@ export class UserListComponent extends ComponentBase implements OnInit {
 
   constructor(
     private readonly apiClientService: ApiClientService,
+    private readonly localStorageService: LocalStorageService,
     private readonly router: Router,
     private readonly route: ActivatedRoute,
     private readonly modalService: NgbModal
@@ -73,13 +76,11 @@ export class UserListComponent extends ComponentBase implements OnInit {
 
     const {id} = this.userToImpersonate
 
-    this.apiClientService.impersonate(id).subscribe(
-      data => {
-        localStorage.setItem(AppConstants.UserToken, data.token)
-        this.modalService.open(this.impersonationCompleteRef).result.then(this.handleImpersonationLinkClicked)
-      }, 
-      error => this.showErrorToast = error.status === 403
-    )
+    this.apiClientService.impersonate(id).subscribe(({token}: UserTokenResponse) => {
+      this.localStorageService.setToken(token)
+      this.modalService.open(this.impersonationCompleteRef).result.then(this.handleImpersonationLinkClicked)
+    }, 
+    (error) => this.showErrorToast = error.status === 403)
   }
 
   private handleImpersonationLinkClicked = (linkType: string) => {
@@ -94,7 +95,31 @@ export class UserListComponent extends ComponentBase implements OnInit {
     )
   }
 
-  public onFirstNameFilterClicked() {
-    this.users = this.users.filter(oo => oo.firstName.toLowerCase() == this.filterModel.toLowerCase())
+  public onResetFiltersClicked() {
+    this.userSearch = new UserSearchViewModel()
+
+    this.apiClientService.searchUsers(this.userSearch).subscribe(data => {
+      this.users = data
+    })
+  }
+
+  public onFiltersClicked() {
+
+    const {roleCount, locationCount, accessListCount, skip, take, sortByField} = this.userSearch
+    const mapToInt = (value: number) => value ? parseInt(value.toString()) : 0
+
+    const mappedUserSearchModel = {
+      ...this.userSearch,
+      roleCount: mapToInt(roleCount),
+      locationCount: mapToInt(locationCount),
+      accessListCount: mapToInt(accessListCount),
+      skip: mapToInt(skip),
+      take: mapToInt(take),
+      sortByField: mapToInt(sortByField)
+    }
+
+    this.apiClientService.searchUsers(mappedUserSearchModel).subscribe(data => {
+      this.users = data
+    })
   }
 }

@@ -21,5 +21,4 @@ export abstract class CheckBoxComponentBase extends ComponentBase {
   protected extractCheckedIds = (chunkedData: any) => {
     return _.flatten(chunkedData).filter(oo => oo.isChecked).map(oo => oo.id)
   }
-
 }
