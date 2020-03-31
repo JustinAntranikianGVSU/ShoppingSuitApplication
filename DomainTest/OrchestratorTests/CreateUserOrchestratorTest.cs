@@ -22,22 +22,23 @@ namespace DomainTest.OrchestratorTests
 			return new AppDbContext(options);
 		}
 
-		private static IMapper GetMapper()
+		private static UserDto CreateUser(int id, string firstName, string lastName, string email = null)
 		{
-			var mappingConfig = new MapperConfiguration(mc =>
+			return new UserDto()
 			{
-				mc.AddProfile(new MappingProfile());
-			});
-
-			return mappingConfig.CreateMapper();
+				Id = id,
+				FirstName = firstName,
+				LastName = lastName,
+				Email = email
+			};
 		}
 
 		[Fact]
 		public async Task CreateUserOrchestrator_Create_ReturnsBadRequest()
 		{
 			var dbContext = GetInMemoryDb();
-			var orchestrator = new CreateUserOrchestrator(dbContext, GetMapper());
-			var result = await orchestrator.Create(new UserDto(1, "J", "A"));
+			var orchestrator = new CreateUserOrchestrator(dbContext);
+			var result = await orchestrator.Create(CreateUser(1, "J", "A"));
 
 			Assert.Equal(3, result.Errors.Count);
 
@@ -69,12 +70,12 @@ namespace DomainTest.OrchestratorTests
 		{
 			var dbContext = GetInMemoryDb();
 
-			var existingUser = new UserEntity() { FirstName = "J1", LastName = "A1", Email = "J" };
+			var existingUser = new UserEntity() { FirstName = "J1", LastName = "A1", Email = "E" };
 			dbContext.Users.Add(existingUser);
 			dbContext.SaveChanges();
 
-			var orchestrator = new CreateUserOrchestrator(dbContext, GetMapper());
-			var newUser = new UserDto(1, "J", "A") { Email = "J" };
+			var orchestrator = new CreateUserOrchestrator(dbContext);
+			var newUser = CreateUser(1, "J", "A", "E");
 			var result = await orchestrator.Create(newUser);
 
 			Assert.Single(result.Errors);
@@ -92,19 +93,19 @@ namespace DomainTest.OrchestratorTests
 		{
 			var dbContext = GetInMemoryDb();
 
-			var existingUser = new UserEntity() { FirstName = "J1", LastName = "A1", Email = "J1" };
+			var existingUser = new UserEntity() { FirstName = "J1", LastName = "A1", Email = "E1" };
 			dbContext.Users.Add(existingUser);
 			dbContext.SaveChanges();
 
-			var orchestrator = new CreateUserOrchestrator(dbContext, GetMapper());
-			var newUser = new UserDto(1, "J", "A") { Email = "J" };
+			var orchestrator = new CreateUserOrchestrator(dbContext);
+			var newUser = CreateUser(1, "J", "A", "E");
 			var result = await orchestrator.Create(newUser);
 
 			Assert.Empty(result.Errors);
 			Assert.Equal(2, result.Value.Id);
 			Assert.Equal("J", result.Value.FirstName);
 			Assert.Equal("A", result.Value.LastName);
-			Assert.Equal("J", result.Value.Email);
+			Assert.Equal("E", result.Value.Email);
 
 			var userCount = await dbContext.Users.CountAsync();
 			Assert.Equal(2, userCount);
