@@ -61,6 +61,8 @@
     <Folder Include="dbo\" />
     <Folder Include="dbo\Tables\" />
     <Folder Include="publishProfiles" />
+    <Folder Include="dbo\Stored Procedures" />
+    <Folder Include="Compares" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\User.sql" />
@@ -69,8 +71,10 @@
     <Build Include="dbo\Tables\AccessList.sql" />
     <Build Include="dbo\Tables\User_AccessList.sql" />
     <Build Include="dbo\Tables\AccessList_Location.sql" />
+    <Build Include="dbo\Stored Procedures\spSearchUsersByLastName.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="publishProfiles\dev.publish.xml" />
+    <None Include="Compares\ProjectToLocal.scmp" />
   </ItemGroup>
 </Project>
