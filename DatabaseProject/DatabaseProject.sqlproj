@@ -62,7 +62,7 @@
     <Folder Include="dbo\Tables\" />
     <Folder Include="publishProfiles" />
     <Folder Include="dbo\Stored Procedures" />
-    <Folder Include="Compares" />
+    <Folder Include="compares" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\User.sql" />
@@ -74,7 +74,10 @@
     <Build Include="dbo\Stored Procedures\spSearchUsersByLastName.sql" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="publishProfiles\dev.publish.xml" />
+    <None Include="publishProfiles\local.publish.xml" />
     <None Include="Compares\ProjectToLocal.scmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="DatabaseProject.refactorlog" />
   </ItemGroup>
 </Project>
