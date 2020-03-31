@@ -10,19 +10,19 @@ using System.Threading.Tasks;
 
 namespace Domain.Orchestrators
 {
-	public interface IAccessListOrchestrator
+	public interface IGetAccessListOrchestrator
 	{
 		Task<ServiceResult<List<AccessListDto>>> GetAll();
 
 		Task<ServiceResult<AccessListDto>> Get(int accessListId);
 	}
 
-	public class AccessListOrchestrator : OrchestratorBase, IAccessListOrchestrator
+	public class GetAccessListOrchestrator : OrchestratorBase, IGetAccessListOrchestrator
 	{
 		private readonly AccessListDtoMapper _accessListFullDtoMapper;
 		private readonly AccessListRepository _accessListRepository;
 
-		public AccessListOrchestrator(AppDbContext dbContext, JwtRequestContext jwtRequestContext) : base(dbContext, jwtRequestContext)
+		public GetAccessListOrchestrator(AppDbContext dbContext, JwtRequestContext jwtRequestContext) : base(dbContext, jwtRequestContext)
 		{
 			_accessListFullDtoMapper = new AccessListDtoMapper();
 			_accessListRepository = new AccessListRepository(dbContext);

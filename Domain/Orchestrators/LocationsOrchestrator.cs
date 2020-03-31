@@ -17,12 +17,10 @@ namespace Domain.Orchestrators
 
 	public class LocationsOrchestrator : OrchestratorBase, ILocationsOrchestrator
 	{
-		private readonly LocationWithAccessListMapper _locationWithAccessListMapper;
 		private readonly LocationsWithUsersRepository _locationsRepository;
 
 		public LocationsOrchestrator(AppDbContext dbContext, JwtRequestContext jwtRequestContext) : base(dbContext, jwtRequestContext)
 		{
-			_locationWithAccessListMapper = new LocationWithAccessListMapper();
 			_locationsRepository = new LocationsWithUsersRepository(_dbContext);
 		}
 
@@ -30,7 +28,7 @@ namespace Domain.Orchestrators
 		{
 			var clientId = _jwtRequestContext.GetClientId();
 			var locationEntities = await _locationsRepository.GetAll(clientId);
-			var locationDtos = _locationWithAccessListMapper.Map(locationEntities);
+			var locationDtos = new LocationWithAccessListMapper().Map(locationEntities);
 			return GetProcessedResult(locationDtos);
 		}
 	}

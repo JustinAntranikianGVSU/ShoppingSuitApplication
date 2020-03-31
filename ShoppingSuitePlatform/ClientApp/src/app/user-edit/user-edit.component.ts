@@ -80,8 +80,8 @@ export class UserEditComponent extends CheckBoxComponentBase implements OnInit {
 
     const userUpdateDto = new UserUpdateDto(firstName, lastName, email, accessListIds, roleIds)
 
-    this.apiClientService.updateUser(this.getId(), userUpdateDto).subscribe(data => {
-      const ids = data.locations.map(oo => oo.id);
+    this.apiClientService.updateUser(this.getId(), userUpdateDto).subscribe(({locations}: User) => {
+      const ids = locations.map(oo => oo.id);
       this.locationChunks = this.mapToCheckboxChunks(_.flatten(this.locationChunks), ids)
     })
   }

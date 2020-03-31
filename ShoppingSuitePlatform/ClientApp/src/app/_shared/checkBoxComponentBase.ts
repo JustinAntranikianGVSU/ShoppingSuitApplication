@@ -8,8 +8,8 @@ export abstract class CheckBoxComponentBase extends ComponentBase {
   protected mapToCheckboxChunks = <T>(data: T[], ids: any[]): T[][] => {
     const mapToCheckboxFunc = this.mapToCheckboxItem(ids)
     const checkboxes = data.map(mapToCheckboxFunc);
-    const sizeForEachArray = Math.ceil(checkboxes.length / CheckBoxComponentBase.columnChunks)  
-    return _.chunk(checkboxes, sizeForEachArray)
+    const chunkSize = Math.ceil(checkboxes.length / CheckBoxComponentBase.columnChunks)
+    return _.chunk(checkboxes, chunkSize)
   }
 
   private mapToCheckboxItem = (ids: any[]) => (item: any) =>

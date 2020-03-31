@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { User, UserUpdateDto, UserSearchViewModel } from '../_models/user';
 import { AccessList, AccessListUpdateDto } from '../_models/accessList';
 import { Role } from '../_models/role';
@@ -8,6 +8,9 @@ import { ProfileData } from '../_models/profileData';
 import { Location } from '../_models/location';
 import { LoginDto } from '../_models/login';
 import { UserTokenResponse } from '../_models/userTokenResponse';
+import { Router } from '@angular/router';
+import { RouteConstants } from '../_shared/routeConstants';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -15,13 +18,26 @@ import { UserTokenResponse } from '../_models/userTokenResponse';
 export class ApiClientService {
 
   constructor(
-    private readonly http: HttpClient, 
+    private readonly http: HttpClient,
+    private readonly router: Router,
     @Inject('BASE_URL') private readonly baseUrl: string
   ) { }
 
+  public redirectToLoginIfUnathenticated = (error: any) => {
+
+    const unauthenticatedCodes = [401, 403]
+
+    if (unauthenticatedCodes.includes(error.status)) {
+      this.router.navigate([RouteConstants.LoginPage]);
+    }
+
+    return throwError(error)
+  }
+
   /// Users
   public getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(this.baseUrl + `User`)
+    const observable$ = this.http.get<User[]>(this.baseUrl + `User`)
+    return observable$.pipe(catchError(this.redirectToLoginIfUnathenticated))
   }
 
   public getUser(userId: number): Observable<User> {
@@ -38,7 +54,8 @@ export class ApiClientService {
 
   // AccessLists
   public getAccessLists(): Observable<AccessList[]> {
-    return this.http.get<AccessList[]>(this.baseUrl + `AccessList`)
+    const observable$ = this.http.get<AccessList[]>(this.baseUrl + `AccessList`)
+    return observable$.pipe(catchError(this.redirectToLoginIfUnathenticated))
   }
 
   public getAccessList(accessListId: number): Observable<AccessList> {

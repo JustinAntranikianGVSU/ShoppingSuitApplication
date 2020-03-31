@@ -16,12 +16,10 @@ namespace Domain.Orchestrators
 
 	public class MyProfileOrchestrator : OrchestratorBase, IMyProfileOrchestrator
 	{
-		private readonly UserWithLocationsMapper _userWithLocationsMapper;
 		private readonly UsersWithLocationsRepository _usersWithLocationsRepository;
 
 		public MyProfileOrchestrator(AppDbContext dbContext, JwtRequestContext jwtRequestContext) : base(dbContext, jwtRequestContext)
 		{
-			_userWithLocationsMapper = new UserWithLocationsMapper();
 			_usersWithLocationsRepository = new UsersWithLocationsRepository(_dbContext);
 		}
 
@@ -40,7 +38,7 @@ namespace Domain.Orchestrators
 		private async Task<UserWithLocationsDto> GetUserProfile(int userId)
 		{
 			var userEntity = await _usersWithLocationsRepository.SingleAsync(userId);
-			return _userWithLocationsMapper.Map(userEntity);
+			return new UserWithLocationsMapper().Map(userEntity);
 		}
 	}
 }

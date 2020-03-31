@@ -92,7 +92,7 @@ namespace ShoppingSuitePlatform
 			services.AddScoped<IUserSearchOrchestrator, UserSearchOrchestrator>();
 			services.AddScoped<ILoginOrchestrator, LoginOrchestrator>();
 			services.AddScoped<IMyProfileOrchestrator, MyProfileOrchestrator>();
-			services.AddScoped<IAccessListOrchestrator, AccessListOrchestrator>();
+			services.AddScoped<IGetAccessListOrchestrator, GetAccessListOrchestrator>();
 			services.AddScoped<IImpersonateOrchestrator, ImpersonateOrchestrator>();
 			services.AddScoped<IRolesOrchestrator, RolesOrchestrator>();
 			services.AddScoped<IUpdateAccessListOrchestrator, UpdateAccessListOrchestrator>();

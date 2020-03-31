@@ -48,7 +48,7 @@ import { LocalStorageService } from './_services/local-storage.service';
     ])
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },    
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     ApiClientService,
     LocalStorageService,
   ],

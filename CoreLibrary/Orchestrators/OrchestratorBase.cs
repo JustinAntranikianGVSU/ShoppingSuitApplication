@@ -1,5 +1,6 @@
 ﻿using CoreLibrary.ServiceResults;
 using DataAccess;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace CoreLibrary.Orchestrators
@@ -18,10 +19,12 @@ namespace CoreLibrary.Orchestrators
 
 		protected ServiceResult<T> GetBadRequestResult(params ServiceError[] errors) => GetBadRequestResult<T>(errors);
 
+		protected ServiceResult<T> GetBadRequestResult(List<ServiceError> errors) => new ServiceResult<T>(errors, ServiceResultStatus.BadRequest);
+
 		protected ServiceResult<T> GetBadRequestResult(string errorMessage) => GetBadRequestResult<T>(errorMessage);
 	}
 
-	public abstract class OrchestratorBase
+	public abstract class OrchestratorBase : ServiceErrorResultBase
 	{
 		protected readonly AppDbContext _dbContext;
 		protected readonly JwtRequestContext _jwtRequestContext;
@@ -52,13 +55,5 @@ namespace CoreLibrary.Orchestrators
 			var errors = new[] { GetError(errorMessage) };
 			return new ServiceResult<T>(errors.ToList(), ServiceResultStatus.BadRequest);
 		}
-
-		protected ServiceError GetNotSetError(string fieldName) => ServiceError.CreateNotSetError(fieldName, GetType());
-
-		protected ServiceError GetError(string message, string fieldName) => new ServiceError(message, GetType().Name, fieldName);
-
-		protected ServiceError GetError(string message) => new ServiceError(message, GetType().Name);
-
-		public static string GetResourceNotFoundMessage<T>(T id) where T : struct => $"Could not find User with id: {id}";
 	}
 }

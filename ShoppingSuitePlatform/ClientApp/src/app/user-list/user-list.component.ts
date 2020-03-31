@@ -8,6 +8,7 @@ import { ApiClientService } from '../_services/api-client.service';
 import { User, UserSearchViewModel } from '../_models/user';
 import { LocalStorageService } from '../_services/local-storage.service';
 import { UserTokenResponse } from '../_models/userTokenResponse';
+import * as _ from 'lodash';
 
 const commonNames = ['Justin', 'Bob', 'Barry', 'Calvin', 'Don', 'Chris']
 
@@ -48,6 +49,15 @@ export class UserListComponent extends ComponentBase implements OnInit {
     const routerEvents$ = this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     )
+
+    const queryParams = this.route.queryParams.subscribe(data => {
+      // this.userSearch = data
+      // console.log(data)
+      var more = data as any
+      this.userSearch = { ...more }
+    })
+    
+    // this.
 
     routerEvents$.subscribe(() => this.listView = this.isListView());
 
@@ -121,5 +131,20 @@ export class UserListComponent extends ComponentBase implements OnInit {
     this.apiClientService.searchUsers(mappedUserSearchModel).subscribe(data => {
       this.users = data
     })
+
+    this.router.navigate([],
+    {
+      relativeTo: this.route,
+      queryParams: this.getSearchValuesSorted(),
+      fragment: this.listView ? 'listView' : 'expandedView',
+    });
+  }
+
+  private getSearchValuesSorted = () => {
+    const getSearchValuesSorted = Object.keys(this.userSearch).sort().map(oo => {
+      return [oo, this.userSearch[oo]]
+    })
+
+    return _.fromPairs(getSearchValuesSorted)
   }
 }

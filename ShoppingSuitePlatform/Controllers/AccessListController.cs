@@ -13,12 +13,12 @@ namespace ShoppingSuitePlatform.Controllers
 	[Route("[controller]")]
 	public class AccessListController : AppControllerBase
 	{
-		private readonly IAccessListOrchestrator _orchestrator;
+		private readonly IGetAccessListOrchestrator _getAccessListOrchestrator;
 		private readonly IUpdateAccessListOrchestrator _updateAccessListOrchestrator;
 
-		public AccessListController(IAccessListOrchestrator orchestrator, IUpdateAccessListOrchestrator updateAccessListOrchestrator)
+		public AccessListController(IGetAccessListOrchestrator getAccessListOrchestrator, IUpdateAccessListOrchestrator updateAccessListOrchestrator)
 		{
-			_orchestrator = orchestrator;
+			_getAccessListOrchestrator = getAccessListOrchestrator;
 			_updateAccessListOrchestrator = updateAccessListOrchestrator;
 		}
 
@@ -26,7 +26,7 @@ namespace ShoppingSuitePlatform.Controllers
 		[Authorize(Policy = AppPolicy.ViewEmployee)]
 		public async Task<ActionResult> Get()
 		{
-			var result = await _orchestrator.GetAll();
+			var result = await _getAccessListOrchestrator.GetAll();
 			return NotFoundIfNotProcessed(result);
 		}
 
@@ -34,7 +34,7 @@ namespace ShoppingSuitePlatform.Controllers
 		[Authorize(Policy = AppPolicy.ViewEmployee)]
 		public async Task<ActionResult> Get(int id)
 		{
-			var result = await _orchestrator.Get(id);
+			var result = await _getAccessListOrchestrator.Get(id);
 			return NotFoundIfNotProcessed(result);
 		}
 

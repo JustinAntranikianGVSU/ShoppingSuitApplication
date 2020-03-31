@@ -5,6 +5,7 @@ using DataAccess.Entities;
 using DataAccess.Repositories;
 using Domain.Dtos;
 using Domain.Entities;
+using Domain.Managers;
 using Domain.Mappers;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -21,24 +22,23 @@ namespace Domain.Orchestrators.Users
 
 	public class UpdateUserOrchestrator : OrchestratorBase, IUpdateUserOrchestrator
 	{
-		private readonly UserWithLocationsMapper _userWithLocationsMapper;
 		private readonly UsersWithLocationsRepository _usersWithLocationsRepository;
 
 		public UpdateUserOrchestrator(AppDbContext dbContext) : base(dbContext)
 		{
-			_userWithLocationsMapper = new UserWithLocationsMapper();
 			_usersWithLocationsRepository = new UsersWithLocationsRepository(dbContext);
 		}
 
 		public async Task<ServiceResult<UserWithLocationsDto>> Update(int id, UserUpdateDto userUpdateDto)
 		{
 			var userEntity = await GetUserWithRolesAndAccessListsQuery().SingleAsync(oo => oo.Id == id);
+			var updateResult = new UpdateUserManager().GetResult(userEntity, userUpdateDto);
 
-			userEntity.FirstName = userUpdateDto.FirstName;
-			userEntity.LastName = userUpdateDto.LastName;
-			userEntity.Email = userUpdateDto.Email;
-			userEntity.Roles = GetRoles(userEntity.Roles, userUpdateDto.RoleIds);
-			userEntity.AccessLists = GetAccessLists(userEntity.AccessLists, userUpdateDto.AccessListIds);
+			userEntity.FirstName = updateResult.FirstName;
+			userEntity.LastName = updateResult.LastName;
+			userEntity.Email = updateResult.Email;
+			userEntity.Roles = updateResult.Roles;
+			userEntity.AccessLists = updateResult.AccessLists;
 
 			await _dbContext.SaveChangesAsync();
 
@@ -56,23 +56,7 @@ namespace Domain.Orchestrators.Users
 		private async Task<UserWithLocationsDto> GetUserWithLocationsDto(int id)
 		{
 			var userEntity = await _usersWithLocationsRepository.SingleAsync(id);
-			return _userWithLocationsMapper.Map(userEntity);
-		}
-
-		private List<UserAccessListEntity> GetAccessLists(ICollection<UserAccessListEntity> accessLists, List<int> ids)
-		{
-			var entitesToKeep = accessLists.Where(oo => ids.Contains(oo.AccessListId));
-			var existingIds = accessLists.Select(oo => oo.AccessListId);
-			var entitesToAdd = ids.Except(existingIds).Select(oo => new UserAccessListEntity { AccessListId = oo });
-			return entitesToKeep.Concat(entitesToAdd).ToList();
-		}
-
-		private List<UserRoleEntity> GetRoles(ICollection<UserRoleEntity> roles, List<Guid> ids)
-		{
-			var entitesToKeep = roles.Where(oo => ids.Contains(oo.RoleGuid));
-			var existingIds = roles.Select(oo => oo.RoleGuid);
-			var entitesToAdd = ids.Except(existingIds).Select(oo => new UserRoleEntity { RoleGuid = oo });
-			return entitesToKeep.Concat(entitesToAdd).ToList();
+			return new UserWithLocationsMapper().Map(userEntity);
 		}
 	}
 }

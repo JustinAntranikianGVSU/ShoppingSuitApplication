@@ -4,6 +4,7 @@ namespace CoreLibrary
 {
 	public static class AppPolicy
 	{
+		public const string DefaultPolicy = "DefaultPolicy";
 		public const string ViewEmployee = "ViewEmployee";
 		public const string EditEmployee = "EditEmployee";
 		public const string DeleteEmployee = "DeleteEmployee";

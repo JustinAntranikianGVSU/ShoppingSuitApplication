@@ -1,11 +1,11 @@
-﻿using AutoMapper;
+﻿using CoreLibrary;
 using CoreLibrary.Orchestrators;
 using CoreLibrary.ServiceResults;
 using DataAccess;
 using DataAccess.Repositories;
 using Domain.Dtos;
-using Domain.Mappers;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -18,12 +18,10 @@ namespace Domain.Orchestrators
 
 	public class LoginOrchestrator : OrchestratorBase<List<Claim>>, ILoginOrchestrator
 	{
-		private readonly UserMapper _userMapper;
 		private readonly UsersWithRolesRepository _usersWithRolesRepository;
 
-		public LoginOrchestrator(AppDbContext dbContext, IMapper mapper) : base(dbContext)
+		public LoginOrchestrator(AppDbContext dbContext) : base(dbContext)
 		{
-			_userMapper = new UserMapper(mapper);
 			_usersWithRolesRepository = new UsersWithRolesRepository(dbContext);
 		}
 
@@ -38,7 +36,8 @@ namespace Domain.Orchestrators
 				return GetBadRequestResult(error);
 			}
 
-			var userClaims = _userMapper.Map(userEntity).GetClaims();
+			var claimsManager = new ClaimsManager(userEntity.Id, userEntity.ClientIdentifier, userEntity.Roles.Select(oo => oo.RoleGuid));
+			var userClaims = claimsManager.GetClaims();
 			return GetProcessedResult(userClaims);
 		}
 	}

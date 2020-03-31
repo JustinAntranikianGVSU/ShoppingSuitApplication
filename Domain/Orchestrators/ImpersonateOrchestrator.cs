@@ -22,13 +22,11 @@ namespace Domain.Orchestrators
 
 	public class ImpersonateOrchestrator : OrchestratorBase<List<Claim>>, IImpersonateOrchestrator
 	{
-		private readonly UserMapper _userMapper;
 		private readonly UsersWithRolesRepository _usersWithRolesRepository;
 		private readonly IHttpContextAccessor _httpContextAccessor;
 
 		public ImpersonateOrchestrator(AppDbContext dbContext, JwtRequestContext jwtRequestContext, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(dbContext, jwtRequestContext)
 		{
-			_userMapper = new UserMapper(mapper);
 			_usersWithRolesRepository = new UsersWithRolesRepository(_dbContext);
 			_httpContextAccessor = httpContextAccessor;
 		}
@@ -50,8 +48,9 @@ namespace Domain.Orchestrators
 			}
 
 			var userClaims = _httpContextAccessor.HttpContext.User.GetUserAndClientClaims();
-			var impersonateClaims = _userMapper.Map(userEntity).GetClaimsForImpersonation();
 
+			var claimsManager = new ClaimsManager(userEntity.Id, userEntity.ClientIdentifier, userEntity.Roles.Select(oo => oo.RoleGuid));
+			var impersonateClaims = claimsManager.GetClaimsForImpersonation();
 			var combinedClaims = userClaims.Concat(impersonateClaims).ToList();
 			return GetProcessedResult(combinedClaims);
 		}
@@ -65,7 +64,9 @@ namespace Domain.Orchestrators
 			}
 
 			var userEntity = await _usersWithRolesRepository.SingleAsync(_jwtRequestContext.LoggedInUserId);
-			var userClaims = _userMapper.Map(userEntity).GetClaims();
+
+			var claimsManager = new ClaimsManager(userEntity.Id, userEntity.ClientIdentifier, userEntity.Roles.Select(oo => oo.RoleGuid));
+			var userClaims = claimsManager.GetClaims();
 			return GetProcessedResult(userClaims);
 		}
 	}
