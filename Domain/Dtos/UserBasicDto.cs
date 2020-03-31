@@ -16,6 +16,8 @@ namespace Domain
 
 		public string Initals { get => $"{FirstName[0]}{LastName[0]}"; }
 
+		public UserBasicDto() {}
+
 		public UserBasicDto(int id, string firstName, string lastName)
 		{
 			Id = id;

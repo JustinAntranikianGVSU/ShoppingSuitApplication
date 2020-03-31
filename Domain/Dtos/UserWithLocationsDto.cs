@@ -9,7 +9,5 @@ namespace Domain.Dtos
 		public List<AccessListBasicDto> AccessLists { get; set; } = new List<AccessListBasicDto>();
 
 		public string? ClientName { get; set; }
-
-		public UserWithLocationsDto(int id, string firstName, string lastName) : base(id, firstName, lastName) {}
 	}
 }

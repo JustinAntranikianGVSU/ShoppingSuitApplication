@@ -1,7 +1,6 @@
 ﻿using DataAccess.Entities;
 using CoreLibrary;
 using Domain.Dtos;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Domain.Mappers

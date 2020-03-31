@@ -9,13 +9,15 @@ namespace Domain.Mappers
 	{
 		public override UserWithLocationsDto Map(UserEntity userEntity)
 		{
-			var roleDtos = userEntity.Roles.Select(oo => RoleLookup.GetRole(oo.RoleGuid)).ToList();
 			var locationEntites = userEntity.AccessLists.SelectMany(oo => oo.AccessList.Locations);
 
-			var userDto = new UserWithLocationsDto(userEntity.Id, userEntity.FirstName, userEntity.LastName)
+			var userDto = new UserWithLocationsDto()
 			{
+				Id = userEntity.Id,
+				FirstName = userEntity.FirstName,
+				LastName = userEntity.LastName,
 				Email = userEntity.Email,
-				Roles = roleDtos,
+				Roles = userEntity.Roles.Select(oo => RoleLookup.GetRole(oo.RoleGuid)).ToList(),
 				ClientIdentifier = userEntity.ClientIdentifier,
 				ClientName = ClientLookup.GetClientName(userEntity.ClientIdentifier),
 				AccessLists = userEntity.AccessLists.Select(oo => new AccessListBasicDto(oo.AccessList.Id, oo.AccessList.Name)).ToList(),
